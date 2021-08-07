@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const { prefix } = require('../config.json');
 
 module.exports = {
-    name: 'message',
+    name: 'messageCreate',
     execute(message, client) {
 
         var time = new Date().toISOString().substr(11, 5) + " UTC"

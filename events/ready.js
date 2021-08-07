@@ -7,10 +7,12 @@ module.exports = {
 		console.log(`Logged in and ready as ${client.user.tag}`);
 		client.user.setPresence({
 			status: "online",
-			activity: {
-				type: "WATCHING",
-				name: "Battlefield Events | !when"
-			}
+			activities: [
+				{
+					type: "WATCHING",
+					name: "Battlefield Events | !when"
+				}
+			]
 		})
 
 		setInterval(() => {

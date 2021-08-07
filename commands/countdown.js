@@ -1,14 +1,20 @@
 const moment = require("moment");
 
 module.exports = {
-    name: "countdown",
-    aliases: ["when", "reveal"],
+    name: "when",
+    aliases: ["countdown", "reveal"],
     permissions: ["EMBED_LINKS"],
+    allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"],
     cooldown: 5,
     public: true,
     async execute(message, args, client, Discord) {
+        
+        const userId = message.author?.id || message.user.id; // Get user ID from message or interaction
+        // if (userId !== "99182302885588992") return message.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
 
-        // if (message.guild.id != "99183009621622784" && message.author.id != "99183009621622784") return message.reply("Come back later."); // Temp locked to my own server
+        if (!this.allowed_channels.includes(message.channel.id) && userId !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+            return message.reply({ content: "Please try this in <#850376380822323230> or <#177094649473794049> instead!", ephemeral: true });
+        }
 
         try {
 
@@ -18,7 +24,7 @@ module.exports = {
 
             const countdownName = `Exodus Short Film`;
             const countdownTimePassed = `Go check #game-news!`;
-			const messageText = `**Battlefield 2042 | Exodus Short Film**\n<:YouTube:585828653129007127> - <https://youtu.be/FJVCfhLEYdo>\nTimezones: <https://everytimezone.com/s/1744da49>\nTime: <t:1628780400:R>`
+			const messageText = `**Battlefield 2042 | Exodus Short Film**\nPremieres <t:1628780400:R>`
 
             const Time = {
                 EventName: countdownName,

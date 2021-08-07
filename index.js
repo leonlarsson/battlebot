@@ -1,8 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { botToken } = require('./config.json');
+const { botToken } = require('./config');
 
-const client = new Discord.Client({ ws: { intents: ['GUILDS', 'GUILD_MESSAGES'] } });
+const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
 client.events = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 
