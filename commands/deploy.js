@@ -10,9 +10,25 @@ module.exports = {
                 description: "Displays a countdown to the Exodus short film.",
                 options: [
                     {
-                        name: "text",
+                        name: "event",
+                        description: "The event to show a countdown to.",
                         type: "STRING",
-                        description: "When <what>",
+                        required: false,
+                        choices: [
+                            {
+                                name: "Exodus Short Film",
+                                value: "exodus"
+                            },
+                            {
+                                name: "Game Release",
+                                value: "release"
+                            }
+                        ],
+                    },
+                    {
+                        name: "text",
+                        description: "When <what> || (Only Mozzy)",
+                        type: "STRING",
                         required: false
                     }
                 ]

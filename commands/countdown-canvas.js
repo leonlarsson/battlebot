@@ -14,13 +14,6 @@ module.exports = {
 
         try {
 
-            if (args[0] && userId === "99182302885588992") { // If there are args and the arg isn't "reveal", and if the command sender is me, use special values. If no args, use normal countdown and event.
-                Time.EventName = `${args.join(" ")}`;
-                Time.CountdownString = function () {
-                    return "I dunno";
-                }
-            }
-
             const canvas = Canvas.createCanvas(1000, 400);
             const context = canvas.getContext("2d");
             // const backgroundImage = await Canvas.loadImage(Time.CountdownImage());
@@ -40,18 +33,18 @@ module.exports = {
             context.textAlign = "center";
             context.fillText(Time.CountdownString(), 500, 302);
 
-            const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `BF_Exodus_Reveal.png`);
+            const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `${Time.EventName}.png`);
 
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
-                        .setLabel("YouTube")
+                        .setLabel(Time.ButtonOneText)
                         .setStyle('LINK')
-                        .setURL("https://youtu.be/FJVCfhLEYdo"),
+                        .setURL(Time.ButtonOneLink),
                     new MessageButton()
-                        .setLabel("Timezones")
+                        .setLabel(Time.ButtonTwoText)
                         .setStyle('LINK')
-                        .setURL("https://everytimezone.com/s/1744da49"),
+                        .setURL(Time.ButtonTwoLink),
                 )
 
             // Try sending to message channel, if no channel defined, the request is from the interval. Then send it to the designated interval channel.

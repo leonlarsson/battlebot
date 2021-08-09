@@ -18,18 +18,58 @@ module.exports = {
 
         try {
 
-            const currentTime = moment.utc();
-            const countdownTime = moment.utc('2021-08-12 15:00:00'); // Time to count down to (UTC)
-            const duration = moment.duration(countdownTime.diff(currentTime));
+            let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
-            const countdownName = `Exodus Short Film`;
-            const countdownTimePassed = `Go check #game-news!`;
-			const messageText = `**Battlefield 2042 | Exodus Short Film**\nPremieres <t:1628780400:R>`
+            const event = message.options?.get("event")?.value || "exodus";
+            const customText = message.options?.get("text")?.value || args.join(" ");
+
+            if (customText && userId === "99182302885588992") {
+
+                countdownTime = moment.utc("9999-12-12 12:00:00");
+                countdownName = customText;
+                messageText = "<:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554>";
+                countdownText = "I dunno"
+                buttonOneText = "Google";
+                buttonOneLink = "https://google.com";
+                buttonTwoText = "Also Google";
+                buttonTwoLink = "https://youtu.be/j5a0jTc9S10";
+
+            } else if (event === "exodus") {
+
+                countdownTime = moment.utc("2021-08-12 15:00:00");
+                countdownName = "Exodus Short Film";
+                countdownTimePassed = "Go check #game-news!";
+                messageText = "**Battlefield 2042 | Exodus Short Film**\nPremieres <t:1628780400:R>";
+                buttonOneText = "YouTube";
+                buttonOneLink = "https://youtu.be/FJVCfhLEYdo";
+                buttonTwoText = "Timezones";
+                buttonTwoLink = "https://everytimezone.com/s/47e19450";
+
+            } else if (event === "release") {
+
+                countdownTime = moment.utc("2021-10-22 10:00:00");
+                countdownName = "Battlefield 2042 Release";
+                countdownTimePassed = "Go check #game-news!";
+                messageText = "**Battlefield 2042 | Release**\nReleases <t:1634896800:R>";
+                buttonOneText = "Game Page";
+                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
+                buttonTwoText = "Pre-Order";
+                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+
+            }
+
+            const currentTime = moment.utc();
+            const duration = moment.duration(countdownTime.diff(currentTime));
 
             const Time = {
                 EventName: countdownName,
                 MessageText: messageText,
-                Month: duration.months(),
+                ButtonOneText: buttonOneText,
+                ButtonOneLink: buttonOneLink,
+                ButtonTwoText: buttonTwoText,
+                ButtonTwoLink: buttonTwoLink,
+                Years: duration.years(),
+                Months: duration.months(),
                 Days: duration.days(),
                 Hours: duration.hours(),
                 Minutes: duration.minutes(),
@@ -74,6 +114,8 @@ module.exports = {
                 },
                 CountdownString: function () {
 
+                    if (customText && userId === "99182302885588992") return countdownText;
+
                     if (this.HasPassed()) {
                         return countdownTimePassed;
                     }
@@ -99,7 +141,7 @@ module.exports = {
                     }
                                         
                     // More than a month left
-                    return `${this.Month} ${this.MonthText()}, ${this.Days} ${this.DaysText()}, ${this.Hours} ${this.HoursText()}`
+                    return `${this.Months} ${this.MonthText()}, ${this.Days} ${this.DaysText()}, ${this.Hours} ${this.HoursText()}`
                 },
                 // CountdownImage: function () {
 
