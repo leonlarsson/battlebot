@@ -5,6 +5,8 @@ module.exports = {
     name: 'messageCreate',
     execute(message, client) {
 
+        if (message.author.id !== "99182302885588992") return;
+
         var time = new Date().toISOString().substr(11, 5) + " UTC"
 
         // Ignore if no prefix or bot user
