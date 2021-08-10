@@ -20,7 +20,7 @@ module.exports = {
 
             let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
-            const event = message.options?.get("event")?.value || "exodus";
+            const event = message.options?.get("event")?.value || "exodus"; // Get selected event and set default event
             const customText = message.options?.get("text")?.value || args.join(" ");
 
             if (customText && userId === "99182302885588992") {
@@ -51,6 +51,17 @@ module.exports = {
                 countdownName = "Battlefield 2042 Release";
                 countdownTimePassed = "Go check #game-news!";
                 messageText = "**Battlefield 2042 | Release**\nReleases <t:1634896800:R>";
+                buttonOneText = "Game Page";
+                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
+                buttonTwoText = "Pre-Order";
+                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+
+            } else if (event === "early_release") {
+
+                countdownTime = moment.utc("2021-10-15 10:00:00");
+                countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
+                countdownTimePassed = "Go check #game-news!";
+                messageText = "**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:1634292000:R>";
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";

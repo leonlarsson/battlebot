@@ -22,6 +22,10 @@ module.exports = {
                             {
                                 name: "Game Release",
                                 value: "release"
+                            },
+                            {
+                                name: "Game Release (Gold/Ultimate)",
+                                value: "early_release"
                             }
                         ],
                     },
