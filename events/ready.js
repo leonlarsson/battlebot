@@ -15,8 +15,8 @@ module.exports = {
 			]
 		})
 
-		setInterval(() => {
-			client.commands.get("countdown").execute(1, 2, client, Discord);
-		}, 21600000);
+		// setInterval(() => {
+		// 	client.commands.get("countdown").execute(1, 2, client, Discord);
+		// }, 21600000);
 	}
 };
