@@ -20,7 +20,7 @@ module.exports = {
 
             let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
-            const event = message.options?.get("event")?.value || "exodus"; // Get selected event and set default event
+            const event = message.options?.get("event")?.value || "release"; // Get selected event and set default event
             const customText = message.options?.get("text")?.value || args.join(" ");
 
             if (customText && userId === "99182302885588992") {
@@ -33,17 +33,6 @@ module.exports = {
                 buttonOneLink = "https://google.com";
                 buttonTwoText = "Also Google";
                 buttonTwoLink = "https://youtu.be/j5a0jTc9S10";
-
-            } else if (event === "exodus") {
-
-                countdownTime = moment.utc("2021-08-12 15:00:00");
-                countdownName = "Exodus Short Film";
-                countdownTimePassed = "Go check #game-news!";
-                messageText = "**Battlefield 2042 | Exodus Short Film**\nPremieres <t:1628780400:R>";
-                buttonOneText = "YouTube";
-                buttonOneLink = "https://youtu.be/FJVCfhLEYdo";
-                buttonTwoText = "Timezones";
-                buttonTwoLink = "https://everytimezone.com/s/47e19450";
 
             } else if (event === "release") {
 

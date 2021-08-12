@@ -16,10 +16,6 @@ module.exports = {
                         required: false,
                         choices: [
                             {
-                                name: "Exodus Short Film",
-                                value: "exodus"
-                            },
-                            {
                                 name: "Game Release",
                                 value: "release"
                             },
