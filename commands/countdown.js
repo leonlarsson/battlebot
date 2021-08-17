@@ -7,7 +7,7 @@ module.exports = {
     cooldown: 5,
     public: true,
     enabled: true,
-    async execute(interaction, args, client, Discord) {
+    async execute(interaction, client) {
         
         const userId = interaction.user.id; // Get user ID from message or interaction
         // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
@@ -21,7 +21,7 @@ module.exports = {
             let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
             const event = interaction.options?.get("event")?.value || "release"; // Get selected event and set default event
-            const customText = interaction.options?.get("text")?.value || args.join(" ");
+            const customText = interaction.options?.get("text")?.value;
 
             if (customText && userId === "99182302885588992") {
 
@@ -61,7 +61,7 @@ module.exports = {
             const currentTime = moment.utc();
             const duration = moment.duration(countdownTime.diff(currentTime));
 
-            const Time = {
+            const Event = {
                 EventName: countdownName,
                 MessageText: messageText,
                 ButtonOneText: buttonOneText,
@@ -75,35 +75,35 @@ module.exports = {
                 Minutes: duration.minutes(),
                 Seconds: duration.seconds(),
                 MonthText: function () {
-                    if (Time.Months == 1) {
+                    if (Event.Months == 1) {
                         return "month";
                     } else {
                         return "months";
                     }
                 },
                 DaysText: function () {
-                    if (Time.Days == 1) {
+                    if (Event.Days == 1) {
                         return "day";
                     } else {
                         return "days";
                     }
                 },
                 HoursText: function () {
-                    if (Time.Hours == 1) {
+                    if (Event.Hours == 1) {
                         return "hour";
                     } else {
                         return "hours";
                     }
                 },
                 MinutesText: function () {
-                    if (Time.Minutes == 1) {
+                    if (Event.Minutes == 1) {
                         return "minute";
                     } else {
                         return "minutes";
                     }
                 },
                 SecondsText: function () {
-                    if (Time.Seconds == 1) {
+                    if (Event.Seconds == 1) {
                         return "second";
                     } else {
                         return "seconds";
@@ -121,15 +121,15 @@ module.exports = {
                     }
 
                     if (duration._milliseconds < 60000) { // Less than a minute left
-                        return `${Time.Seconds} ${Time.SecondsText()}`;
+                        return `${Event.Seconds} ${Event.SecondsText()}`;
                     }
 
                     if (duration._milliseconds < 3600000) { // Less than an hour left
-                        return `${this.Minutes} ${this.MinutesText()}, ${Time.Seconds} ${Time.SecondsText()}`;
+                        return `${this.Minutes} ${this.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                     }
 					
 					if (duration._milliseconds < 21600000) { // Less than 6 hours left
-                        return `${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}, ${Time.Seconds} ${Time.SecondsText()}`;
+                        return `${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                     }
 
                     if (duration._milliseconds < 86400000) { // Less than a day left
@@ -166,7 +166,7 @@ module.exports = {
                 // }
             }
 
-            client.commands.get("countdowncanvas").execute(interaction, args, client, Discord, Time);
+            client.commands.get("countdowncanvas").execute(interaction, client, Event);
 
         } catch (err) {
             console.error(err);

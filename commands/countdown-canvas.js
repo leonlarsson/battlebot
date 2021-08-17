@@ -1,13 +1,13 @@
 const Canvas = require("canvas");
 const { registerFont } = require('canvas')
 const { intervalChannel } = require('../config.json')
-const { MessageActionRow, MessageButton } = require('discord.js');
+const { MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     name: "countdowncanvas",
     public: false,
     enabled: false,
-    async execute(interaction, args, client, Discord, Time) {
+    async execute(interaction, client, Event) {
 
         const backgroundNum = Math.floor(Math.random() * 3);
 
@@ -15,7 +15,7 @@ module.exports = {
 
             const canvas = Canvas.createCanvas(1000, 400);
             const context = canvas.getContext("2d");
-            // const backgroundImage = await Canvas.loadImage(Time.CountdownImage());
+            // const backgroundImage = await Canvas.loadImage(Event.CountdownImage());
             const backgroundImage = await Canvas.loadImage(`./assets/images/BG_BF_${backgroundNum}.png`);
 
             registerFont('./assets/fonts/Geometos.ttf', { family: "Geometos" });
@@ -25,32 +25,32 @@ module.exports = {
             context.font = '35px Geometos';
             context.fillStyle = '#00ffde';
             context.textAlign = "center";
-            context.fillText(Time.EventName, 500, 208);
+            context.fillText(Event.EventName, 500, 208);
 
             context.font = '50px Geometos';
             context.fillStyle = '#00ffde';
             context.textAlign = "center";
-            context.fillText(Time.CountdownString(), 500, 302);
+            context.fillText(Event.CountdownString(), 500, 302);
 
-            const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `${Time.EventName}.png`);
+            const attachment = new MessageAttachment(canvas.toBuffer(), `${Event.EventName}.png`);
 
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
-                        .setLabel(Time.ButtonOneText)
+                        .setLabel(Event.ButtonOneText)
                         .setStyle('LINK')
-                        .setURL(Time.ButtonOneLink),
+                        .setURL(Event.ButtonOneLink),
                     new MessageButton()
-                        .setLabel(Time.ButtonTwoText)
+                        .setLabel(Event.ButtonTwoText)
                         .setStyle('LINK')
-                        .setURL(Time.ButtonTwoLink),
+                        .setURL(Event.ButtonTwoLink),
                 )
 
             // Try sending to message channel, if no channel defined, the request is from the interval. Then send it to the designated interval channel.
             try {
-                await interaction.reply({ content: Time.MessageText, files: [attachment], components: [row] });
+                await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row] });
             } catch (err) {
-                client.channels.cache.get(intervalChannel).send({ content: Time.MessageText, files: [attachment], components: [row] });
+                client.channels.cache.get(intervalChannel).send({ content: Event.MessageText, files: [attachment], components: [row] });
             }
 
         } catch (error) {
