@@ -6,11 +6,10 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 module.exports = {
     name: "countdowncanvas",
     public: false,
-    disabled: true,
-    async execute(message, args, client, Discord, Time) {
+    enabled: false,
+    async execute(interaction, args, client, Discord, Time) {
 
         const backgroundNum = Math.floor(Math.random() * 3);
-        const userId = message.author?.id || message.user.id; // Get user ID from message or interaction
 
         try {
 
@@ -49,7 +48,7 @@ module.exports = {
 
             // Try sending to message channel, if no channel defined, the request is from the interval. Then send it to the designated interval channel.
             try {
-                await message.reply({ content: Time.MessageText, files: [attachment], components: [row] });
+                await interaction.reply({ content: Time.MessageText, files: [attachment], components: [row] });
             } catch (err) {
                 client.channels.cache.get(intervalChannel).send({ content: Time.MessageText, files: [attachment], components: [row] });
             }

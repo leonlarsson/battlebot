@@ -2,26 +2,26 @@ const moment = require("moment");
 
 module.exports = {
     name: "when",
-    aliases: ["countdown", "reveal"],
     permissions: ["EMBED_LINKS"],
     allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"],
     cooldown: 5,
     public: true,
-    async execute(message, args, client, Discord) {
+    enabled: true,
+    async execute(interaction, args, client, Discord) {
         
-        const userId = message.author?.id || message.user.id; // Get user ID from message or interaction
-        // if (userId !== "99182302885588992") return message.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
+        const userId = interaction.user.id; // Get user ID from message or interaction
+        // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
 
-        if (!this.allowed_channels.includes(message.channel.id) && userId !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
-            return message.reply({ content: "Please try this in <#850376380822323230> or <#177094649473794049> instead!", ephemeral: true });
+        if (!this.allowed_channels.includes(interaction.channel.id) && userId !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+            return interaction.reply({ content: "Please try this in <#850376380822323230> or <#177094649473794049> instead!", ephemeral: true });
         }
 
         try {
 
             let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
-            const event = message.options?.get("event")?.value || "release"; // Get selected event and set default event
-            const customText = message.options?.get("text")?.value || args.join(" ");
+            const event = interaction.options?.get("event")?.value || "release"; // Get selected event and set default event
+            const customText = interaction.options?.get("text")?.value || args.join(" ");
 
             if (customText && userId === "99182302885588992") {
 
@@ -75,7 +75,7 @@ module.exports = {
                 Minutes: duration.minutes(),
                 Seconds: duration.seconds(),
                 MonthText: function () {
-                    if (Time.Month == 1) {
+                    if (Time.Months == 1) {
                         return "month";
                     } else {
                         return "months";
@@ -166,7 +166,7 @@ module.exports = {
                 // }
             }
 
-            client.commands.get("countdowncanvas").execute(message, args, client, Discord, Time);
+            client.commands.get("countdowncanvas").execute(interaction, args, client, Discord, Time);
 
         } catch (err) {
             console.error(err);
