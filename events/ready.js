@@ -9,8 +9,8 @@ module.exports = {
 			status: "online",
 			activities: [
 				{
-					type: "WATCHING",
-					name: "Battlefield Events | !when"
+					type: "PLAYING",
+					name: "Battlefield"
 				}
 			]
 		})
