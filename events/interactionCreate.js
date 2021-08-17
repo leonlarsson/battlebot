@@ -6,10 +6,10 @@ module.exports = {
         if (!interaction.isCommand()) return;
 
         const command = await client.commands.get(interaction.commandName);
-        if (!command) return interaction.reply({ content: "Not a valid command." })
+        if (!command) return interaction.reply({ content: "Not a valid command." });
 
         if (command.enabled === false) return interaction.reply({ content: "Command is disabled.", ephemeral: true });
-        if (command.public === false && message.author.id !== "99182302885588992") return interaction.reply({ content: "Command is noty available.", ephemeral: true });
+        if (command.public === false && interaction.user.id !== "99182302885588992") return interaction.reply({ content: "Command is not available.", ephemeral: true });
 
         // Perm Check.
         if (command.permissions) {
@@ -22,11 +22,7 @@ module.exports = {
         let args = [];
 
         if (interaction.commandName === "when") {
-            if (interaction.options.get("text")?.value) {
-                args[0] = interaction.options.get("text").value;
-            }
-
-            command.execute(interaction, args, client, Discord);
+            command.execute(interaction, client);
         }
 
         if (interaction.commandName === "recruitment") {
@@ -37,17 +33,26 @@ module.exports = {
                 }
             }
 
-            args[0] = interaction.options.get("name").value;
-            args[1] = interaction.options.get("platform").value;
-            args[2] = interaction.options.get("game").value;
-            args[3] = interaction.options.get("region").value;
-            args[4] = interaction.options.get("description").value;
+            // Remove invites and link embeds
+            function cleanMessage(content) {
+                const inviteRegex = /(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s/]+?(?=\b)/g;
+                const linkRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g;
+                return content.replace(inviteRegex, "[INVITE REMOVED]").replace(linkRegex, `<$1>`);
+            }
 
-            if (args[0].length > 50) return interaction.reply({ content: "`Name` needs to be 50 characters or less.", ephemeral: true });
-            if (args[1].length > 50) return interaction.reply({ content: "`Platform` needs to be 50 characters or less.", ephemeral: true });
-            if (args[2].length > 70) return interaction.reply({ content: "`Game` needs to be 70 characters or less.", ephemeral: true });
-            if (args[3].length > 50) return interaction.reply({ content: "`Region` needs to be 50 characters or less.", ephemeral: true });
-            if (args[4].length > 600) return interaction.reply({ content: "`Description` needs to be 600 characters or less.", ephemeral: true });
+            // Removing embeds on links and censor invite links
+            args[0] = cleanMessage(interaction.options.get("name").value);
+            args[1] = cleanMessage(interaction.options.get("platform").value);
+            args[2] = cleanMessage(interaction.options.get("game").value);
+            args[3] = cleanMessage(interaction.options.get("region").value);
+            args[4] = cleanMessage(interaction.options.get("description").value);
+            
+            // Check length
+            if (args[0].length > 50) return interaction.reply({ content: `\`Name\` needs to be 50 characters or less. You were at ${args[0].length}.`, ephemeral: true });
+            if (args[1].length > 50) return interaction.reply({ content: `\`Platform\` needs to be 50 characters or less. You were at ${args[1].length}.`, ephemeral: true });
+            if (args[2].length > 70) return interaction.reply({ content: `\`Game\` needs to be 70 characters or less. You were at ${args[2].length}.`, ephemeral: true });
+            if (args[3].length > 50) return interaction.reply({ content: `\`Region\` needs to be 50 characters or less. You were at ${args[3].length}.`, ephemeral: true });
+            if (args[4].length > 600) return interaction.reply({ content: `\`Description\` needs to be 600 characters or less. You were at ${args[4].length}.`, ephemeral: true });
 
             // Cooldowns
             if (command.cooldown) {
