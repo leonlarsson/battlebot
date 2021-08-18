@@ -1,6 +1,6 @@
 module.exports = {
     name: "recruitment",
-    allowed_channels: ["739938247089848351"],
+    allowed_channels: ["739938247089848351"], // #recruitment
     cooldown: 172800, // Seconds
     public: true,
     enabled: true,
