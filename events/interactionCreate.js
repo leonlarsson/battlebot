@@ -66,7 +66,7 @@ module.exports = {
                 const timestamps = cooldowns.get(command.name);
                 const cooldownAmount = (command.cooldown) * 1000;
 
-                if (timestamps.has(interaction.user.id)) {
+                if (timestamps.has(interaction.user.id) && interaction.user.id !== "99182302885588992") {
                     const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 
                     if (now < expirationTime) {
