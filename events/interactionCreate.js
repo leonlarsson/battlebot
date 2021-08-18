@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const Discord = require('discord.js');
 
 module.exports = {
@@ -33,20 +34,13 @@ module.exports = {
                 }
             }
 
-            // Remove invites and link embeds
-            function cleanMessage(content) {
-                const inviteRegex = /(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s/]+?(?=\b)/g;
-                const linkRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g;
-                return content.replace(inviteRegex, "[INVITE REMOVED]").replace(linkRegex, `<$1>`);
-            }
-
             // Removing embeds on links and censor invite links
             args[0] = cleanMessage(interaction.options.get("name").value);
             args[1] = cleanMessage(interaction.options.get("platform").value);
             args[2] = cleanMessage(interaction.options.get("game").value);
             args[3] = cleanMessage(interaction.options.get("region").value);
             args[4] = cleanMessage(interaction.options.get("description").value);
-            
+
             // Check length
             if (args[0].length > 50) return interaction.reply({ content: `\`Name\` needs to be 50 characters or less. You were at ${args[0].length}.`, ephemeral: true });
             if (args[1].length > 50) return interaction.reply({ content: `\`Platform\` needs to be 50 characters or less. You were at ${args[1].length}.`, ephemeral: true });
@@ -81,6 +75,13 @@ module.exports = {
 
             command.execute(interaction, args);
 
+        }
+
+        // Remove invites and link embeds
+        function cleanMessage(content) {
+            const inviteRegex = /(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s/]+?(?=\b)/g;
+            const linkRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g;
+            return content.replace(inviteRegex, "[INVITE REMOVED]").replace(linkRegex, `<$1>`);
         }
 
     }
