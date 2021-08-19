@@ -7,7 +7,7 @@ module.exports = {
         if (!interaction.isCommand()) return;
 
         const command = await client.commands.get(interaction.commandName);
-        if (!command) return interaction.reply({ content: "Not a valid command." });
+        if (!command) return interaction.reply({ content: "Not a valid command.", ephemeral: true });
 
         if (command.enabled === false) return interaction.reply({ content: "Command is disabled.", ephemeral: true });
         if (command.public === false && interaction.user.id !== "99182302885588992") return interaction.reply({ content: "Command is not available.", ephemeral: true });
@@ -33,6 +33,15 @@ module.exports = {
                     return interaction.reply({ content: "This is only available in <#739938247089848351>", ephemeral: true });
                 }
             }
+
+            console.log("New recruitment message (Raw)", {
+                User: `${interaction.user.tag} (${interaction.user.id})`,
+                Name: interaction.options.get("name").value,
+                Platform: interaction.options.get("platform").value,
+                Game: interaction.options.get("game").value,
+                Region: interaction.options.get("region").value,
+                Description: interaction.options.get("description").value,
+            });
 
             // Removing embeds on links and censor invite links
             args[0] = cleanMessage(interaction.options.get("name").value);
@@ -65,7 +74,7 @@ module.exports = {
 
                     if (now < expirationTime) {
                         const timeLeft = (expirationTime - now) / 3600000; // Milliseconds to hours.
-                        return interaction.reply({ content: `Please wait ${timeLeft.toFixed(1)} more hour(s) before reusing the \`${command.name}\` command.`, ephemeral: true });
+                        return interaction.reply({ content: `Please wait ${timeLeft.toFixed(2)} more hour(s) before reusing the \`${command.name}\` command.`, ephemeral: true });
                     }
                 }
 
