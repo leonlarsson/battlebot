@@ -8,7 +8,7 @@ const botToken = config.botToken;
 const clientId = config.clientId;
 
 // Guild id to deploy in
-const guildId = '99183009621622784'; // Slash Commands Test server
+const guildId = '140933721929940992'; // BFD
 
 const rest = new REST({ version: '9' }).setToken(botToken);
 
