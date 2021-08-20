@@ -23,6 +23,13 @@ module.exports = {
         let args = [];
 
         if (interaction.commandName === "when") {
+
+            if (command.allowed_channels) {
+                if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+                    return interaction.reply({ content: "This is only available in <#850376380822323230> and <#177094649473794049>", ephemeral: true });
+                }
+            }
+
             command.execute(interaction, client);
         }
 

@@ -3,7 +3,7 @@ const moment = require("moment");
 module.exports = {
     name: "when",
     permissions: ["EMBED_LINKS"],
-    allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"],
+    allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"], // #battlefield-2042, #battlefield, #planning
     cooldown: 5,
     public: true,
     enabled: true,
