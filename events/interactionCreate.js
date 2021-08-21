@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-escape */
 const Discord = require('discord.js');
+const HumanizeDuration = require('humanize-duration');
 
 module.exports = {
     name: 'interactionCreate',
@@ -75,14 +76,13 @@ module.exports = {
 
                     const now = Date.now();
                     const timestamps = cooldowns.get(command.name);
-                    const cooldownAmount = (command.cooldown) * 1000;
+                    const cooldownAmount = (command.cooldown) * 1000; // time in milliseconds
 
                     if (timestamps.has(interaction.user.id)) {
                         const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 
                         if (now < expirationTime) {
-                            const timeLeft = (expirationTime - now) / 3600000; // Milliseconds to hours.
-                            return interaction.reply({ content: `Please wait ${timeLeft.toFixed(2)} more hour(s) before reusing the \`${command.name}\` command.`, ephemeral: true });
+                            return interaction.reply({ content: `Please wait ${HumanizeDuration(cooldownAmount)} before reusing the \`${command.name}\` command.`, ephemeral: true });
                         }
                     }
 
