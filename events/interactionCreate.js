@@ -64,29 +64,31 @@ module.exports = {
             if (args[3].length > 50) return interaction.reply({ content: `\`Region\` needs to be 50 characters or less. You were at ${args[3].length}.`, ephemeral: true });
             if (args[4].length > 600) return interaction.reply({ content: `\`Description\` needs to be 600 characters or less. You were at ${args[4].length}.`, ephemeral: true });
 
-            // Cooldowns
-            if (command.cooldown) {
-                const { cooldowns } = client;
+            // Cooldowns. If user is exempt, don't do cooldown stuff
+            if (!command.cooldown_exempt.includes(interaction.user.id)) {
+                if (command.cooldown) {
+                    const { cooldowns } = client;
 
-                if (!cooldowns.has(command.name)) {
-                    cooldowns.set(command.name, new Discord.Collection());
-                }
-
-                const now = Date.now();
-                const timestamps = cooldowns.get(command.name);
-                const cooldownAmount = (command.cooldown) * 1000;
-
-                if (timestamps.has(interaction.user.id) && interaction.user.id !== "99182302885588992") {
-                    const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
-
-                    if (now < expirationTime) {
-                        const timeLeft = (expirationTime - now) / 3600000; // Milliseconds to hours.
-                        return interaction.reply({ content: `Please wait ${timeLeft.toFixed(2)} more hour(s) before reusing the \`${command.name}\` command.`, ephemeral: true });
+                    if (!cooldowns.has(command.name)) {
+                        cooldowns.set(command.name, new Discord.Collection());
                     }
-                }
 
-                timestamps.set(interaction.user.id, now);
-                setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                    const now = Date.now();
+                    const timestamps = cooldowns.get(command.name);
+                    const cooldownAmount = (command.cooldown) * 1000;
+
+                    if (timestamps.has(interaction.user.id)) {
+                        const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
+
+                        if (now < expirationTime) {
+                            const timeLeft = (expirationTime - now) / 3600000; // Milliseconds to hours.
+                            return interaction.reply({ content: `Please wait ${timeLeft.toFixed(2)} more hour(s) before reusing the \`${command.name}\` command.`, ephemeral: true });
+                        }
+                    }
+
+                    timestamps.set(interaction.user.id, now);
+                    setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+                }
             }
 
             command.execute(interaction, args);

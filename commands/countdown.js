@@ -5,6 +5,7 @@ module.exports = {
     permissions: ["EMBED_LINKS"],
     allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"], // #battlefield-2042, #battlefield, #planning
     cooldown: 5,
+    cooldown_exempt: [],
     public: true,
     enabled: true,
     async execute(interaction, client) {
