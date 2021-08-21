@@ -65,6 +65,9 @@ module.exports = {
             if (args[3].length > 50) return interaction.reply({ content: `\`Region\` needs to be 50 characters or less. You were at ${args[3].length}.`, ephemeral: true });
             if (args[4].length > 600) return interaction.reply({ content: `\`Description\` needs to be 600 characters or less. You were at ${args[4].length}.`, ephemeral: true });
 
+            // Check newlines
+            if (args[0].includes("\n") || args[1].includes("\n") || args[2].includes("\n") || args[3].includes("\n") || args[4].includes("\n")) return interaction.reply({ content: "Your message cannot contain any linebreaks. Keep it all on one line and try again.", ephemeral: true });
+
             // Cooldowns. If user is exempt, don't do cooldown stuff
             if (!command.cooldown_exempt.includes(interaction.user.id)) {
                 if (command.cooldown) {
