@@ -1,6 +1,15 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { botToken } = require('./config');
+const config = require('./config');
+
+let botToken;
+if (config.environment === "dev") {
+	botToken = config.botToken_dev;
+} else if (config.environment === "live") {
+	botToken = config.botToken;
+} else {
+	console.log("No environment specified.");
+}
 
 const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
 client.events = new Discord.Collection();
@@ -38,4 +47,4 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-client.login(botToken)
+client.login(botToken);

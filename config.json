@@ -1,6 +1,12 @@
 {
-    "prefix": "!",
-    "botToken": "ODUwNjcxMTM0NTAwMTkyMjY2.YLtHOw.gBaiu6aAJ-MguV7ltW5CfXYv6Wg",
-    "clientId": "850671134500192266",
-    "intervalChannel": "850376380822323230"
+  "prefix": "!",
+  "environment": "dev",
+
+  "botToken": "ODUwNjcxMTM0NTAwMTkyMjY2.YLtHOw.gBaiu6aAJ-MguV7ltW5CfXYv6Wg",
+  "botToken_dev": "ODc4NzE1NTA0Njk1NTc4NjY1.YSFNlg.3rRgov_wrq5cZT6cNAdbCgCrReo",
+  "clientId": "850671134500192266",
+  "clientId_dev": "878715504695578665",
+  "slashGuild": "140933721929940992",
+  "slashGuild_dev": "99183009621622784",
+  "intervalChannel": "850376380822323230"
 }

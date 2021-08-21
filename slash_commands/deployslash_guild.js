@@ -3,12 +3,20 @@ const { Routes } = require('discord-api-types/v9');
 const config = require('../config');
 const slashCommandsData = require('./slash_commands_data');
 
-// Set vars
-const botToken = config.botToken;
-const clientId = config.clientId;
-
-// Guild id to deploy in
-const guildId = '140933721929940992'; // BFD
+let botToken;
+let clientId;
+let guildId;
+if (config.environment === "dev") {
+    botToken = config.botToken_dev;
+    clientId = config.clientId_dev;
+    guildId = config.slashGuild_dev;
+} else if (config.environment === "live") {
+    botToken = config.botToken;
+    clientId = config.clientId;
+    guildId = config.slashGuild;
+} else {
+    console.log("No environment specified.");
+}
 
 const rest = new REST({ version: '9' }).setToken(botToken);
 
