@@ -30,8 +30,6 @@ module.exports = {
                     return interaction.reply({ content: "This is only available in <#850376380822323230> and <#177094649473794049>", ephemeral: true });
                 }
             }
-
-            command.execute(interaction, client);
         }
 
         if (interaction.commandName === "recruitment") {
@@ -68,35 +66,35 @@ module.exports = {
             // Check newlines
             if (args[0].includes("\n") || args[1].includes("\n") || args[2].includes("\n") || args[3].includes("\n") || args[4].includes("\n")) return interaction.reply({ content: "Your message cannot contain any linebreaks. Keep it all on one line and try again.", ephemeral: true });
 
-            // Cooldowns. If user is exempt, don't do cooldown stuff
-            if (!command.cooldown_exempt.includes(interaction.user.id)) {
-                if (command.cooldown) {
-                    const { cooldowns } = client;
-
-                    if (!cooldowns.has(command.name)) {
-                        cooldowns.set(command.name, new Discord.Collection());
-                    }
-
-                    const now = Date.now();
-                    const timestamps = cooldowns.get(command.name);
-                    const cooldownAmount = (command.cooldown) * 1000; // time in milliseconds
-
-                    if (timestamps.has(interaction.user.id)) {
-                        const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
-
-                        if (now < expirationTime) {
-                            return interaction.reply({ content: `Please wait ${HumanizeDuration(cooldownAmount)} before reusing the \`${command.name}\` command.`, ephemeral: true });
-                        }
-                    }
-
-                    timestamps.set(interaction.user.id, now);
-                    setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
-                }
-            }
-
-            command.execute(interaction, args);
-
         }
+        
+        // Cooldowns. If user is exempt, don't do cooldown stuff
+        if (!command.cooldown_exempt.includes(interaction.user.id)) {
+            if (command.cooldown) {
+                const { cooldowns } = client;
+
+                if (!cooldowns.has(command.name)) {
+                    cooldowns.set(command.name, new Discord.Collection());
+                }
+
+                const now = Date.now();
+                const timestamps = cooldowns.get(command.name);
+
+                if (timestamps.has(interaction.user.id)) {
+                    const expirationTime = timestamps.get(interaction.user.id) + command.cooldown;
+
+                    if (now < expirationTime) {
+                        const timeLeft = (expirationTime - now); // Remaining time in milliseconds
+                        return interaction.reply({ content: `Please wait ${HumanizeDuration(timeLeft, { round: true })} before reusing the \`${command.name}\` command.`, ephemeral: true });
+                    }
+                }
+
+                timestamps.set(interaction.user.id, now);
+                setTimeout(() => timestamps.delete(interaction.user.id), command.cooldown);
+            }
+        }
+
+        command.execute(interaction, args, client); // Run command
 
         // Remove invites and link embeds
         function cleanMessage(content) {

@@ -4,11 +4,11 @@ module.exports = {
     name: "when",
     permissions: ["EMBED_LINKS"],
     allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"], // #battlefield-2042, #battlefield, #planning
-    cooldown: 5,
+    cooldown: 5000,
     cooldown_exempt: [],
     public: true,
     enabled: true,
-    async execute(interaction, client) {
+    async execute(interaction, args, client) {
         
         const userId = interaction.user.id; // Get user ID from message or interaction
         // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me

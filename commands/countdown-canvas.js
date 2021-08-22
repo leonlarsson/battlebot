@@ -1,6 +1,5 @@
 const Canvas = require("canvas");
 const { registerFont } = require('canvas')
-const { intervalChannel } = require('../config.json')
 const { MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
@@ -46,12 +45,7 @@ module.exports = {
                         .setURL(Event.ButtonTwoLink),
                 )
 
-            // Try sending to message channel, if no channel defined, the request is from the interval. Then send it to the designated interval channel.
-            try {
-                await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row] });
-            } catch (err) {
-                client.channels.cache.get(intervalChannel).send({ content: Event.MessageText, files: [attachment], components: [row] });
-            }
+            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row] });
 
         } catch (error) {
             console.log(error);
