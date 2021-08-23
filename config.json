@@ -2,6 +2,7 @@
   "prefix": "!",
   "environment": "dev",
 
+  "mongoDB_srv": "mongodb+srv://leon:bN6Mf9IT3jLSeoqh@battlebot.cmapq.mongodb.net/BattlebotDB?retryWrites=true&w=majority",
   "botToken": "ODUwNjcxMTM0NTAwMTkyMjY2.YLtHOw.gBaiu6aAJ-MguV7ltW5CfXYv6Wg",
   "botToken_dev": "ODc4NzE1NTA0Njk1NTc4NjY1.YSFNlg.3rRgov_wrq5cZT6cNAdbCgCrReo",
   "clientId": "850671134500192266",

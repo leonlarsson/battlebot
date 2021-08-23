@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const mongoose = require('mongoose');
 const config = require('./config');
 
 let botToken;
@@ -46,5 +47,15 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
+
+mongoose.connect(config.mongoDB_srv, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useFindAndModify: false
+}).then(() => {
+	console.log("Connected to the DB.");
+}).catch(error => {
+	console.log(error);
+})
 
 client.login(botToken);
