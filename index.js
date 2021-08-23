@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
 const mongoose = require('mongoose');
 const config = require('./config');
 
@@ -12,13 +13,11 @@ if (config.environment === "dev") {
 	console.log("No environment specified.");
 }
 
-const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
-client.events = new Discord.Collection();
-client.cooldowns = new Discord.Collection();
-
-const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 
 // Events
+client.events = new Discord.Collection();
+const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
@@ -28,6 +27,19 @@ for (const file of eventFiles) {
 	}
 }
 
+// Commands
+client.commands = new Discord.Collection();
+const commandFolders = fs.readdirSync("./commands");
+
+for (const folder of commandFolders) {
+	const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith(".js"));
+	for (const file of commandFiles) {
+		const command = require(`./commands/${folder}/${file}`);
+		client.commands.set(command.name, command);
+	}
+}
+
+// Error handling (bad)
 process.on('unhandledRejection', error => {
 	if (error.code == 10008) {
 		console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`)
@@ -40,14 +52,7 @@ process.on('unhandledRejection', error => {
 	}
 });
 
-client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync("./commands");
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
-
+// Connect to DB
 mongoose.connect(config.mongoDB_srv, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
