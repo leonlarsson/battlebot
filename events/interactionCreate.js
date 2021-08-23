@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 const mongoose = require('mongoose');
-const Cooldowns = require('../models/cooldown');
+const Cooldowns = require('../db/models/cooldown');
 const HumanizeDuration = require('humanize-duration');
 
 module.exports = {
@@ -8,26 +8,33 @@ module.exports = {
     async execute(interaction, client) {
         if (!interaction.isCommand()) return;
 
-        //TODO: Fix getting command and subcommand and all that stuff
+        // Define command used
+        let commandUsed;
+        if (interaction.commandName === "when") commandUsed = "when";
+        if (interaction.commandName === "recruitment") {
+            if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";
+            if (interaction.options.getSubcommand() === "clear") commandUsed = "recruitment_clear";
+        }
 
-        const command = await client.commands.get(interaction.commandName);
+        // Get command and check if valid
+        const command = await client.commands.get(commandUsed);
         if (!command) return interaction.reply({ content: "Not a valid command.", ephemeral: true });
 
+        // Public/enabled checks
         if (command.enabled === false) return interaction.reply({ content: "Command is disabled.", ephemeral: true });
         if (command.public === false && interaction.user.id !== "99182302885588992") return interaction.reply({ content: "Command is not available.", ephemeral: true });
 
-        // Perm Check.
+        // Perm check
         if (command.permissions) {
             const authorPerms = interaction.channel.permissionsFor(interaction.user);
             if (!authorPerms || !authorPerms.has(command.permissions)) {
-                return interaction.reply({ content: "You cannot run this :(", ephemeral: true });
+                return interaction.reply({ content: "You don't have permission to run this.", ephemeral: true });
             }
         }
 
         let args = [];
 
         if (interaction.commandName === "when") {
-
             if (command.allowed_channels) {
                 if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
                     return interaction.reply({ content: "This is only available in <#850376380822323230> and <#177094649473794049>", ephemeral: true });
@@ -36,7 +43,6 @@ module.exports = {
         }
 
         if (interaction.commandName === "recruitment") {
-
             if (interaction.options.getSubcommand() === "post") {
 
                 if (command.allowed_channels) {
@@ -45,14 +51,14 @@ module.exports = {
                     }
                 }
 
-                // console.log("New recruitment message (Raw)", {
-                //     User: `${interaction.user.tag} (${interaction.user.id})`,
-                //     Name: interaction.options.get("name").value,
-                //     Platform: interaction.options.get("platform").value,
-                //     Game: interaction.options.get("game").value,
-                //     Region: interaction.options.get("region").value,
-                //     Description: interaction.options.get("description").value,
-                // });
+                console.log("New recruitment message (Raw)", {
+                    User: `${interaction.user.tag} (${interaction.user.id})`,
+                    Name: interaction.options.get("name").value,
+                    Platform: interaction.options.get("platform").value,
+                    Game: interaction.options.get("game").value,
+                    Region: interaction.options.get("region").value,
+                    Description: interaction.options.get("description").value,
+                });
 
                 // Removing embeds on links and censor invite links
                 args[0] = cleanMessage(interaction.options.get("name").value);
@@ -74,36 +80,40 @@ module.exports = {
             }
 
             if (interaction.options.getSubcommand() === "clear") {
-                args[0] = interaction.options.get("user");
+                args[0] = interaction.options.get("user").user.id;
+                args[1] = interaction.options.get("user").user.tag;
             }
         }
-
-        command.execute(interaction, args, client); // Run command
 
         // Cooldowns
         const now = new Date().getTime();
         const cooldownEnd = (now + command.cooldown);
-        if (!command.cooldown_exempt?.includes(interaction.user.id)) {
+        if (command.cooldown) {
+            if (!command.cooldown_exempt?.includes(interaction.user.id)) {
 
-            const query = await Cooldowns.findOne({
-                userId: interaction.user.id,
-                command: interaction.commandName,
-            });
+                // Look for command cooldown for the user
+                const query = await Cooldowns.findOne({
+                    userId: interaction.user.id,
+                    command: commandUsed,
+                });
 
-            if (query) {
-                if (query.cooldownEndsAtTimestamp > now) {
-                    console.log("Cooldown found and is active");
-                    return interaction.reply({ content: `Please wait ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}.`, ephemeral: true });
+                // If a cooldown query exists, check if expired. If expired, update cooldown times and run command. If query does not exist, add one.
+                if (query) {
+                    if (query.cooldownEndsAtTimestamp > now) {
+                        return interaction.reply({ content: `Please wait \`${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true, conjunction: " and " })}\` before using this command again.`, ephemeral: true });
+                    } else {
+                        const update = { commandUsedTimestamp: now, commandUsedDate: new Date(now), cooldownEndsAtTimestamp: cooldownEnd, cooldownEndsDate: new Date(cooldownEnd) };
+                        await query.updateOne(update);
+                    }
                 } else {
-                    const update = { commandUsedTimestamp: now, commandUsedDate: new Date(now), cooldownEndsAtTimestamp: cooldownEnd, cooldownEndsDate: new Date(cooldownEnd) };
-                    console.log("Cooldown found and is expired");
-                    await query.updateOne(update);
+                    addCooldown();
                 }
-            } else {
-                addCooldown();
             }
         }
 
+        command.execute(interaction, args, client); // Run command
+        
+        // Function to add cooldown query
         function addCooldown() {
             const cooldown = new Cooldowns({
                 _id: mongoose.Types.ObjectId(),
@@ -111,13 +121,14 @@ module.exports = {
                 guildId: interaction.guild.id,
                 username: interaction.user.tag,
                 userId: interaction.user.id,
-                command: interaction.commandName,
+                command: commandUsed,
                 commandUsedTimestamp: now,
                 commandUsedDate: new Date(now),
                 cooldownEndsAtTimestamp: cooldownEnd,
                 cooldownEndsDate: new Date(cooldownEnd),
             });
 
+            // Save the query to the DB
             cooldown.save()
                 .catch(err => console.error(err));
         }
@@ -128,6 +139,5 @@ module.exports = {
             const linkRegex = /(http(s)?:\/\/.?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g;
             return content.replace(inviteRegex, "[INVITE REMOVED]").replace(linkRegex, `<$1>`);
         }
-
     }
 };
