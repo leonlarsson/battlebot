@@ -102,7 +102,12 @@ module.exports = {
                     if (query.cooldownEndsAtTimestamp > now) {
                         return interaction.reply({ content: `Please wait \`${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true, conjunction: " and " })}\` before using this command again.`, ephemeral: true });
                     } else {
-                        const update = { commandUsedTimestamp: now, commandUsedDate: new Date(now), cooldownEndsAtTimestamp: cooldownEnd, cooldownEndsDate: new Date(cooldownEnd) };
+                        let update;
+                        if (commandUsed === "when") {
+                            update = { commandUsedTimestamp: now, commandUsedDate: new Date(now), cooldownEndsAtTimestamp: cooldownEnd, cooldownEndsDate: new Date(cooldownEnd) };
+                        } else {
+                            update = { recruitmentMessage: { Name: args[0], Platform: args[1], Game: args[2], Region: args[3], Description: args[4] }, commandUsedTimestamp: now, commandUsedDate: new Date(now), cooldownEndsAtTimestamp: cooldownEnd, cooldownEndsDate: new Date(cooldownEnd) };
+                        }
                         await query.updateOne(update);
                     }
                 } else {
@@ -112,7 +117,7 @@ module.exports = {
         }
 
         command.execute(interaction, args, client); // Run command
-        
+
         // Function to add cooldown query
         function addCooldown() {
             const cooldown = new Cooldowns({
@@ -122,6 +127,13 @@ module.exports = {
                 username: interaction.user.tag,
                 userId: interaction.user.id,
                 command: commandUsed,
+                recruitmentMessage: {
+                    Name: args[0],
+                    Platform: args[1],
+                    Game: args[2],
+                    Region: args[3],
+                    Description: args[4]
+                },
                 commandUsedTimestamp: now,
                 commandUsedDate: new Date(now),
                 cooldownEndsAtTimestamp: cooldownEnd,
