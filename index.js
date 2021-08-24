@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 const config = require('./config');
 
 let botToken;
-if (config.environment === "dev") {
-	botToken = config.botToken_dev;
-} else if (config.environment === "live") {
+if (config.environment === "live") {
 	botToken = config.botToken;
+} else if (config.environment === "dev") {
+	botToken = config.botToken_dev;
 } else {
 	console.log("No environment specified.");
 }

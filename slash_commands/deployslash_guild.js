@@ -6,14 +6,14 @@ const slashCommandsData = require('./slash_commands_data');
 let botToken;
 let clientId;
 let guildId;
-if (config.environment === "dev") {
-    botToken = config.botToken_dev;
-    clientId = config.clientId_dev;
-    guildId = config.slashGuild_dev;
-} else if (config.environment === "live") {
+if (config.environment === "live") {
     botToken = config.botToken;
     clientId = config.clientId;
     guildId = config.slashGuild;
+} else if (config.environment === "dev") {
+    botToken = config.botToken_dev;
+    clientId = config.clientId_dev;
+    guildId = config.slashGuild_dev;
 } else {
     console.log("No environment specified.");
 }
