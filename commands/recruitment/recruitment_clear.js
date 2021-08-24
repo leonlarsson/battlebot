@@ -2,7 +2,7 @@ const Cooldowns = require('../../db/models/cooldown');
 
 module.exports = {
     name: "recruitment_clear",
-    permissions: ["ADMINISTRATOR"],
+    permissions: ["BAN_MEMBERS"],
     public: true,
     enabled: true,
     async execute(interaction, args) {
