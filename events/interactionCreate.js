@@ -13,7 +13,10 @@ module.exports = {
         if (interaction.commandName === "when") commandUsed = "when";
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";
-            if (interaction.options.getSubcommand() === "clear") commandUsed = "recruitment_clear";
+            if (interaction.options.getSubcommandGroup(false) === "cooldown") {
+                if (interaction.options.getSubcommand() === "clear") commandUsed = "recruitment_clear";
+                if (interaction.options.getSubcommand() === "view") commandUsed = "recruitment_view";
+            }
         }
 
         // Get command and check if valid
@@ -80,6 +83,10 @@ module.exports = {
             }
 
             if (interaction.options.getSubcommand() === "clear") {
+                args[0] = interaction.options.get("user").user.id;
+                args[1] = interaction.options.get("user").user.tag;
+            }
+            if (interaction.options.getSubcommand() === "view") {
                 args[0] = interaction.options.get("user").user.id;
                 args[1] = interaction.options.get("user").user.tag;
             }

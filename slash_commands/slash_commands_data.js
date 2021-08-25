@@ -69,18 +69,38 @@ module.exports = [
                 ]
             },
             {
-                name: "clear",
-                description: "Clear a user's cooldown. (Admin only).",
-                type: 1,
+                name: "cooldown",
+                description: "Cooldown actions for recruitment.",
+                type: 2,
                 options: [
                     {
-                        name: "user",
-                        description: "The user to clear cooldown of.",
-                        type: 6,
-                        required: true
+                        name: "clear",
+                        description: "Clear a user's cooldown. (Admin only).",
+                        type: 1,
+                        options: [
+                            {
+                                name: "user",
+                                description: "The user to clear cooldown of.",
+                                type: 6,
+                                required: true
+                            }
+                        ]
+                    },
+                    {
+                        name: "view",
+                        description: "View a user's cooldown. Also allows clearing. (Admin only).",
+                        type: 1,
+                        options: [
+                            {
+                                name: "user",
+                                description: "The user to view cooldown of.",
+                                type: 6,
+                                required: true
+                            }
+                        ]
                     }
                 ]
-            }
+            },
         ]
     }
 ]
