@@ -8,7 +8,7 @@ module.exports = {
     public: true,
     enabled: true,
     async execute(interaction, args, client) {
-        
+
         const userId = interaction.user.id; // Get user ID from message or interaction
         // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
 
@@ -27,7 +27,7 @@ module.exports = {
 
                 countdownTime = moment.utc("9999-12-12 12:00:00");
                 countdownName = customText;
-                messageText = "<:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554><:CursedCat:869694866752405554>";
+                messageText = "Hello";
                 countdownText = "I dunno"
                 buttonOneText = "Google";
                 buttonOneLink = "https://google.com";
@@ -51,6 +51,30 @@ module.exports = {
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownTimePassed = "Go check #game-news!";
                 messageText = "**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:1634292000:R>";
+                buttonOneText = "Game Page";
+                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
+                buttonTwoText = "Pre-Order";
+                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+
+            } else if (event === "beta") {
+
+                countdownTime = moment.utc("9999-01-01 10:00:00");
+                countdownName = "Battlefield 2042 Open Beta";
+                countdownTimePassed = "Go check #game-news!";
+                messageText = "No date has been announced.";
+                countdownText = "No date announced";
+                buttonOneText = "Game Page";
+                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
+                buttonTwoText = "Pre-Order";
+                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+
+            } else if (event === "early_beta") {
+
+                countdownTime = moment.utc("9999-01-01 10:00:00");
+                countdownName = "Battlefield 2042 Open Beta (Early Access)";
+                countdownTimePassed = "Go check #game-news!";
+                messageText = "No date has been announced.";
+                countdownText = "No date announced";
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -114,6 +138,7 @@ module.exports = {
                 },
                 CountdownString: function () {
 
+                    if (event === "beta" || event === "early_beta") return countdownText;
                     if (customText && userId === "99182302885588992") return countdownText;
 
                     if (this.HasPassed()) {
@@ -127,8 +152,8 @@ module.exports = {
                     if (duration._milliseconds < 3600000) { // Less than an hour left
                         return `${this.Minutes} ${this.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                     }
-					
-					if (duration._milliseconds < 21600000) { // Less than 6 hours left
+
+                    if (duration._milliseconds < 21600000) { // Less than 6 hours left
                         return `${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                     }
 
@@ -139,7 +164,7 @@ module.exports = {
                     if (duration._milliseconds >= 86400000 && duration._milliseconds < 2592000000) { // More than a day and less than a month
                         return `${this.Days} ${this.DaysText()}, ${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}`;
                     }
-                                        
+
                     // More than a month left
                     return `${this.Months} ${this.MonthText()}, ${this.Days} ${this.DaysText()}, ${this.Hours} ${this.HoursText()}`
                 },

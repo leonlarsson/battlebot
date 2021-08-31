@@ -16,7 +16,15 @@ module.exports = [
                     {
                         name: "Game Release (Gold/Ultimate)",
                         value: "early_release"
-                    }
+                    },
+                    {
+                        name: "Open Beta",
+                        value: "beta"
+                    },
+                    {
+                        name: "Open Beta (Early Access)",
+                        value: "early_beta"
+                    },
                 ],
             },
             {
