@@ -1,7 +1,7 @@
 module.exports = [
     {
         name: "when",
-        description: "Displays a countdown to the Exodus short film.",
+        description: "Displays a countdown to an upcoming Battlefield event.",
         options: [
             {
                 name: "event",
@@ -110,5 +110,19 @@ module.exports = [
                 ]
             },
         ]
+    },
+
+    // Context menus
+
+    //Show userinfo
+    {
+        name: "Show userinfo",
+        type: 2
+    },
+
+    // Clear recruitment cooldown
+    {
+        name: "Clear recr. cooldown",
+        type: 2
     }
 ]

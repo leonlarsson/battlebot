@@ -6,10 +6,12 @@ const HumanizeDuration = require('humanize-duration');
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
-        if (!interaction.isCommand()) return;
+        if (!interaction.isCommand() && !interaction.isContextMenu()) return;
 
         // Define command used
         let commandUsed;
+        if (interaction.commandName === "Show userinfo") commandUsed = "userinfo";
+        if (interaction.commandName === "Clear recr. cooldown") commandUsed = "recruitment_clear";
         if (interaction.commandName === "when") commandUsed = "when";
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";
@@ -54,14 +56,14 @@ module.exports = {
                     }
                 }
 
-                console.log("New recruitment message (Raw)", {
-                    User: `${interaction.user.tag} (${interaction.user.id})`,
-                    Name: interaction.options.get("name").value,
-                    Platform: interaction.options.get("platform").value,
-                    Game: interaction.options.get("game").value,
-                    Region: interaction.options.get("region").value,
-                    Description: interaction.options.get("description").value,
-                });
+                // console.log("New recruitment message (Raw)", {
+                //     User: `${interaction.user.tag} (${interaction.user.id})`,
+                //     Name: interaction.options.get("name").value,
+                //     Platform: interaction.options.get("platform").value,
+                //     Game: interaction.options.get("game").value,
+                //     Region: interaction.options.get("region").value,
+                //     Description: interaction.options.get("description").value,
+                // });
 
                 // Removing embeds on links and censor invite links
                 args[0] = cleanMessage(interaction.options.get("name").value);

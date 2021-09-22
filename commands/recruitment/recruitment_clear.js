@@ -9,6 +9,11 @@ module.exports = {
 
         //TODO: Maybe make only one find call?
 
+        // If the entry point is the context menu command
+        if (interaction.commandName === "Clear recr. cooldown") {
+            args[0] = interaction.options.getUser("user").id;
+            args[1] = interaction.options.getUser("user").tag;
+        }
         const now = new Date().getTime();
 
         const query = await Cooldowns.findOne({
@@ -20,6 +25,7 @@ module.exports = {
         if (query) {
             query.remove();
             interaction.reply({ content: `Recruitment cooldown for **${args[1]}** (${args[0]}) has been cleared.` });
+            console.log(`${interaction.user.tag} (${interaction.user.id}) cleared ${args[1]}'s (${args[0]}) recruitment cooldown`);
         } else {
             interaction.reply({ content: `No recruitment cooldown found for user **${args[1]}** (${args[0]}).` });
         }

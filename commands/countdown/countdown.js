@@ -36,10 +36,10 @@ module.exports = {
 
             } else if (event === "release") {
 
-                countdownTime = moment.utc("2021-10-22 10:00:00");
+                countdownTime = moment.utc("2021-11-19 10:00:00");
                 countdownName = "Battlefield 2042 Release";
                 countdownTimePassed = "Go check #game-news!";
-                messageText = "**Battlefield 2042 | Release**\nReleases <t:1634896800:R>";
+                messageText = "**Battlefield 2042 | Release**\nReleases <t:1637312400:R>";
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -47,10 +47,10 @@ module.exports = {
 
             } else if (event === "early_release") {
 
-                countdownTime = moment.utc("2021-10-15 10:00:00");
+                countdownTime = moment.utc("2021-11-12 10:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownTimePassed = "Go check #game-news!";
-                messageText = "**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:1634292000:R>";
+                messageText = "**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:1636707600:R>";
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -138,7 +138,7 @@ module.exports = {
                 },
                 CountdownString: function () {
 
-                    if (event === "beta" || event === "early_beta") return countdownText;
+                    if (countdownText) return countdownText;
                     if (customText && userId === "99182302885588992") return countdownText;
 
                     if (this.HasPassed()) {

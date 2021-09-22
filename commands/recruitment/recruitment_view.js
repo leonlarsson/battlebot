@@ -66,6 +66,7 @@ module.exports = {
         collector.on("end", collected => {
             if (collected.size === 0) return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter("")], components: [] });
             interaction.editReply({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${collected.first().user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
+            console.log(`${collected.first().user.tag} (${collected.first().user.id}) cleared ${args[1]}'s (${args[0]}) recruitment cooldown`);
         })
     }
 };
