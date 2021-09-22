@@ -9,6 +9,11 @@ module.exports = {
 
         //TODO: Maybe make only one find call?
 
+        // If the entry point is the context menu command
+        if (interaction.commandName === "Clear recr. cooldown") {
+            args[0] = interaction.options.getUser("user").id;
+            args[1] = interaction.options.getUser("user").tag;
+        }
         const now = new Date().getTime();
 
         const query = await Cooldowns.findOne({

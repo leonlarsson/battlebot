@@ -11,6 +11,7 @@ module.exports = {
         // Define command used
         let commandUsed;
         if (interaction.commandName === "Show userinfo") commandUsed = "userinfo";
+        if (interaction.commandName === "Clear recr. cooldown") commandUsed = "recruitment_clear";
         if (interaction.commandName === "when") commandUsed = "when";
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";

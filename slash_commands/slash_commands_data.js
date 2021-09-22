@@ -119,4 +119,10 @@ module.exports = [
         name: "Show userinfo",
         type: 2
     },
+
+    // Clear recruitment cooldown
+    {
+        name: "Clear recr. cooldown",
+        type: 2
+    }
 ]
