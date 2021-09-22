@@ -25,6 +25,7 @@ module.exports = {
         if (query) {
             query.remove();
             interaction.reply({ content: `Recruitment cooldown for **${args[1]}** (${args[0]}) has been cleared.` });
+            console.log(`${interaction.user.tag} (${interaction.user.id}) cleared ${args[1]}'s (${args[0]}) recruitment cooldown`);
         } else {
             interaction.reply({ content: `No recruitment cooldown found for user **${args[1]}** (${args[0]}).` });
         }
