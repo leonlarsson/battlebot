@@ -110,5 +110,13 @@ module.exports = [
                 ]
             },
         ]
-    }
+    },
+
+    // Context menus
+
+    //Show userinfo
+    {
+        name: "Show userinfo",
+        type: 2
+    },
 ]

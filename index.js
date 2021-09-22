@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
+const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
 const mongoose = require('mongoose');
 const config = require('./config');
 

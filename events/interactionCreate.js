@@ -6,10 +6,11 @@ const HumanizeDuration = require('humanize-duration');
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
-        if (!interaction.isCommand()) return;
+        if (!interaction.isCommand() && !interaction.isContextMenu()) return;
 
         // Define command used
         let commandUsed;
+        if (interaction.commandName === "Show userinfo") commandUsed = "userinfo";
         if (interaction.commandName === "when") commandUsed = "when";
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";
