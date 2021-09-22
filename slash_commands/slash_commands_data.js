@@ -1,7 +1,7 @@
 module.exports = [
     {
         name: "when",
-        description: "Displays a countdown to the Exodus short film.",
+        description: "Displays a countdown to an upcoming Battlefield event.",
         options: [
             {
                 name: "event",
@@ -16,7 +16,15 @@ module.exports = [
                     {
                         name: "Game Release (Gold/Ultimate)",
                         value: "early_release"
-                    }
+                    },
+                    {
+                        name: "Open Beta",
+                        value: "beta"
+                    },
+                    {
+                        name: "Open Beta (Early Access)",
+                        value: "early_beta"
+                    },
                 ],
             },
             {
