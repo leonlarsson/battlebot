@@ -56,14 +56,14 @@ module.exports = {
                     }
                 }
 
-                console.log("New recruitment message (Raw)", {
-                    User: `${interaction.user.tag} (${interaction.user.id})`,
-                    Name: interaction.options.get("name").value,
-                    Platform: interaction.options.get("platform").value,
-                    Game: interaction.options.get("game").value,
-                    Region: interaction.options.get("region").value,
-                    Description: interaction.options.get("description").value,
-                });
+                // console.log("New recruitment message (Raw)", {
+                //     User: `${interaction.user.tag} (${interaction.user.id})`,
+                //     Name: interaction.options.get("name").value,
+                //     Platform: interaction.options.get("platform").value,
+                //     Game: interaction.options.get("game").value,
+                //     Region: interaction.options.get("region").value,
+                //     Description: interaction.options.get("description").value,
+                // });
 
                 // Removing embeds on links and censor invite links
                 args[0] = cleanMessage(interaction.options.get("name").value);
