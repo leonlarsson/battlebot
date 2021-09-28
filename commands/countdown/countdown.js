@@ -58,25 +58,23 @@ module.exports = {
 
             } else if (event === "beta") {
 
-                countdownTime = moment.utc("9999-01-01 10:00:00");
+                countdownTime = moment.utc("2021-10-08 07:00:00");
                 countdownName = "Battlefield 2042 Open Beta";
-                countdownTimePassed = "Go check #game-news!";
-                messageText = "No date has been announced.";
-                countdownText = "No date announced";
-                buttonOneText = "Game Page";
-                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
+                countdownTimePassed = "Go play!";
+                messageText = "**Battlefield 2042 | Open Beta**\nOpens <t:1633676400:R>";
+                buttonOneText = "Beta Info";
+                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042/open-beta";
                 buttonTwoText = "Pre-Order";
                 buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
 
             } else if (event === "early_beta") {
 
-                countdownTime = moment.utc("9999-01-01 10:00:00");
+                countdownTime = moment.utc("2021-10-06 07:00:00");
                 countdownName = "Battlefield 2042 Open Beta (Early Access)";
-                countdownTimePassed = "Go check #game-news!";
-                messageText = "No date has been announced.";
-                countdownText = "No date announced";
-                buttonOneText = "Game Page";
-                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
+                countdownTimePassed = "Go play!";
+                messageText = "**Battlefield 2042 | Open Beta (Early Access)**\nOpens <t:1633503600:R>";
+                buttonOneText = "Beta Info";
+                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042/open-beta";
                 buttonTwoText = "Pre-Order";
                 buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
 
