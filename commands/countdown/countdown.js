@@ -36,10 +36,10 @@ module.exports = {
 
             } else if (event === "release") {
 
-                countdownTime = moment.utc("2021-11-19 10:00:00");
+                countdownTime = moment.utc("2021-11-19 07:00:00");
                 countdownName = "Battlefield 2042 Release";
                 countdownTimePassed = "Go check #game-news!";
-                messageText = "**Battlefield 2042 | Release**\nReleases <t:1637312400:R>";
+                messageText = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R>`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -47,10 +47,10 @@ module.exports = {
 
             } else if (event === "early_release") {
 
-                countdownTime = moment.utc("2021-11-12 10:00:00");
+                countdownTime = moment.utc("2021-11-12 07:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownTimePassed = "Go check #game-news!";
-                messageText = "**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:1636707600:R>";
+                messageText = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R>`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -61,7 +61,7 @@ module.exports = {
                 countdownTime = moment.utc("2021-10-10 07:00:00");
                 countdownName = "Battlefield 2042 Open Beta Close";
                 countdownTimePassed = "The Open Beta has ended.";
-                messageText = "**Battlefield 2042 | Open Beta Close**\nCloses <t:1633849200:R>";
+                messageText = `**Battlefield 2042 | Open Beta Close**\nCloses <t:${countdownTime.unix()}:R>`;
                 buttonOneText = "Beta Info";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042/open-beta";
                 buttonTwoText = "Pre-Order";
