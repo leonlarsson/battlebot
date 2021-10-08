@@ -58,10 +58,10 @@ module.exports = {
 
             } else if (event === "beta") {
 
-                countdownTime = moment.utc("2021-10-08 07:00:00");
+                countdownTime = moment.utc("2021-10-08 09:00:00");
                 countdownName = "Battlefield 2042 Open Beta";
                 countdownTimePassed = "Go play!";
-                messageText = "**Battlefield 2042 | Open Beta**\nOpens <t:1633676400:R>";
+                messageText = "**Battlefield 2042 | Open Beta**\nOpens <t:1633683600:R>";
                 buttonOneText = "Beta Info";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042/open-beta";
                 buttonTwoText = "Pre-Order";
