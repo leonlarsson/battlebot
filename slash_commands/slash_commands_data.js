@@ -18,12 +18,8 @@ module.exports = [
                         value: "early_release"
                     },
                     {
-                        name: "Open Beta",
-                        value: "beta"
-                    },
-                    {
-                        name: "Open Beta (Early Access)",
-                        value: "early_beta"
+                        name: "Open Beta Close",
+                        value: "beta_close"
                     },
                 ],
             },
