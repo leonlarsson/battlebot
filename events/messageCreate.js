@@ -15,7 +15,7 @@ module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
 
-        const disabled = false;
+        const disabled = true;
         if (disabled) return;
 
         if (message.author.bot) return;
