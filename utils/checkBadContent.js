@@ -17,7 +17,7 @@ module.exports = async (message, client) => {
     if (matchedContent) {
         await message.delete().catch(() => { });
         setTimeout(() => {
-            client.channels.cache.get(alertChannel).send({ content: `\`[${moment.utc().format("YYYY-MM-DD HH:mm:ss UTC")}]\` ⛔ Detected bad content in <#${message.channel.id}> from <@${message.author.id}> (${message.author.id})\nMatched ${matchedContent.length > 1 ? "words" : "word"} \`${matchedContent.slice(0, 3).join("`, `")}\` in the message below:\n\`\`\`\n${message.content}\n\`\`\`\n${message.deleted ? "Actions taken: **delete, log**" : `Link: https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}\nAction taken: **log**`}`, allowedMentions: { parse: [] } }).then(msg => msg.suppressEmbeds(true));
+            client.channels.cache.get(alertChannel).send({ content: `\`[${moment.utc().format("YYYY-MM-DD HH:mm:ss UTC")}]\` ⛔ Detected bad content in <#${message.channel.id}> from <@${message.author.id}> (${message.author.id})\nMatched ${matchedContent.length > 1 ? `${matchedContent.length} words` : `1 word`}: \`${matchedContent.slice(0, 3).join("`, `")}\`${matchedContent.length > 3 ? ` (+${matchedContent.length - matchedContent.slice(0, 3).length})` : ""} in the message below:\n\`\`\`\n${message.content}\n\`\`\`\n${message.deleted ? "Actions taken: **delete, log**" : `Link: https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}\nAction taken: **log**`}`, allowedMentions: { parse: [] } }).then(msg => msg.suppressEmbeds(true));
             return;
         }, 200);
     }
