@@ -18,8 +18,8 @@ module.exports = [
                         value: "early_release"
                     },
                     {
-                        name: "Open Beta Close",
-                        value: "beta_close"
+                        name: "Hazard Zone Trailer",
+                        value: "hz_trailer"
                     },
                 ],
             },

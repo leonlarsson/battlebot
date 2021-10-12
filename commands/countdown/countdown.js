@@ -56,16 +56,16 @@ module.exports = {
                 buttonTwoText = "Pre-Order";
                 buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
 
-            } else if (event === "beta_close") {
+            } else if (event === "hz_trailer") {
 
-                countdownTime = moment.utc("2021-10-10 07:00:00");
-                countdownName = "Battlefield 2042 Open Beta Close";
-                countdownTimePassed = "The Open Beta has ended.";
-                messageText = `**Battlefield 2042 | Open Beta Close**\nCloses <t:${countdownTime.unix()}:R>`;
-                buttonOneText = "Beta Info";
-                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042/open-beta";
-                buttonTwoText = "Pre-Order";
-                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+                countdownTime = moment.utc("2021-10-14 15:00:00");
+                countdownName = "Battlefield 2042 | Hazard Zone Trailer";
+                countdownTimePassed = "Check #game-news";
+                messageText = `**Battlefield 2042 | Hazard Zone Trailer**\nPremieres <t:${countdownTime.unix()}:R>`;
+                buttonOneText = "YouTube";
+                buttonOneLink = "https://www.youtube.com/watch?v=nkMiPwL8G1w";
+                buttonTwoText = "Game Page";
+                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042";
 
             }
 
