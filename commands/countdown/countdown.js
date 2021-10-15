@@ -56,17 +56,6 @@ module.exports = {
                 buttonTwoText = "Pre-Order";
                 buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
 
-            } else if (event === "hz_trailer") {
-
-                countdownTime = moment.utc("2021-10-14 15:00:00");
-                countdownName = "Battlefield 2042 | Hazard Zone Trailer";
-                countdownTimePassed = "Check #game-news";
-                messageText = `**Battlefield 2042 | Hazard Zone Trailer**\nPremieres <t:${countdownTime.unix()}:R>`;
-                buttonOneText = "YouTube";
-                buttonOneLink = "https://www.youtube.com/watch?v=nkMiPwL8G1w";
-                buttonTwoText = "Game Page";
-                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042";
-
             }
 
             const currentTime = moment.utc();

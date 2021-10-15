@@ -16,11 +16,7 @@ module.exports = [
                     {
                         name: "Game Release (Gold/Ultimate)",
                         value: "early_release"
-                    },
-                    {
-                        name: "Hazard Zone Trailer",
-                        value: "hz_trailer"
-                    },
+                    }
                 ],
             },
             {
