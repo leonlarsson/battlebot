@@ -2,8 +2,8 @@ const moment = require("moment");
 
 module.exports = {
     name: "when",
-    permissions: ["EMBED_LINKS"],
-    allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"], // #battlefield-2042, #battlefield, #planning
+    // permissions: ["EMBED_LINKS"],
+    allowed_channels: ["850376380822323230", "177094649473794049", "470275028030849024"], // #battlefield-2042, #battlefield, #server-planning
     cooldown: 5000,
     public: true,
     enabled: true,
@@ -20,8 +20,8 @@ module.exports = {
 
             let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
-            const event = interaction.options?.get("event")?.value || "release"; // Get selected event and set default event
-            const customText = interaction.options?.get("text")?.value;
+            const event = interaction.options?.getString("event") || "release"; // Get selected event and set default event
+            const customText = interaction.options?.getString("text");
 
             if (customText && userId === "99182302885588992") {
 

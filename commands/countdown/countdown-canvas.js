@@ -45,7 +45,10 @@ module.exports = {
                         .setURL(Event.ButtonTwoLink),
                 )
 
-            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row] });
+            // If the user does NOT have EMBED_LINKS, send an ephemeral reply instead.
+            let permCheck;
+            interaction.channel.permissionsFor(interaction.user).has("EMBED_LINKS") ? permCheck = false : permCheck = true;
+            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row], ephemeral: permCheck });
 
         } catch (error) {
             console.log(error);
