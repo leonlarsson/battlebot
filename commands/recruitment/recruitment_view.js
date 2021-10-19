@@ -53,20 +53,20 @@ module.exports = {
         const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
 
         const clearCooldownFilter = i => i.user.id === interaction.user.id; // Only the interaction user
-        const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
+        const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 3000, max: 1 });
 
-        // On collect, remove cooldown query from DB
+        // On collect, remove cooldown query from DB. Update response and remove button.
         collector.on("collect", async i => {
             if (i.customId === 'clearCooldown') {
                 query.remove();
+                i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
+                console.log(`${i.user.tag} (${i.user.id}) cleared ${args[1]}'s (${args[0]}) recruitment cooldown`);
             }
         })
 
-        // On collector end: If no collections, remove button and footer. If collected, edit embed and remove button
+        // On collector end: If no collections, remove button and footer.
         collector.on("end", collected => {
             if (collected.size === 0) return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter("")], components: [] });
-            interaction.editReply({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${collected.first().user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
-            console.log(`${collected.first().user.tag} (${collected.first().user.id}) cleared ${args[1]}'s (${args[0]}) recruitment cooldown`);
         })
     }
 };
