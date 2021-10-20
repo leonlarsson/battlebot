@@ -12,7 +12,13 @@ module.exports = {
         let commandUsed;
         if (interaction.commandName === "Show userinfo") commandUsed = "userinfo";
         if (interaction.commandName === "Clear recr. cooldown") commandUsed = "recruitment_clear";
+
         if (interaction.commandName === "when") commandUsed = "when";
+
+        if (interaction.commandName === "extra") {
+            if (interaction.options.getSubcommand() === "bf1morse") commandUsed = "bf1morse";
+        }
+
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";
             if (interaction.options.getSubcommandGroup(false) === "cooldown") {

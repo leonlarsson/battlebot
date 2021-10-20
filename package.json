@@ -15,8 +15,11 @@
     "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "humanize-duration": "^3.27.0",
+    "jmespath": "^0.15.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.13.7"
+    "mongoose": "^5.13.7",
+    "morsify": "^2.4.0",
+    "regex-escape": "^3.4.10"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
