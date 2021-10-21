@@ -117,7 +117,7 @@ module.exports = [
         options: [
             {
                 name: "bf1morse",
-                description: "Solves Battlefield 'The Beginning' easter egg morse.",
+                description: "Solves Battlefield 1 'The Beginning' easter egg morse.",
                 type: 1,
                 options: [
                     {
