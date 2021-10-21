@@ -1,4 +1,4 @@
-const morse = require('morsify');
+const morse = require('morse-decoder');
 const jmespath = require('jmespath');
 const RegexEscape = require("regex-escape");
 const json = require('../../assets/misc/bf1morse_locations');

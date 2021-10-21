@@ -1,5 +1,5 @@
 {
-  "name": "battlefield-countdown-bot",
+  "name": "battlebot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,13 +12,13 @@
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
     "canvas": "^2.8.0",
-    "discord-api-types": "^0.22.0",
+    "discord-api-types": "^0.24.0",
     "discord.js": "^13.2.0",
     "humanize-duration": "^3.27.0",
     "jmespath": "^0.15.0",
     "moment": "^2.29.1",
     "mongoose": "^5.13.7",
-    "morsify": "^2.4.0",
+    "morse-decoder": "^3.0.1",
     "regex-escape": "^3.4.10"
   },
   "devDependencies": {
