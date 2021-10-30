@@ -15,10 +15,6 @@ module.exports = {
 
         if (interaction.commandName === "when") commandUsed = "when";
 
-        if (interaction.commandName === "extra") {
-            if (interaction.options.getSubcommand() === "bf1morse") commandUsed = "bf1morse";
-        }
-
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "recruitment_post";
             if (interaction.options.getSubcommandGroup(false) === "cooldown") {
