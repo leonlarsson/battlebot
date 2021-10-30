@@ -1,6 +1,6 @@
-const fs = require('fs');
-const Discord = require('discord.js');
-const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
+const { readdirSync } = require('fs');
+const { Client, Intents, Collection } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
 const mongoose = require('mongoose');
 const config = require('./config');
 
@@ -13,10 +13,9 @@ if (config.environment === "live") {
 	console.log("No environment specified.");
 }
 
-
 // Events
-client.events = new Discord.Collection();
-const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+client.events = new Collection();
+const eventFiles = readdirSync("./events").filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
@@ -28,11 +27,11 @@ for (const file of eventFiles) {
 }
 
 // Commands
-client.commands = new Discord.Collection();
-const commandFolders = fs.readdirSync("./commands");
+client.commands = new Collection();
+const commandFolders = readdirSync("./commands");
 
 for (const folder of commandFolders) {
-	const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith(".js"));
+	const commandFiles = readdirSync(`./commands/${folder}`).filter(file => file.endsWith(".js"));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${folder}/${file}`);
 		client.commands.set(command.name, command);
@@ -42,13 +41,13 @@ for (const folder of commandFolders) {
 // Error handling (bad)
 process.on('unhandledRejection', error => {
 	if (error.code == 10008) {
-		console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`)
+		console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`);
 	} else if (error.code == 50001) {
-		console.error(`${error}: ERROR HANDLER - Missing access. Did the bot lose access to a channel?`)
+		console.error(`${error}: ERROR HANDLER - Missing access. Did the bot lose access to a channel?`);
 	} else if (error.code == 50013) {
-		console.error(`${error}: ERROR HANDLER - Missing permissions. Missing a permission somewhere.`)
+		console.error(`${error}: ERROR HANDLER - Missing permissions. Missing a permission somewhere.`);
 	} else {
-		console.trace(`${error}: ERROR HANDLER - Something broke.`)
+		console.trace(`${error}: ERROR HANDLER - Something broke.`);
 	}
 });
 
