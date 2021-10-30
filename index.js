@@ -53,14 +53,11 @@ process.on('unhandledRejection', error => {
 });
 
 // Connect to DB
-mongoose.connect(config.mongoDB_srv, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useFindAndModify: false
-}).then(() => {
-	console.log("Connected to the DB.");
-}).catch(error => {
-	console.log(error);
-})
+mongoose.connect(config.mongoDB_srv)
+	.then(() => {
+		console.log("Connected to the DB.");
+	}).catch(error => {
+		console.log(error);
+	})
 
 client.login(botToken);

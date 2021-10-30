@@ -17,7 +17,7 @@
     "humanize-duration": "^3.27.0",
     "jmespath": "^0.15.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.13.7",
+    "mongoose": "^6.0.12",
     "morse-decoder": "^3.0.1",
     "regex-escape": "^3.4.10"
   },
