@@ -7,7 +7,7 @@ module.exports = {
     cooldown: 5000,
     public: true,
     enabled: true,
-    async execute(interaction, args, client) {
+    async execute(interaction, _args, client) {
 
         const userId = interaction.user.id; // Get user ID from message or interaction
         // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
@@ -20,8 +20,8 @@ module.exports = {
 
             let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
-            const event = interaction.options?.getString("event") || "release"; // Get selected event and set default event
-            const customText = interaction.options?.getString("text");
+            const event = interaction.options.getString("event") || "release"; // Get selected event and set default event
+            const customText = interaction.options.getString("text");
 
             if (customText && userId === "99182302885588992") {
 
@@ -39,7 +39,7 @@ module.exports = {
                 countdownTime = moment.utc("2021-11-19 07:00:00");
                 countdownName = "Battlefield 2042 Release";
                 countdownTimePassed = "Go check #game-news!";
-                messageText = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R>`;
+                messageText = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -50,7 +50,7 @@ module.exports = {
                 countdownTime = moment.utc("2021-11-12 07:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownTimePassed = "Go check #game-news!";
-                messageText = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R>`;
+                messageText = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
