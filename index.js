@@ -59,4 +59,5 @@ mongoose.connect(config.mongoDB_srv)
 		console.log(error);
 	})
 
+console.log(`Attempting to log in - Environment: ${config.environment}`);
 client.login(botToken);

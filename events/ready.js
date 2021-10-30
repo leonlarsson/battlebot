@@ -1,8 +1,10 @@
+const { environment } = require('../config');
+
 module.exports = {
 	name: 'ready',
 	once: false,
 	execute(client) {
-		console.log(`Logged in and ready as ${client.user.tag}`);
+		console.log(`Logged in and ready as ${client.user.tag} - Environment: ${environment}`);
 		client.user.setPresence({
 			status: "online",
 			activities: [
