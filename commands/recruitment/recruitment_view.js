@@ -53,7 +53,7 @@ module.exports = {
         const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
 
         const clearCooldownFilter = i => i.user.id === interaction.user.id; // Only the interaction user
-        const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 3000, max: 1 });
+        const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
 
         // On collect, remove cooldown query from DB. Update response and remove button.
         collector.on("collect", async i => {
