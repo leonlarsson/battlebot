@@ -18,7 +18,7 @@ module.exports = {
 
         try {
 
-            let countdownTime, countdownName, countdownTimePassed, messageText, countdownText, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
+            let countdownTime, countdownName, countdownPassed_timeString, countdownMessage, countdownTextCanvas, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
             const event = interaction.options.getString("event") || "release"; // Get selected event and set default event
             const customText = interaction.options.getString("text");
@@ -27,8 +27,8 @@ module.exports = {
 
                 countdownTime = moment.utc("9999-12-12 12:00:00");
                 countdownName = customText;
-                messageText = "Hello";
-                countdownText = "I dunno"
+                countdownMessage = "Hello";
+                countdownTextCanvas = "I dunno";
                 buttonOneText = "Google";
                 buttonOneLink = "https://google.com";
                 buttonTwoText = "Also Google";
@@ -38,8 +38,8 @@ module.exports = {
 
                 countdownTime = moment.utc("2021-11-19 07:00:00");
                 countdownName = "Battlefield 2042 Release";
-                countdownTimePassed = "Go check #game-news!";
-                messageText = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
+                countdownPassed_timeString = "Go check #game-news!";
+                countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -49,8 +49,8 @@ module.exports = {
 
                 countdownTime = moment.utc("2021-11-12 07:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
-                countdownTimePassed = "Go check #game-news!";
-                messageText = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
+                countdownPassed_timeString = "Go check #game-news!";
+                countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -63,7 +63,7 @@ module.exports = {
 
             const Event = {
                 EventName: countdownName,
-                MessageText: messageText,
+                MessageText: countdownMessage,
                 ButtonOneText: buttonOneText,
                 ButtonOneLink: buttonOneLink,
                 ButtonTwoText: buttonTwoText,
@@ -74,51 +74,51 @@ module.exports = {
                 Hours: duration.hours(),
                 Minutes: duration.minutes(),
                 Seconds: duration.seconds(),
-                MonthText: function () {
-                    if (Event.Months == 1) {
+                MonthText: () => {
+                    if (Event.Months === 1) {
                         return "month";
                     } else {
                         return "months";
                     }
                 },
-                DaysText: function () {
-                    if (Event.Days == 1) {
+                DaysText: () => {
+                    if (Event.Days === 1) {
                         return "day";
                     } else {
                         return "days";
                     }
                 },
-                HoursText: function () {
-                    if (Event.Hours == 1) {
+                HoursText: () => {
+                    if (Event.Hours === 1) {
                         return "hour";
                     } else {
                         return "hours";
                     }
                 },
-                MinutesText: function () {
-                    if (Event.Minutes == 1) {
+                MinutesText: () => {
+                    if (Event.Minutes === 1) {
                         return "minute";
                     } else {
                         return "minutes";
                     }
                 },
-                SecondsText: function () {
-                    if (Event.Seconds == 1) {
+                SecondsText: () => {
+                    if (Event.Seconds === 1) {
                         return "second";
                     } else {
                         return "seconds";
                     }
                 },
-                HasPassed: function () {
+                HasPassed: () => {
                     return countdownTime.isBefore(currentTime);
                 },
-                CountdownString: function () {
+                CountdownString: () => {
 
-                    if (countdownText) return countdownText;
-                    if (customText && userId === "99182302885588992") return countdownText;
+                    if (countdownTextCanvas) return countdownTextCanvas;
+                    if (customText && userId === "99182302885588992") return countdownTextCanvas;
 
-                    if (this.HasPassed()) {
-                        return countdownTimePassed;
+                    if (Event.HasPassed()) {
+                        return countdownPassed_timeString;
                     }
 
                     if (duration._milliseconds < 60000) { // Less than a minute left
@@ -126,25 +126,25 @@ module.exports = {
                     }
 
                     if (duration._milliseconds < 3600000) { // Less than an hour left
-                        return `${this.Minutes} ${this.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
+                        return `${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                     }
 
                     if (duration._milliseconds < 21600000) { // Less than 6 hours left
-                        return `${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
+                        return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                     }
 
                     if (duration._milliseconds < 86400000) { // Less than a day left
-                        return `${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}`;
+                        return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
                     }
 
                     if (duration._milliseconds >= 86400000 && duration._milliseconds < 2592000000) { // More than a day and less than a month
-                        return `${this.Days} ${this.DaysText()}, ${this.Hours} ${this.HoursText()}, ${this.Minutes} ${this.MinutesText()}`;
+                        return `${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
                     }
 
                     // More than a month left
-                    return `${this.Months} ${this.MonthText()}, ${this.Days} ${this.DaysText()}, ${this.Hours} ${this.HoursText()}`
+                    return `${Event.Months} ${Event.MonthText()}, ${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}`
                 },
-                // CountdownImage: function () {
+                // CountdownImage: () =>  {
 
                 //     if (duration._milliseconds < 3600000) { // Less than an hour left
                 //         return `./assets/images/Background_1Hour.png`;
