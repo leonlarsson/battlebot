@@ -6,7 +6,7 @@ module.exports = {
     name: "countdowncanvas",
     public: false,
     enabled: false,
-    async execute(interaction, client, Event) {
+    async execute(interaction, Event) {
 
         const backgroundNum = Math.floor(Math.random() * 3);
 

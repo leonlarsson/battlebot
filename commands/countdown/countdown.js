@@ -18,27 +18,15 @@ module.exports = {
 
         try {
 
-            let countdownTime, countdownName, countdownPassed_timeString, countdownMessage, countdownTextCanvas, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
+            let countdownTime, countdownName, countdownPassed_canvasMessage, countdownMessage, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
 
             const event = interaction.options.getString("event") || "release"; // Get selected event and set default event
-            const customText = interaction.options.getString("text");
 
-            if (customText && userId === "99182302885588992") {
-
-                countdownTime = moment.utc("9999-12-12 12:00:00");
-                countdownName = customText;
-                countdownMessage = "Hello";
-                countdownTextCanvas = "I dunno";
-                buttonOneText = "Google";
-                buttonOneLink = "https://google.com";
-                buttonTwoText = "Also Google";
-                buttonTwoLink = "https://youtu.be/j5a0jTc9S10";
-
-            } else if (event === "release") {
+            if (event === "release") {
 
                 countdownTime = moment.utc("2021-11-19 07:00:00");
                 countdownName = "Battlefield 2042 Release";
-                countdownPassed_timeString = "Go check #game-news!";
+                countdownPassed_canvasMessage = "Go check #game-news!";
                 countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
@@ -49,7 +37,7 @@ module.exports = {
 
                 countdownTime = moment.utc("2021-11-12 07:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
-                countdownPassed_timeString = "Go check #game-news!";
+                countdownPassed_canvasMessage = "Go check #game-news!";
                 countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
@@ -114,11 +102,8 @@ module.exports = {
                 },
                 CountdownString: () => {
 
-                    if (countdownTextCanvas) return countdownTextCanvas;
-                    if (customText && userId === "99182302885588992") return countdownTextCanvas;
-
                     if (Event.HasPassed()) {
-                        return countdownPassed_timeString;
+                        return countdownPassed_canvasMessage;
                     }
 
                     if (duration._milliseconds < 60000) { // Less than a minute left
@@ -167,7 +152,7 @@ module.exports = {
                 // }
             }
 
-            client.commands.get("countdowncanvas").execute(interaction, client, Event);
+            client.commands.get("countdowncanvas").execute(interaction, Event);
 
         } catch (err) {
             console.error(err);

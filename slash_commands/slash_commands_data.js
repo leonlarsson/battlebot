@@ -20,12 +20,6 @@ module.exports = [
                         value: "early_release"
                     }
                 ],
-            },
-            {
-                name: "text",
-                description: "When <what> || (Only Mozzy)",
-                type: 3,
-                required: false
             }
         ]
     },
