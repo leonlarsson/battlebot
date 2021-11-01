@@ -24,10 +24,10 @@ module.exports = {
 
             if (event === "release") {
 
-                countdownTime = moment.utc("2021-11-19 07:00:00");
+                countdownTime = moment.utc("2021-11-19 08:00:00");
                 countdownName = "Battlefield 2042 Release";
                 countdownPassed_canvasMessage = "Go check #game-news!";
-                countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
+                countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
@@ -35,10 +35,10 @@ module.exports = {
 
             } else if (event === "early_release") {
 
-                countdownTime = moment.utc("2021-11-12 07:00:00");
+                countdownTime = moment.utc("2021-11-12 08:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownPassed_canvasMessage = "Go check #game-news!";
-                countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
+                countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
                 buttonTwoText = "Pre-Order";
