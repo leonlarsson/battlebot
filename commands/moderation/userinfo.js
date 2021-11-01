@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "userinfo",
-    permissions: ["BAN_MEMBERS"],
+    permissions: ["MANAGE_MESSAGES"],
     public: true,
     enabled: true,
     async execute(interaction) {
