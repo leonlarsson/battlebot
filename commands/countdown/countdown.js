@@ -1,5 +1,5 @@
 const moment = require("moment");
-const createCountdownCanvas = ("../../utils/createCountdownCanvas");
+const createCountdownCanvas = require("../../utils/createCountdownCanvas");
 
 module.exports = {
     name: "when",
@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 5000,
     public: true,
     enabled: true,
-    async execute(interaction, _args, client) {
+    async execute(interaction) {
 
         const userId = interaction.user.id; // Get user ID from message or interaction
         // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
