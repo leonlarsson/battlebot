@@ -27,7 +27,7 @@ module.exports = {
 
                 countdownTime = moment.utc("2021-11-19 08:00:00");
                 countdownName = "Battlefield 2042 Release";
-                countdownPassed_canvasMessage = "Go check #game-news!";
+                countdownPassed_canvasMessage = "Go play!";
                 countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
@@ -38,7 +38,7 @@ module.exports = {
 
                 countdownTime = moment.utc("2021-11-12 08:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
-                countdownPassed_canvasMessage = "Go check #game-news!";
+                countdownPassed_canvasMessage = "Go play!";
                 countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
                 buttonOneText = "Game Page";
                 buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
