@@ -1,4 +1,5 @@
 const moment = require("moment");
+const createCountdownCanvas = ("../../utils/createCountdownCanvas");
 
 module.exports = {
     name: "when",
@@ -152,7 +153,7 @@ module.exports = {
                 // }
             }
 
-            client.commands.get("countdowncanvas").execute(interaction, Event);
+            createCountdownCanvas(interaction, Event);
 
         } catch (err) {
             console.error(err);
