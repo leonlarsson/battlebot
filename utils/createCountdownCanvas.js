@@ -42,22 +42,30 @@ module.exports = async (interaction, Event) => {
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `${Event.EventName}.png`);
 
-        const row = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setLabel(Event.ButtonOneText)
-                    .setStyle('LINK')
-                    .setURL(Event.ButtonOneLink),
-                new MessageButton()
-                    .setLabel(Event.ButtonTwoText)
-                    .setStyle('LINK')
-                    .setURL(Event.ButtonTwoLink),
-            )
+        const row = new MessageActionRow();
+
+        // If there are buttons specified, add to row
+        if (Event.Buttons[0]) {
+            Event.Buttons.forEach(button => {
+                row.addComponents(
+                    new MessageButton()
+                        .setLabel(button.Text)
+                        .setStyle('LINK')
+                        .setURL(button.Link),
+                );
+            });
+        }
 
         // If the user does NOT have EMBED_LINKS, send an ephemeral reply instead.
         let permCheck;
         interaction.channel.permissionsFor(interaction.user).has("EMBED_LINKS") ? permCheck = false : permCheck = true;
-        await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row], ephemeral: permCheck });
+
+        // If there are buttons, send the row
+        if (Event.Buttons[0]) {
+            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row], ephemeral: permCheck });
+        } else {
+            await interaction.reply({ content: Event.MessageText, files: [attachment], ephemeral: permCheck });
+        }
 
     } catch (error) {
         console.log(error);

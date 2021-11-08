@@ -19,7 +19,8 @@ module.exports = {
 
         try {
 
-            let countdownTime, countdownName, countdownPassed_canvasMessage, countdownMessage, buttonOneText, buttonOneLink, buttonTwoText, buttonTwoLink;
+            let countdownTime, countdownName, countdownPassed_canvasMessage, countdownMessage;
+            let buttons = [];
 
             const event = interaction.options.getString("event") || "release"; // Get selected event and set default event
 
@@ -29,10 +30,10 @@ module.exports = {
                 countdownName = "Battlefield 2042 Release";
                 countdownPassed_canvasMessage = "Go play!";
                 countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
-                buttonOneText = "Game Page";
-                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
-                buttonTwoText = "Pre-Order";
-                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+                buttons.push(
+                    { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
+                    { Text: "Buy", Link: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
+                );
 
             } else if (event === "early_release") {
 
@@ -40,10 +41,10 @@ module.exports = {
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownPassed_canvasMessage = "Go play!";
                 countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
-                buttonOneText = "Game Page";
-                buttonOneLink = "https://www.ea.com/games/battlefield/battlefield-2042";
-                buttonTwoText = "Pre-Order";
-                buttonTwoLink = "https://www.ea.com/games/battlefield/battlefield-2042/buy";
+                buttons.push(
+                    { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
+                    { Text: "Buy", Link: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
+                );
 
             }
 
@@ -53,16 +54,20 @@ module.exports = {
             const Event = {
                 EventName: countdownName,
                 MessageText: countdownMessage,
-                ButtonOneText: buttonOneText,
-                ButtonOneLink: buttonOneLink,
-                ButtonTwoText: buttonTwoText,
-                ButtonTwoLink: buttonTwoLink,
+                Buttons: buttons,
                 Years: duration.years(),
                 Months: duration.months(),
                 Days: duration.days(),
                 Hours: duration.hours(),
                 Minutes: duration.minutes(),
                 Seconds: duration.seconds(),
+                YearText: () => {
+                    if (Event.Years === 1) {
+                        return "year";
+                    } else {
+                        return "years";
+                    }
+                },
                 MonthText: () => {
                     if (Event.Months === 1) {
                         return "month";
