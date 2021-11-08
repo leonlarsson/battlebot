@@ -28,7 +28,7 @@ module.exports = async (interaction, Event) => {
         //Event name text
         context.fillStyle = '#00ffde';
         context.textAlign = "center";
-        context.fillText(Event.EventName, 500, 208);
+        context.fillText(Event.EventName, 500, 208, 950);
 
         // Countdown background
         context.fillStyle = "rgba(0, 0, 0, .6)";
@@ -38,7 +38,7 @@ module.exports = async (interaction, Event) => {
         context.font = '50px Geometos';
         context.fillStyle = '#00ffde';
         context.textAlign = "center";
-        context.fillText(Event.CountdownString(), 500, 302);
+        context.fillText(Event.CountdownString(), 500, 302, 950);
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `${Event.EventName}.png`);
 
