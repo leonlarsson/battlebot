@@ -19,16 +19,20 @@ module.exports = {
 
         try {
 
-            let countdownTime, countdownName, countdownPassed_canvasMessage, countdownMessage;
+            let countdownTime, countdownName, canvasBackground, countdownPassed_canvasMessage, countdownPassed_canvasBackground, countdownMessage;
             let buttons = [];
 
             const event = interaction.options.getString("event") || "release"; // Get selected event and set default event
 
             if (event === "release") {
 
+                const backgroundNum = Math.floor(Math.random() * 3);
+                canvasBackground = `./assets/images/BG_2042_${backgroundNum}.png`;
+
                 countdownTime = moment.utc("2021-11-19 08:00:00");
                 countdownName = "Battlefield 2042 Release";
-                countdownPassed_canvasMessage = "Go play!";
+                countdownPassed_canvasMessage = "Get ready to fight!";
+                countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
                 countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
                 buttons.push(
                     { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
@@ -37,9 +41,13 @@ module.exports = {
 
             } else if (event === "early_release") {
 
+                const backgroundNum = Math.floor(Math.random() * 3);
+                canvasBackground = `./assets/images/BG_2042_${backgroundNum}.png`;
+
                 countdownTime = moment.utc("2021-11-12 08:00:00");
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
-                countdownPassed_canvasMessage = "Go play!";
+                countdownPassed_canvasMessage = "Get ready to fight!";
+                countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
                 countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
                 buttons.push(
                     { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
@@ -105,6 +113,13 @@ module.exports = {
                 },
                 HasPassed: () => {
                     return countdownTime.isBefore(currentTime);
+                },
+                CountdownBackground: () => {
+                    if (Event.HasPassed()) {
+                        return countdownPassed_canvasBackground;
+                    } else {
+                        return canvasBackground;
+                    }
                 },
                 CountdownString: () => {
 

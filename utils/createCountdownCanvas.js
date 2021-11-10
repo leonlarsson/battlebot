@@ -4,15 +4,13 @@ const { MessageAttachment, MessageActionRow, MessageButton } = require('discord.
 
 module.exports = async (interaction, Event) => {
 
-    const backgroundNum = Math.floor(Math.random() * 3);
+    // const backgroundNum = Math.floor(Math.random() * 3);
 
     try {
 
         const canvas = Canvas.createCanvas(1000, 400);
         const context = canvas.getContext("2d");
-        const backgroundImage = await Canvas.loadImage(`./assets/images/BG_2042_${backgroundNum}.png`);
-        // const backgroundImage = await Canvas.loadImage(Event.CountdownImage());
-        // const backgroundImage = await Canvas.loadImage("./assets/images/BG_BF_ONLY_LOGO.png");
+        const backgroundImage = await Canvas.loadImage(Event.CountdownBackground());
 
         registerFont('./assets/fonts/Geometos.ttf', { family: "Geometos" });
 
