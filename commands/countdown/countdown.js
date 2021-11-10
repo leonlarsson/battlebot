@@ -22,7 +22,7 @@ module.exports = {
             let countdownTime, countdownName, canvasBackground, countdownPassed_canvasMessage, countdownPassed_canvasBackground, countdownMessage;
             let buttons = [];
 
-            const event = interaction.options.getString("event") || "release"; // Get selected event and set default event
+            const event = interaction.options.getString("event"); // Get selected event
 
             if (event === "release") {
 

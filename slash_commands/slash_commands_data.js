@@ -9,7 +9,7 @@ module.exports = [
                 name: "event",
                 description: "The event to show a countdown to.",
                 type: 3,
-                required: false,
+                required: true,
                 choices: [
                     {
                         name: "Game Release",
