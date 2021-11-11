@@ -27,7 +27,7 @@ module.exports = {
         });
 
         // If no query is found
-        if (!query) return interaction.reply({ content: `No Portal Experience Sharing cooldown found for user **${args[1]}** (${args[0]}).` });
+        if (!query) return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${args[1]}** (${args[0]}).` });
 
         // Build moments
         const cooldownStartTimestamp = moment.utc(query.commandUsedTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
@@ -42,7 +42,7 @@ module.exports = {
             )
 
         const cooldownViewEmbed = new MessageEmbed()
-            .setTitle(`Portal Experience Sharing cooldown for ${args[1]} (${args[0]})`)
+            .setTitle(`Portal Experience sharing cooldown for ${args[1]} (${args[0]})`)
             .setFooter("Click on 'Clear Cooldown' to clear this user's cooldown.")
             .addFields(
                 { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
@@ -60,7 +60,7 @@ module.exports = {
             if (i.customId === 'clearCooldown') {
                 query.remove();
                 i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
-                console.log(`${i.user.tag} (${i.user.id}) cleared ${args[1]}'s (${args[0]}) Portal Experience Sharing cooldown`);
+                console.log(`${i.user.tag} (${i.user.id}) cleared ${args[1]}'s (${args[0]}) Portal Experience sharing cooldown`);
             }
         })
 

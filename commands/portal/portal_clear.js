@@ -17,7 +17,7 @@ module.exports = {
         // If query exists, remove and notify. If not, notify.
         if (query) {
             query.remove();
-            interaction.reply({ content: `Portal Experience Sharing cooldown for **${args[1]}** (${args[0]}) has been cleared.` });
+            interaction.reply({ content: `Portal Experience sharing cooldown for **${args[1]}** (${args[0]}) has been cleared.` });
             console.log(`${interaction.user.tag} (${interaction.user.id}) cleared ${args[1]}'s (${args[0]}) Portal Experience Sharing cooldown`);
         } else {
             interaction.reply({ content: `No Portal Experience Sharing cooldown found for user **${args[1]}** (${args[0]}).` });
