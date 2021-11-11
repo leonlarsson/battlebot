@@ -24,6 +24,76 @@ module.exports = [
         ]
     },
 
+    // Portal experience command
+
+    {
+        name: "portal",
+        description: "Post about your Portal Experience.",
+        options: [
+            {
+                name: "post",
+                description: "Share your Portal Experience.",
+                type: 1,
+                options: [
+                    {
+
+                        name: "name",
+                        description: "Your Portal Experience name.",
+                        type: 3,
+                        required: true,
+                    },
+                    {
+                        name: "description",
+                        description: "A description of your Portal Experience.",
+                        type: 3,
+                        required: true
+                    },
+                    {
+                        name: "experience_code",
+                        description: "Your Portal Experience Code.",
+                        type: 3,
+                        required: true
+                    }
+                ]
+            },
+
+            // Portal sharing cooldown clear / view
+            {
+                name: "cooldown",
+                description: "Cooldown actions for Portal sharing.",
+                type: 2,
+                options: [
+                    {
+                        name: "clear",
+                        description: "Clear a user's cooldown. (Admin only).",
+                        type: 1,
+                        options: [
+                            {
+                                name: "user",
+                                description: "The user to clear cooldown of.",
+                                type: 6,
+                                required: true
+                            }
+                        ]
+                    },
+                    {
+                        name: "view",
+                        description: "View a user's cooldown. Also allows clearing. (Admin only).",
+                        type: 1,
+                        options: [
+                            {
+                                name: "user",
+                                description: "The user to view cooldown of.",
+                                type: 6,
+                                required: true
+                            }
+                        ]
+                    }
+                ]
+            },
+        ]
+    },
+
     // Recruitment commands
     {
         name: "recruitment",
@@ -31,7 +101,7 @@ module.exports = [
         options: [
             {
                 name: "post",
-                description: "Build and post a recruitment post.",
+                description: "Post a recruitment post.",
                 type: 1,
                 options: [
                     {
