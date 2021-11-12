@@ -46,24 +46,17 @@ module.exports = {
             }
         }
 
-        let args = [];
-
-        if (interaction.commandName === "when") {
-            if (command.allowed_channels) {
-                if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
-                    return interaction.reply({ content: "This is only available in <#850376380822323230> and <#177094649473794049>", ephemeral: true });
-                }
+        // Check for valid channel(s)
+        if (command.allowed_channels) {
+            if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992a") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+                return interaction.reply({ content: command.wrong_channel_message, ephemeral: true });
             }
         }
 
+        let args = [];
+
         if (interaction.commandName === "portal") {
             if (interaction.options.getSubcommand() === "post") {
-
-                if (command.allowed_channels) {
-                    if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
-                        return interaction.reply({ content: "This is only available in <#908101543646089236>", ephemeral: true });
-                    }
-                }
 
                 // Removing embeds on links and censor invite links
                 args[0] = cleanMessage(interaction.options.get("name").value);
@@ -93,12 +86,6 @@ module.exports = {
 
         if (interaction.commandName === "recruitment") {
             if (interaction.options.getSubcommand() === "post") {
-
-                if (command.allowed_channels) {
-                    if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
-                        return interaction.reply({ content: "This is only available in <#739938247089848351>", ephemeral: true });
-                    }
-                }
 
                 // Removing embeds on links and censor invite links
                 args[0] = cleanMessage(interaction.options.get("name").value);

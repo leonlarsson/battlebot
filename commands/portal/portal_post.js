@@ -1,6 +1,7 @@
 module.exports = {
     name: "portal_post",
-    allowed_channels: ["908101543646089236", "845402419038650418"], // #portal-sharing, #mozzy-spam
+    allowed_channels: ["908101543646089236"], // #portal-sharing, #mozzy-spam
+    wrong_channel_message: "This is only available in <#908101543646089236>",
     cooldown: 86400000,
     // cooldown_exempt: ["99182302885588992", "106391128718245888"], // Mozzy, Dragory
     public: true,
