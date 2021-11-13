@@ -57,40 +57,20 @@ module.exports = [
                 ]
             },
 
-            // Portal sharing cooldown clear / view
+            // Portal sharing cooldown action
             {
                 name: "cooldown",
                 description: "Cooldown actions for Portal sharing.",
-                type: 2,
+                type: 1,
                 options: [
                     {
-                        name: "clear",
-                        description: "Clear a user's cooldown. (Admin only).",
-                        type: 1,
-                        options: [
-                            {
-                                name: "user",
-                                description: "The user to clear cooldown of.",
-                                type: 6,
-                                required: true
-                            }
-                        ]
-                    },
-                    {
-                        name: "view",
-                        description: "View a user's cooldown. Also allows clearing. (Admin only).",
-                        type: 1,
-                        options: [
-                            {
-                                name: "user",
-                                description: "The user to view cooldown of.",
-                                type: 6,
-                                required: true
-                            }
-                        ]
+                        name: "user",
+                        description: "The user to see cooldown of.",
+                        type: 6,
+                        required: true
                     }
                 ]
-            },
+            }
         ]
     },
 
@@ -140,37 +120,17 @@ module.exports = [
             // Recruitment cooldown clear / view
             {
                 name: "cooldown",
-                description: "Cooldown actions for recruitment.",
-                type: 2,
+                description: "Cooldown actions for recruitment posts.",
+                type: 1,
                 options: [
                     {
-                        name: "clear",
-                        description: "Clear a user's cooldown. (Admin only).",
-                        type: 1,
-                        options: [
-                            {
-                                name: "user",
-                                description: "The user to clear cooldown of.",
-                                type: 6,
-                                required: true
-                            }
-                        ]
-                    },
-                    {
-                        name: "view",
-                        description: "View a user's cooldown. Also allows clearing. (Admin only).",
-                        type: 1,
-                        options: [
-                            {
-                                name: "user",
-                                description: "The user to view cooldown of.",
-                                type: 6,
-                                required: true
-                            }
-                        ]
+                        name: "user",
+                        description: "The user to see cooldown of.",
+                        type: 6,
+                        required: true
                     }
                 ]
-            },
+            }
         ]
     },
 

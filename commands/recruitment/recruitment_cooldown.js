@@ -4,11 +4,13 @@ const moment = require('moment');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-    name: "recruitment_view",
+    name: "recruitment_cooldown",
     permissions: ["BAN_MEMBERS"],
     public: true,
     enabled: true,
-    async execute(interaction, args) {
+    async execute(interaction) {
+
+        const targetUser = interaction.options.getUser("user");
 
         const now = new Date().getTime();
 
@@ -22,12 +24,12 @@ module.exports = {
 
         // Find cooldown for user
         const query = await Cooldowns.findOne({
-            userId: args[0],
+            userId: targetUser.id,
             command: "recruitment_post"
         });
 
         // If no query is found
-        if (!query) return interaction.reply({ content: `No recruitment cooldown found for user **${args[1]}** (${args[0]}).` });
+        if (!query) return interaction.reply({ content: `No recruitment cooldown found for user **${targetUser.tag}** (${targetUser.id}).` });
 
         // Build moments
         const cooldownStartTimestamp = moment.utc(query.commandUsedTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
@@ -42,12 +44,11 @@ module.exports = {
             )
 
         const cooldownViewEmbed = new MessageEmbed()
-            .setTitle(`Recruitment cooldown for ${args[1]} (${args[0]})`)
+            .setTitle(`Recruitment cooldown for ${targetUser.tag} (${targetUser.id})`)
             .setFooter("Click on 'Clear Cooldown' to clear this user's cooldown.")
             .addFields(
                 { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
-                { name: "Cooldown ends", value: `In ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}\nOn ${cooldownEndTimestamp}` },
-                { name: "Message content", value: `Name: ${query.cooldownMessage.Name}\nPlatform: ${query.cooldownMessage.Platform}\nGame: ${query.cooldownMessage.Game}\nRegion: ${query.cooldownMessage.Region}\nDescription: ${query.cooldownMessage.Description}` }
+                { name: "Cooldown ends", value: `In ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}\nOn ${cooldownEndTimestamp}` }
             )
 
         const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
@@ -60,7 +61,7 @@ module.exports = {
             if (i.customId === 'clearCooldown') {
                 query.remove();
                 i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
-                console.log(`${i.user.tag} (${i.user.id}) cleared ${args[1]}'s (${args[0]}) recruitment cooldown`);
+                console.log(`${i.user.tag} (${i.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown.`);
             }
         })
 

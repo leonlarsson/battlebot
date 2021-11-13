@@ -17,14 +17,6 @@ const cooldownSchema = mongoose.Schema({
     username: String,
     userId: String,
     command: String,
-    cooldownMessage: {
-        Name: String,
-        Platform: String,
-        Game: String,
-        Region: String,
-        Description: String,
-        Experience_Code: String
-    },
     commandUsedTimestamp: Number,
     commandUsedDate: String,
     cooldownEndsAtTimestamp: Number,
