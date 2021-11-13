@@ -1,4 +1,5 @@
 const moment = require("moment");
+const { checkCooldown, addCooldown } = require('../../utils/handleCooldowns');
 const createCountdownCanvas = require("../../utils/createCountdownCanvas");
 
 module.exports = {
@@ -13,6 +14,10 @@ module.exports = {
 
         const userId = interaction.user.id; // Get user ID from message or interaction
         // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
+
+        // Check if there is a DB cooldown query. If there is no query, run code and add cooldown at the bottom. If there is an active one, return and reply. If there is an expired one, update the query
+        const query = await checkCooldown(interaction, this);
+        if (query && query.cooldownEndsAtTimestamp > new Date().getTime()) return;
 
         if (!this.allowed_channels.includes(interaction.channel.id) && userId !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
             return interaction.reply({ content: "Please try this in <#850376380822323230> or <#177094649473794049> instead!", ephemeral: true });
@@ -173,6 +178,9 @@ module.exports = {
                 //     return `./assets/images/Background_Over1Day.png`;
                 // }
             }
+
+            // If there is no cooldown query, create a new one
+            if (!query) addCooldown(interaction, this);
 
             createCountdownCanvas(interaction, Event);
 
