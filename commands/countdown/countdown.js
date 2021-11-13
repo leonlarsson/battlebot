@@ -49,7 +49,7 @@ module.exports = {
                 countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
                 countdownPassed_canvasMessage = "Get ready to fight!";
                 countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
-                countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
+                countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleased <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
                 buttons.push(
                     { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
                     { Text: "Buy", Link: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
