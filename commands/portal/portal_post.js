@@ -34,7 +34,7 @@ module.exports = {
 
         msg.startThread({
             name: name,
-            // autoArchiveDuration: 4320,
+            autoArchiveDuration: 4320,
             reason: "Auto-created thread for Portal Experience sharing post."
         });
 
