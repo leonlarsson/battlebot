@@ -4,6 +4,7 @@ module.exports = [
     {
         name: "when",
         description: "Displays a countdown to an upcoming Battlefield event.",
+        default_permission: false,
         options: [
             {
                 name: "event",
@@ -12,14 +13,10 @@ module.exports = [
                 required: true,
                 choices: [
                     {
-                        name: "Game Release",
-                        value: "release"
-                    },
-                    {
-                        name: "Game Release (Gold/Ultimate)",
-                        value: "early_release"
+                        name: "Event Name",
+                        value: "event_name"
                     }
-                ],
+                ]
             }
         ]
     },

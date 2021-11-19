@@ -30,7 +30,7 @@ module.exports = {
 
             const event = interaction.options.getString("event"); // Get selected event
 
-            if (event === "release") {
+            if (event === "event_name") {
 
                 const backgroundNum = Math.floor(Math.random() * 3);
                 canvasBackground = `./assets/images/BG_2042_${backgroundNum}.png`;
@@ -45,7 +45,7 @@ module.exports = {
                     { Text: "Buy", Link: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
                 );
 
-            } else if (event === "early_release") {
+            } else if (event === "event_name2") {
 
                 const backgroundNum = Math.floor(Math.random() * 3);
                 canvasBackground = `./assets/images/BG_2042_${backgroundNum}.png`;
