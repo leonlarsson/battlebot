@@ -21,6 +21,30 @@ module.exports = [
         ]
     },
 
+    // FNB categpry move command
+    {
+        name: "fnb",
+        description: "Activate or deactivate the FNB category.",
+        options: [
+            {
+                name: "action",
+                description: "Whether to deactivate (move down) or activate (move up) the FNB category.",
+                type: 3,
+                required: true,
+                choices: [
+                    {
+                        name: "Activate (Move up)",
+                        value: "activate",
+                    },
+                    {
+                        name: "Deactivate (Move down)",
+                        value: "deactivate",
+                    },
+                ]
+            }
+        ]
+    },
+
     // Portal experience command
 
     {

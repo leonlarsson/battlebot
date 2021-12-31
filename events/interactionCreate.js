@@ -9,6 +9,8 @@ module.exports = {
 
         if (interaction.commandName === "when") commandUsed = "when";
 
+        if (interaction.commandName === "fnb") commandUsed = "fnb";
+
         if (interaction.commandName === "portal") {
             if (interaction.options.getSubcommand() === "post") commandUsed = "portal_post";
             if (interaction.options.getSubcommand() === "cooldown") commandUsed = "portal_cooldown";
