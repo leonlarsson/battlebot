@@ -40,6 +40,11 @@ module.exports = {
                 new MessageButton()
                     .setCustomId("clearCooldown")
                     .setLabel("Clear Cooldown")
+                    .setStyle('PRIMARY'),
+                new MessageButton()
+                    .setCustomId("setLongCooldown")
+                    .setEmoji("⚠")
+                    .setLabel("Set Cooldown To Year 9999")
                     .setStyle('PRIMARY')
             )
 
@@ -56,12 +61,29 @@ module.exports = {
         const clearCooldownFilter = i => i.user.id === interaction.user.id; // Only the interaction user
         const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
 
-        // On collect, remove cooldown query from DB. Update response and remove button.
+        // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
         collector.on("collect", async i => {
-            if (i.customId === 'clearCooldown') {
+            if (i.customId === "clearCooldown") {
                 query.remove();
                 i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
                 console.log(`${i.user.tag} (${i.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown.`);
+            }
+
+            if (i.customId === "setLongCooldown") {
+                // Set the new timestamp
+                await query.updateOne({ cooldownEndsAtTimestamp: 253370764800000, cooldownEndsDate: new Date(253370764800000) });
+
+                // Update embed
+                const newEmbed = cooldownViewEmbed
+                    .setDescription(`**__✅ COOLDOWN SET TO YEAR 9999 BY ${i.user.tag} ✅__**`)
+                    .setFooter("Cooldown increased (a lot).")
+                    .setFields(
+                        { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
+                        { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${moment.utc(253370764800000).format("dddd, D MMM Y, hh:mm:ss A (UTC)")}` }
+                    )
+
+                i.update({ embeds: [newEmbed], components: [] });
+                console.log(`${i.user.tag} (${i.user.id}) set ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown to year 9999.`);
             }
         })
 
