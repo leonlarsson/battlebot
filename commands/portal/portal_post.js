@@ -32,6 +32,9 @@ module.exports = {
 
         const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Experience Name**: ${name}\n**Experience Description**: ${description}\n**Experience Code**: ${experienceCode}\n`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
 
+        // Currently set to "<:UpVote:718281782813786154>" on BFD
+        msg.react(interaction.guild.emojis.cache.get("718281782813786154"));
+
         msg.startThread({
             name: name,
             autoArchiveDuration: 1440,
