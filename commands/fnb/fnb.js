@@ -1,7 +1,16 @@
+// eslint-disable-next-line no-unused-vars
+const { Client, CommandInteraction } = require("discord.js");
+
 module.exports = {
     name: "fnb",
     public: true,
     enabled: true,
+    /**
+     * 
+     * @param {CommandInteraction} interaction 
+     * @param {Client} client 
+     * @returns 
+     */
     async execute(interaction, client) {
 
         // Set allowed roles. FNB Staff & Admin (on BFD)
@@ -10,6 +19,7 @@ module.exports = {
 
         // Set FNB category (on BFD)
         await interaction.guild.channels.fetch();
+        await interaction.guild.fetch();
         const fnbCategory = client.channels.cache.get("907954291732512799");
 
         if (fnbCategory) {
@@ -27,7 +37,7 @@ module.exports = {
 
             } else {
                 console.log(`${interaction.user.tag} (${interaction.user.id}) requested to deactivate FNB category.`);
-                const moveFNB = fnbCategory.setPosition(11, { reason: `${interaction.user.tag} asked me to move the FNB category down.` });
+                const moveFNB = fnbCategory.setPosition(10, { reason: `${interaction.user.tag} asked me to move the FNB category down.` });
                 const changePerms = fnbCategory.permissionOverwrites.edit(interaction.guild.roles.everyone, { "CONNECT": false });
 
                 Promise.all([moveFNB, changePerms])
