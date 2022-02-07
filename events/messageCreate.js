@@ -1,14 +1,12 @@
-const checkBadContent = require('../utils/checkBadContent');
+import checkBadContent from "../utils/checkBadContent.js";
 
-module.exports = {
-    name: 'messageCreate',
-    async execute(message, client) {
+export const name = 'messageCreate';
+export async function execute(message, client) {
 
-        const disabled = true;
-        if (disabled) return;
-        if (message.author.bot) return;
+    const disabled = true;
+    if (disabled) return;
+    if (message.author.bot) return;
 
-        checkBadContent(message, client);
+    checkBadContent(message, client);
 
-    },
-};
+}

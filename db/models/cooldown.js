@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const config = require('../../config');
+import mongoose from "mongoose";
+import { environment, cooldownsCollectionName, cooldownsCollectionName_dev } from "../../config.js";
 
 let collectionName;
-if (config.environment === "live") {
-    collectionName = config.cooldownsCollectionName;
-} else if (config.environment === "dev") {
-    collectionName = config.cooldownsCollectionName_dev;
+if (environment === "live") {
+    collectionName = cooldownsCollectionName;
+} else if (environment === "dev") {
+    collectionName = cooldownsCollectionName_dev;
 } else {
     console.log("No environment specified.");
 }
@@ -23,4 +23,4 @@ const cooldownSchema = mongoose.Schema({
     cooldownEndsDate: String,
 });
 
-module.exports = mongoose.model(collectionName, cooldownSchema, collectionName);
+export default mongoose.model(collectionName, cooldownSchema, collectionName);

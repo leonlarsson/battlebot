@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "deployslash_guild": "node slash_commands/deployslash_guild.js",
     "removeslash_guild": "node slash_commands/removeslash_guild.js"

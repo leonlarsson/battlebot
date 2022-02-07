@@ -1,6 +1,6 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const config = require('../config');
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import * as config from "../config.js";
 
 let botToken;
 let clientId;

@@ -1,7 +1,7 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const config = require('../config');
-const slashCommandsData = require('./slash_commands_data');
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import * as config from "../config.js";
+import slashCommandsData from "./slash_commands_data.js";
 
 let botToken;
 let clientId;

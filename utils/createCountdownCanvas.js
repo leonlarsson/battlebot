@@ -1,8 +1,7 @@
-const Canvas = require("canvas");
-const { registerFont } = require('canvas')
-const { MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
+import Canvas from "canvas";
+import { MessageAttachment, MessageActionRow, MessageButton } from "discord.js";
 
-module.exports = async (interaction, Event) => {
+export default async (interaction, Event) => {
 
     // const backgroundNum = Math.floor(Math.random() * 3);
 
@@ -12,7 +11,7 @@ module.exports = async (interaction, Event) => {
         const context = canvas.getContext("2d");
         const backgroundImage = await Canvas.loadImage(Event.CountdownBackground());
 
-        registerFont('./assets/fonts/Geometos.ttf', { family: "Geometos" });
+        Canvas.registerFont('./assets/fonts/Geometos.ttf', { family: "Geometos" });
 
         // Background image. (With the game logo)
         context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);

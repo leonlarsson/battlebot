@@ -1,22 +1,20 @@
-const { environment } = require('../config');
+import { environment } from "../config.js";
 
-module.exports = {
-	name: 'ready',
-	once: false,
-	execute(client) {
-		console.log(`Logged in and ready as ${client.user.tag} - Environment: ${environment}`);
-		client.user.setPresence({
-			status: "online",
-			activities: [
-				{
-					type: "PLAYING",
-					name: "Battlefield"
-				}
-			]
-		})
+export const name = "ready";
+export const once = true;
+export function execute(client) {
+	console.log(`Logged in and ready as ${client.user.tag} - Environment: ${environment}`);
+	client.user.setPresence({
+		status: "online",
+		activities: [
+			{
+				type: "PLAYING",
+				name: "Battlefield"
+			}
+		]
+	});
 
-		// setInterval(() => {
-		// 	client.commands.get("countdown").execute(1, 2, client, Discord);
-		// }, 21600000);
-	}
-};
+	// setInterval(() => {
+	// 	client.commands.get("countdown").execute(1, 2, client, Discord);
+	// }, 21600000);
+}

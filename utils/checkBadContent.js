@@ -1,8 +1,15 @@
-const moment = require("moment");
+import moment from "moment";
 // eslint-disable-next-line no-unused-vars
-const { badWordsRegex, scamLinkRegex } = require("../utils/badWordsRegex");
+import { Message, Client } from "discord.js";
+// eslint-disable-next-line no-unused-vars
+import { badWordsRegex, scamLinkRegex } from "../utils/badWordsRegex.js";
 
-module.exports = async (message, client) => {
+/**
+ * Checks bad content, removed, and alerts.
+ * @param {Message} message The message.
+ * @param {Client} client The client.
+ */
+export default async (message, client) => {
 
     const includedChannels = ["850376380822323230", "907670041028329532", "907670155125989456", "907670279675842640", "908101543646089236", "177094649473794049", "446371403445436426", "140933721929940992", "422598689928773632", "792878528609386536", "258372071086620674", "179133087102402560", "174646583021928460", "179133571053780992", "179133477533253632", "179133087102402560", "739938247089848351"];
     // battlefield-2042, hazard-zone, portal, portal-builder, portal-sharing, battlefield, stats, general, technology, other-games, art-cinematics, streams-and-videos, pc, xbox, playstation, recruitment

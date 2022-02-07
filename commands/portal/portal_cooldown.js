@@ -1,95 +1,95 @@
-const Cooldowns = require('../../db/models/cooldown');
-const HumanizeDuration = require('humanize-duration');
-const moment = require('moment');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
+import HumanizeDuration from "humanize-duration";
+import moment from "moment";
+import Cooldowns from "../../db/models/cooldown.js";
 
-module.exports = {
-    name: "portal_cooldown",
-    permissions: ["BAN_MEMBERS"],
-    public: true,
-    enabled: true,
-    async execute(interaction) {
+export const name = "portal_cooldown";
+export const permissions = ["BAN_MEMBERS"];
+export const isPublic = true;
+export const enabled = true;
+export async function execute(interaction) {
 
-        const targetUser = interaction.options.getUser("user");
+    const targetUser = interaction.options.getUser("user");
 
-        const now = new Date().getTime();
+    const now = new Date().getTime();
 
-        // Get all queries and remove the expired cooldowns
-        const allQueries = await Cooldowns.find({});
-        allQueries.forEach(query => {
-            if (query.cooldownEndsAtTimestamp < now) {
-                query.remove();
-            }
-        })
+    // Get all queries and remove the expired cooldowns
+    const allQueries = await Cooldowns.find({});
+    allQueries.forEach(query => {
+        if (query.cooldownEndsAtTimestamp < now) {
+            query.remove();
+        }
+    });
 
-        // Find cooldown for user
-        const query = await Cooldowns.findOne({
-            userId: targetUser.id,
-            command: "portal_post"
-        });
+    // Find cooldown for user
+    const query = await Cooldowns.findOne({
+        userId: targetUser.id,
+        command: "portal_post"
+    });
 
-        // If no query is found
-        if (!query) return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${targetUser.tag}** (${targetUser.id}).` });
+    // If no query is found
+    if (!query)
+        return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${targetUser.tag}** (${targetUser.id}).` });
 
-        // Build moments
-        const cooldownStartTimestamp = moment.utc(query.commandUsedTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
-        const cooldownEndTimestamp = moment.utc(query.cooldownEndsAtTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
+    // Build moments
+    const cooldownStartTimestamp = moment.utc(query.commandUsedTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
+    const cooldownEndTimestamp = moment.utc(query.cooldownEndsAtTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
 
-        const row = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setCustomId("clearCooldown")
-                    .setLabel("Clear Cooldown")
-                    .setStyle('PRIMARY'),
-                new MessageButton()
-                    .setCustomId("setLongCooldown")
-                    .setEmoji("⚠")
-                    .setLabel("Set Cooldown To Year 9999")
-                    .setStyle('PRIMARY')
-            )
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId("clearCooldown")
+                .setLabel("Clear Cooldown")
+                .setStyle('PRIMARY'),
+            new MessageButton()
+                .setCustomId("setLongCooldown")
+                .setEmoji("⚠")
+                .setLabel("Set Cooldown To Year 9999")
+                .setStyle('PRIMARY')
+        );
 
-        const cooldownViewEmbed = new MessageEmbed()
-            .setTitle(`Portal Experience sharing cooldown for ${targetUser.tag} (${targetUser.id}).`)
-            .setFooter("Click on 'Clear Cooldown' to clear this user's cooldown.")
-            .addFields(
-                { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
-                { name: "Cooldown ends", value: `In ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}\nOn ${cooldownEndTimestamp}` }
-            )
+    const cooldownViewEmbed = new MessageEmbed()
+        .setTitle(`Portal Experience sharing cooldown for ${targetUser.tag} (${targetUser.id}).`)
+        .setFooter("Click on 'Clear Cooldown' to clear this user's cooldown.")
+        .addFields(
+            { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
+            { name: "Cooldown ends", value: `In ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}\nOn ${cooldownEndTimestamp}` }
+        );
 
-        const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
+    const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
 
-        const clearCooldownFilter = i => i.user.id === interaction.user.id; // Only the interaction user
-        const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
+    const clearCooldownFilter = i => i.user.id === interaction.user.id; // Only the interaction user
+    const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
 
-        // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
-        collector.on("collect", async i => {
-            if (i.customId === "clearCooldown") {
-                query.remove();
-                i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
-                console.log(`${i.user.tag} (${i.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown.`);
-            }
+    // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
+    collector.on("collect", async (i) => {
+        if (i.customId === "clearCooldown") {
+            query.remove();
+            i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
+            console.log(`${i.user.tag} (${i.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown.`);
+        }
 
-            if (i.customId === "setLongCooldown") {
-                // Set the new timestamp
-                await query.updateOne({ cooldownEndsAtTimestamp: 253370764800000, cooldownEndsDate: new Date(253370764800000) });
+        if (i.customId === "setLongCooldown") {
+            // Set the new timestamp
+            await query.updateOne({ cooldownEndsAtTimestamp: 253370764800000, cooldownEndsDate: new Date(253370764800000) });
 
-                // Update embed
-                const newEmbed = cooldownViewEmbed
-                    .setDescription(`**__✅ COOLDOWN SET TO YEAR 9999 BY ${i.user.tag} ✅__**`)
-                    .setFooter("Cooldown increased (a lot).")
-                    .setFields(
-                        { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
-                        { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${moment.utc(253370764800000).format("dddd, D MMM Y, hh:mm:ss A (UTC)")}` }
-                    )
+            // Update embed
+            const newEmbed = cooldownViewEmbed
+                .setDescription(`**__✅ COOLDOWN SET TO YEAR 9999 BY ${i.user.tag} ✅__**`)
+                .setFooter("Cooldown increased (a lot).")
+                .setFields(
+                    { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
+                    { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${moment.utc(253370764800000).format("dddd, D MMM Y, hh:mm:ss A (UTC)")}` }
+                );
 
-                i.update({ embeds: [newEmbed], components: [] });
-                console.log(`${i.user.tag} (${i.user.id}) set ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown to year 9999.`);
-            }
-        })
+            i.update({ embeds: [newEmbed], components: [] });
+            console.log(`${i.user.tag} (${i.user.id}) set ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown to year 9999.`);
+        }
+    });
 
-        // On collector end: If no collections, remove button and footer.
-        collector.on("end", collected => {
-            if (collected.size === 0) return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter("")], components: [] });
-        })
-    }
-};
+    // On collector end: If no collections, remove button and footer.
+    collector.on("end", collected => {
+        if (collected.size === 0)
+            return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter("")], components: [] });
+    });
+}
