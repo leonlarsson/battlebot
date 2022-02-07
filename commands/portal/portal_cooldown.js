@@ -50,7 +50,7 @@ export async function execute(interaction) {
 
     const cooldownViewEmbed = new MessageEmbed()
         .setTitle(`Portal Experience sharing cooldown for ${targetUser.tag} (${targetUser.id}).`)
-        .setFooter("Click on 'Clear Cooldown' to clear this user's cooldown.")
+        .setFooter({ text: "Click on 'Clear Cooldown' to clear this user's cooldown." })
         .addFields(
             { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
             { name: "Cooldown ends", value: `In ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}\nOn ${cooldownEndTimestamp}` }
@@ -65,7 +65,7 @@ export async function execute(interaction) {
     collector.on("collect", async (i) => {
         if (i.customId === "clearCooldown") {
             query.remove();
-            i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter("Cooldown cleared.")], components: [] });
+            i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter({ text: "Cooldown cleared." })], components: [] });
             console.log(`${i.user.tag} (${i.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown.`);
         }
 
@@ -76,7 +76,7 @@ export async function execute(interaction) {
             // Update embed
             const newEmbed = cooldownViewEmbed
                 .setDescription(`**__✅ COOLDOWN SET TO YEAR 9999 BY ${i.user.tag} ✅__**`)
-                .setFooter("Cooldown increased (a lot).")
+                .setFooter({ text: "Cooldown increased (a lot)." })
                 .setFields(
                     { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
                     { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${moment.utc(253370764800000).format("dddd, D MMM Y, hh:mm:ss A (UTC)")}` }
@@ -90,6 +90,6 @@ export async function execute(interaction) {
     // On collector end: If no collections, remove button and footer.
     collector.on("end", collected => {
         if (collected.size === 0)
-            return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter("")], components: [] });
+            return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter({ text: "" })], components: [] });
     });
 }

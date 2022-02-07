@@ -15,7 +15,7 @@ export async function execute(interaction) {
     if (!member) {
 
         userInfoEmbed = new MessageEmbed()
-            .setAuthor(`User: ${user.tag}`, user.displayAvatarURL({ dynamic: true }))
+            .setAuthor({ name: `User: ${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
             .addField("User information (User not on server)", `
 Bot: **${user.bot ? "Yes" : "No"}** | System: **${user.system ? "Yes" : "No"}**
 Name: **${user.tag}** (<@${user.id}>)
@@ -27,7 +27,7 @@ Flags: \`${user.flags.toArray().join("`, `") || "None"}\`
     } else {
 
         userInfoEmbed = new MessageEmbed()
-            .setAuthor(`User: ${member.user.tag}`, member.user.displayAvatarURL({ dynamic: true }))
+            .setAuthor({ name: `User: ${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .addField("User information", `
 Bot: **${member.user.bot ? "Yes" : "No"}** | System: **${member.user.system ? "Yes" : "No"}**
 Name: **${member.user.tag}** (<@${member.user.id}>)
