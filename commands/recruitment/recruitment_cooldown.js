@@ -1,10 +1,10 @@
+import { MessageEmbed, MessageActionRow, MessageButton, Permissions } from "discord.js";
 import HumanizeDuration from "humanize-duration";
 import moment from "moment";
-import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import Cooldowns from "../../db/models/cooldown.js";
 
 export const name = "recruitment_cooldown";
-export const permissions = ["BAN_MEMBERS"];
+export const permissions = [Permissions.FLAGS.BAN_MEMBERS];
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {

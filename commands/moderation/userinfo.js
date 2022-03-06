@@ -1,9 +1,9 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, Permissions } from "discord.js";
 import moment from "moment";
 import HumanizeDuration from "humanize-duration";
 
 export const name = "userinfo";
-export const permissions = ["MANAGE_MESSAGES"];
+export const permissions = [Permissions.FLAGS.MANAGE_MESSAGES];
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
