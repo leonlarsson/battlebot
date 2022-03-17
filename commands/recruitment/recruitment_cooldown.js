@@ -33,7 +33,7 @@ export async function execute(interaction) {
     if (!query)
         return interaction.reply({ content: `No recruitment cooldown found for user **${targetUser.tag}** (${targetUser.id}).` });
 
-    // Build moments
+    // Build day.js
     const cooldownStartTimestamp = dayjs.utc(query.commandUsedTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
     const cooldownEndTimestamp = dayjs.utc(query.cooldownEndsAtTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
 
