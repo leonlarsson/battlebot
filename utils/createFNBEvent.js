@@ -27,7 +27,7 @@ export default client => {
             // Build and create event
             guild.scheduledEvents.create({
                 name: `#FridayNightBattlefield - ${fnbStart.format("MMMM Do")}`,
-                description: "Welcome to **#FridayNightBattlefield** is a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information look in <#907954362637234246>.",
+                description: "Welcome to **#FridayNightBattlefield**, a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information look in <#907954362637234246>.",
                 privacyLevel: "GUILD_ONLY",
                 entityType: "EXTERNAL",
                 entityMetadata: { location: "The FridayNightBattlefield Category" },
