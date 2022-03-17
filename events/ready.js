@@ -1,4 +1,5 @@
 import { environment } from "../config.js";
+import createFNBEvent from "../utils/createFNBEvent.js";
 
 export const name = "ready";
 export const once = true;
@@ -14,7 +15,6 @@ export function execute(client) {
 		]
 	});
 
-	// setInterval(() => {
-	// 	client.commands.get("countdown").execute(1, 2, client, Discord);
-	// }, 21600000);
+	// Start cron to create FNB event
+	createFNBEvent(client);
 }
