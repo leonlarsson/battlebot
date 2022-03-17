@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { CronJob } from "cron";
 import { environment } from "../config.js";
 
@@ -18,15 +18,15 @@ export default client => {
             const channelId = environment === "live" ? "907954411970658335" : "845402419038650418";
 
             const guild = client.guilds.cache.get(guildId);
-            const fnbStart = new moment().day("Friday").hour(21).minute(30);
-            const fnbEnd = new moment().day("Saturday").hour(5).minute(0);
+            const fnbStart = dayjs().day(5).hour(21).minute(30);
+            const fnbEnd = dayjs().day(6).hour(5).minute(0);
 
             // Return if guild is not there
             if (!guild) return console.log(`Failed to find guild ${guildId}`);
 
             // Build and create event
             guild.scheduledEvents.create({
-                name: `#FridayNightBattlefield - ${fnbStart.format("MMMM Do")}`,
+                name: `#FridayNightBattlefield - ${fnbStart.format("MMMM D")}`,
                 description: "Welcome to **#FridayNightBattlefield**, a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information look in <#907954362637234246>.",
                 privacyLevel: "GUILD_ONLY",
                 entityType: "EXTERNAL",
