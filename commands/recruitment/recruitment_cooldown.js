@@ -1,6 +1,8 @@
 import { MessageEmbed, MessageActionRow, MessageButton, Permissions } from "discord.js";
 import HumanizeDuration from "humanize-duration";
-import moment from "moment";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js"
+dayjs.extend(utc);
 import Cooldowns from "../../db/models/cooldown.js";
 
 export const name = "recruitment_cooldown";
@@ -32,8 +34,8 @@ export async function execute(interaction) {
         return interaction.reply({ content: `No recruitment cooldown found for user **${targetUser.tag}** (${targetUser.id}).` });
 
     // Build moments
-    const cooldownStartTimestamp = moment.utc(query.commandUsedTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
-    const cooldownEndTimestamp = moment.utc(query.cooldownEndsAtTimestamp).format("dddd, D MMM Y, hh:mm:ss A (UTC)");
+    const cooldownStartTimestamp = dayjs.utc(query.commandUsedTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
+    const cooldownEndTimestamp = dayjs.utc(query.cooldownEndsAtTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
 
     const row = new MessageActionRow()
         .addComponents(
@@ -79,7 +81,7 @@ export async function execute(interaction) {
                 .setFooter({ text: "Cooldown increased (a lot)." })
                 .setFields(
                     { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
-                    { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${moment.utc(253370764800000).format("dddd, D MMM Y, hh:mm:ss A (UTC)")}` }
+                    { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${dayjs.utc(253370764800000).format("dddd, D MMM YYYY, hh:mm A UTC")}` }
                 );
 
             i.update({ embeds: [newEmbed], components: [] });
