@@ -48,20 +48,19 @@ export default async (interaction, Event) => {
                     new MessageButton()
                         .setLabel(button.Text)
                         .setStyle('LINK')
-                        .setURL(button.Link),
+                        .setURL(button.Link)
                 );
             });
         }
 
         // If the user does NOT have EMBED_LINKS, send an ephemeral reply instead.
-        let permCheck;
-        interaction.channel.permissionsFor(interaction.user).has("EMBED_LINKS") ? permCheck = false : permCheck = true;
+        const ephemeral = !interaction.channel.permissionsFor(interaction.user).has("EMBED_LINKS");
 
         // If there are buttons, send the row
         if (Event.Buttons[0]) {
-            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row], ephemeral: permCheck });
+            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row], ephemeral });
         } else {
-            await interaction.reply({ content: Event.MessageText, files: [attachment], ephemeral: permCheck });
+            await interaction.reply({ content: Event.MessageText, files: [attachment], ephemeral });
         }
 
     } catch (error) {

@@ -1,4 +1,6 @@
-import moment from "moment";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration.js"
+dayjs.extend(duration);
 import { checkCooldown, addCooldown } from "../../utils/handleCooldowns.js";
 import createCountdownCanvas from "../../utils/createCountdownCanvas.js";
 
@@ -10,14 +12,16 @@ export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
 
-    const userId = interaction.user.id; // Get user ID from message or interaction
+    // Get user ID from message or interaction
+    const userId = interaction.user.id;
 
     // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
     // Check if there is a DB cooldown query. If there is no query, run code and add cooldown at the bottom. If there is an active one, return and reply. If there is an expired one, update the query
     const query = await checkCooldown(interaction, this);
     if (query && query.cooldownEndsAtTimestamp > new Date().getTime()) return;
 
-    if (!this.allowed_channels.includes(interaction.channel.id) && userId !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+    // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+    if (!this.allowed_channels.includes(interaction.channel.id) && userId !== "99182302885588992") {
         return interaction.reply({ content: "Please try this in <#850376380822323230> or <#177094649473794049> instead!", ephemeral: true });
     }
 
@@ -26,14 +30,15 @@ export async function execute(interaction) {
         let countdownTime, countdownName, canvasBackground, countdownPassed_canvasMessage, countdownPassed_canvasBackground, countdownMessage;
         let buttons = [];
 
-        const event = interaction.options.getString("event"); // Get selected event
+        // Get selected event
+        const event = interaction.options.getString("event");
 
         if (event === "event_name") {
 
             const backgroundNum = Math.floor(Math.random() * 3);
             canvasBackground = `./assets/images/BG_2042_${backgroundNum}.png`;
 
-            countdownTime = moment.utc("2021-11-19 08:00:00");
+            countdownTime = dayjs("2022-04-20 08:00:00");
             countdownName = "Battlefield 2042 Release";
             countdownPassed_canvasMessage = "Get ready to fight!";
             countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
@@ -48,7 +53,7 @@ export async function execute(interaction) {
             const backgroundNum = Math.floor(Math.random() * 3);
             canvasBackground = `./assets/images/BG_2042_${backgroundNum}.png`;
 
-            countdownTime = moment.utc("2021-11-12 08:00:00");
+            countdownTime = dayjs("2022-04-20 10:00:00");
             countdownName = "Battlefield 2042 Release (Gold/Ultimate)";
             countdownPassed_canvasMessage = "Get ready to fight!";
             countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
@@ -60,8 +65,8 @@ export async function execute(interaction) {
 
         }
 
-        const currentTime = moment.utc();
-        const duration = moment.duration(countdownTime.diff(currentTime));
+        const currentTime = dayjs();
+        const duration = dayjs.duration(countdownTime.diff(currentTime));
 
         const Event = {
             EventName: countdownName,
@@ -73,87 +78,46 @@ export async function execute(interaction) {
             Hours: duration.hours(),
             Minutes: duration.minutes(),
             Seconds: duration.seconds(),
-            YearText: () => {
-                if (Event.Years === 1) {
-                    return "year";
-                } else {
-                    return "years";
-                }
-            },
-            MonthText: () => {
-                if (Event.Months === 1) {
-                    return "month";
-                } else {
-                    return "months";
-                }
-            },
-            DaysText: () => {
-                if (Event.Days === 1) {
-                    return "day";
-                } else {
-                    return "days";
-                }
-            },
-            HoursText: () => {
-                if (Event.Hours === 1) {
-                    return "hour";
-                } else {
-                    return "hours";
-                }
-            },
-            MinutesText: () => {
-                if (Event.Minutes === 1) {
-                    return "minute";
-                } else {
-                    return "minutes";
-                }
-            },
-            SecondsText: () => {
-                if (Event.Seconds === 1) {
-                    return "second";
-                } else {
-                    return "seconds";
-                }
-            },
-            HasPassed: () => {
-                return countdownTime.isBefore(currentTime);
-            },
-            CountdownBackground: () => {
-                if (Event.HasPassed()) {
-                    return countdownPassed_canvasBackground;
-                } else {
-                    return canvasBackground;
-                }
-            },
+            YearsText: () => Event.Years === 1 ? "year" : "years",
+            MonthsText: () => Event.Months === 1 ? "month" : "months",
+            DaysText: () => Event.Days === 1 ? "day" : "days",
+            HoursText: () => Event.Hours === 1 ? "hour" : "hours",
+            MinutesText: () => Event.Minutes === 1 ? "minute" : "minutes",
+            SecondsText: () => Event.Seconds === 1 ? "second" : "seconds",
+            HasPassed: () => countdownTime.isBefore(currentTime),
+            CountdownBackground: () => Event.HasPassed() ? countdownPassed_canvasBackground : canvasBackground,
             CountdownString: () => {
 
-                if (Event.HasPassed()) {
-                    return countdownPassed_canvasMessage;
-                }
+                if (Event.HasPassed()) return countdownPassed_canvasMessage;
 
-                if (duration._milliseconds < 60000) { // Less than a minute left
+                // Less than a minute left
+                if (duration.asMinutes() < 1) {
                     return `${Event.Seconds} ${Event.SecondsText()}`;
                 }
 
-                if (duration._milliseconds < 3600000) { // Less than an hour left
+                // Less than an hour left
+                if (duration.asHours() < 1) {
                     return `${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                 }
 
-                if (duration._milliseconds < 21600000) { // Less than 6 hours left
+                // Less than 6 hours left
+                if (duration.asHours() < 6) {
                     return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
                 }
 
-                if (duration._milliseconds < 86400000) { // Less than a day left
+                // Less than a day left
+                if (duration.asDays() < 1) {
                     return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
                 }
 
-                if (duration._milliseconds >= 86400000 && duration._milliseconds < 2592000000) { // More than a day and less than a month
+                // More than a day and less than a month
+                if (duration.asDays() >= 1 && duration.asMonths() < 1) {
                     return `${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
                 }
 
                 // More than a month left
-                return `${Event.Months} ${Event.MonthText()}, ${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}`;
-            },
+                return `${Event.Months} ${Event.MonthsText()}, ${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}`;
+            }
         };
 
         // If there is no cooldown query, create a new one
