@@ -17,7 +17,7 @@ export default client => {
     try {
 
         // Create FNB event Wednesday at 12:00 midday
-        const createFNBEventJob = new CronJob("00 12 * * WED", () => {
+        const createFNBEventJob = new CronJob("00 12 * * MON", () => {
 
             // If live, use BFD as guild and #fnb-bfd-staff as channel
             const guildId = environment === "live" ? "140933721929940992" : "99183009621622784";
@@ -39,7 +39,8 @@ export default client => {
                 entityType: "EXTERNAL",
                 entityMetadata: { location: "The FridayNightBattlefield Category" },
                 scheduledStartTime: fnbStart,
-                scheduledEndTime: fnbEnd
+                scheduledEndTime: fnbEnd,
+                reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`
             }).then(event => {
                 console.log(`Created FNB event: ${event.name}`);
                 client.channels.cache.get(channelId).send(`✅ Created FNB event: \`${event.name}\``);
