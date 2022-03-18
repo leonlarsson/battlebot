@@ -19,9 +19,9 @@ export default client => {
         // Create FNB event Wednesday at 12:00 midday
         const createFNBEventJob = new CronJob("00 12 * * MON", () => {
 
-            // If live, use BFD as guild and #fnb-bfd-staff as channel
+            // If live, use BFD as guild and #fnb-bfd-staff as channel. Otherwise Mozzy server and #bot-dev
             const guildId = environment === "live" ? "140933721929940992" : "99183009621622784";
-            const channelId = environment === "live" ? "907954411970658335" : "845402419038650418";
+            const confirmationChannelId = environment === "live" ? "907954411970658335" : "845402419038650418";
 
             const guild = client.guilds.cache.get(guildId);
             const fnbStart = dayjs().day(5).hour(21).minute(30);
@@ -43,10 +43,10 @@ export default client => {
                 reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`
             }).then(event => {
                 console.log(`Created FNB event: ${event.name}`);
-                client.channels.cache.get(channelId).send(`✅ Created FNB event: \`${event.name}\``);
+                client.channels.cache.get(confirmationChannelId).send(`✅ Created FNB event: \`${event.name}\`\n${environment === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`);
             }).catch(error => {
                 console.log("Failed to create FNB event.", error);
-                client.channels.cache.get(channelId).send(`❌ Failed to create FNB event :(\n\`${error.message}\``);
+                client.channels.cache.get(confirmationChannelId).send(`❌ Failed to create FNB event :(\n\`${error.message}\``);
             });
 
         });
