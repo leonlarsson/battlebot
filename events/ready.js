@@ -1,5 +1,5 @@
 import { environment } from "../config.js";
-import createFNBEvent from "../utils/createFNBEvent.js";
+import { startFNBEventCronJob } from "../utils/createFNBEvent.js";
 
 export const name = "ready";
 export const once = true;
@@ -16,5 +16,5 @@ export function execute(client) {
 	});
 
 	// Start cron to create FNB event
-	createFNBEvent(client);
+	startFNBEventCronJob(client);
 }
