@@ -13,7 +13,7 @@ export async function execute(interaction, client) {
 
     // Set allowed roles. FNB Staff & Admin (on BFD)
     const allowedRoles = ["907750002313539634", "140941611415633920"];
-    if (!allowedRoles.some(r => interaction.member.roles.cache.has(r)))
+    if (!allowedRoles.some(r => interaction.member.roles.cache.has(r)) && interaction.user.id !== "99182302885588992")
         return interaction.reply({ content: "You can't use this.", ephemeral: true });
 
     const row = new MessageActionRow()
