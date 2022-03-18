@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import { Client, CommandInteraction } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
@@ -30,11 +32,11 @@ export const startFNBEventCronJob = client => {
 /**
  * Creates the FNB event.
  * @param {Client} client The client.
+ * @param {CommandInteraction=} interaction The interaction, if entry was a command.
  */
-export const createFNBEvent = client => {
+export const createFNBEvent = (client, interaction) => {
 
     try {
-
 
         // If live, use BFD as guild and #fnb-bfd-staff as channel. Otherwise Mozzy server and #bot-dev
         const guildId = environment === "live" ? "140933721929940992" : "99183009621622784";
@@ -60,10 +62,24 @@ export const createFNBEvent = client => {
             reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`
         }).then(event => {
             console.log(`Created FNB event: ${event.name}`);
-            client.channels.cache.get(confirmationChannelId).send(`✅ Created FNB event: \`${event.name}\`\n${environment === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`);
+            const successMessage = `✅ Created FNB event: \`${event.name}\`\n${environment === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`;
+
+            // If command was run from an interaction, reply to that interaction
+            if (interaction) {
+                interaction.editReply({ content: successMessage, components: [] });
+            } else {
+                client.channels.cache.get(confirmationChannelId).send(successMessage);
+            }
         }).catch(error => {
             console.log("Failed to create FNB event.", error);
-            client.channels.cache.get(confirmationChannelId).send(`❌ Failed to create FNB event :(\n\`${error.message}\``);
+            const failMessage = `❌ Failed to create FNB event :(\n\`${error.message}\``;
+
+            // If command was run from an interaction, reply to that interaction
+            if (interaction) {
+                interaction.editReply({ content: failMessage, components: [] });
+            } else {
+                client.channels.cache.get(confirmationChannelId).send(failMessage);
+            }
         });
     } catch (error) {
         console.log("Error in createFNBEvent():", error);

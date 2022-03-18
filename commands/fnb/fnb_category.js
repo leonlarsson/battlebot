@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { Client, CommandInteraction } from "discord.js";
 
-export const name = "fnb";
+export const name = "fnb_category";
 export const isPublic = true;
 export const enabled = true;
 /**

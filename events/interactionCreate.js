@@ -8,7 +8,10 @@ export async function execute(interaction, client) {
 
     if (interaction.commandName === "when") commandUsed = "when";
 
-    if (interaction.commandName === "fnb") commandUsed = "fnb";
+    if (interaction.commandName === "fnb") {
+        if (interaction.options.getSubcommand() === "category") commandUsed = "fnb_category";
+        if (interaction.options.getSubcommand() === "create_event") commandUsed = "fnb_create_event";
+    }
 
     if (interaction.commandName === "portal") {
         if (interaction.options.getSubcommand() === "post") commandUsed = "portal_post";
