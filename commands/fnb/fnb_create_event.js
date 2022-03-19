@@ -44,13 +44,13 @@ export async function execute(interaction, client) {
         }
 
         if (i.customId === "cancel") {
-            return i.update({ content: "Cancelling event-creation.", components: [] });
+            return i.update({ content: "Cancelling FNB event-creation.", components: [] });
         }
     });
 
     collector.on("end", (collected, endReason) => {
         if (collected.size === 0 && endReason === "time") {
-            interaction.editReply({ content: "Cancelling event-creation.", components: [] });
+            interaction.editReply({ content: "Cancelling FNB event-creation.", components: [] });
         }
     });
 }
