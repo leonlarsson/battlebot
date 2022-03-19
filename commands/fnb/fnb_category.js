@@ -39,9 +39,9 @@ export async function execute(interaction, client) {
             const changePerms = fnbCategory.permissionOverwrites.edit(interaction.guild.roles.everyone, { "CONNECT": false });
 
             Promise.all([moveFNB, changePerms])
-                .then(() => interaction.reply("❌ FNB category moved down and voice connect permission was disabled."))
+                .then(() => interaction.reply("✅ FNB category moved down and voice connect permission was disabled."))
                 .catch(e => {
-                    interaction.reply("🚫 Failed to move FNB category down or change permissions.");
+                    interaction.reply("❌ Failed to move FNB category down or change permissions.");
                     console.log(e.message);
                 });
         }
