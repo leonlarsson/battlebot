@@ -1,3 +1,6 @@
+import HumanizeDuration from "humanize-duration";
+import { checkIfCooldownExpired, getCooldownQuery } from "../utils/handleCooldowns.js";
+
 export const name = "interactionCreate";
 export async function execute(interaction, client) {
     if (!interaction.isCommand() && !interaction.isContextMenu()) return;
@@ -41,10 +44,21 @@ export async function execute(interaction, client) {
 
     // Check for valid channel(s)
     if (command.allowed_channels) {
-        if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") { // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+        // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
+        if (!command.allowed_channels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") {
             return interaction.reply({ content: command.wrong_channel_message, ephemeral: true });
         }
     }
 
-    command.execute(interaction, client); // Run command
+    // Check cooldown. If there is a cooldown and it hasn't expired, return and notify
+    if (command.cooldown) {
+        const cooldown = await getCooldownQuery(interaction, command);
+        if (cooldown) {
+            const { expired, expiresIn } = await checkIfCooldownExpired(cooldown);
+            if (!expired) return interaction.reply({ content: `Please wait \`${HumanizeDuration(expiresIn, { round: true, conjunction: " and " })}\` before using this command again.`, ephemeral: true });
+        }
+    }
+
+    // Run command
+    command.execute(interaction, client);
 }

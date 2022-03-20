@@ -64,7 +64,7 @@ export async function execute(interaction) {
     const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
 
     // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
-    collector.on("collect", async (i) => {
+    collector.on("collect", async i => {
         if (i.customId === "clearCooldown") {
             query.remove();
             i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter({ text: "Cooldown cleared." })], components: [] });

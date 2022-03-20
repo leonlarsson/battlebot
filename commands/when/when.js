@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration.js"
 dayjs.extend(duration);
-import { checkCooldown, addCooldown } from "../../utils/handleCooldowns.js";
+import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import createCountdownCanvas from "../../utils/createCountdownCanvas.js";
 
 export const name = "when";
 export const allowed_channels = ["850376380822323230", "177094649473794049", "470275028030849024"];
 export const wrong_channel_message = "This is only available in <#850376380822323230> and <#177094649473794049>";
-export const cooldown = 5000;
+export const cooldown = 5000; // ms: 5 seconds
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
@@ -16,9 +16,6 @@ export async function execute(interaction) {
     const userId = interaction.user.id;
 
     // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
-    // Check if there is a DB cooldown query. If there is no query, run code and add cooldown at the bottom. If there is an active one, return and reply. If there is an expired one, update the query
-    const query = await checkCooldown(interaction, this);
-    if (query && query.cooldownEndsAtTimestamp > new Date().getTime()) return;
 
     // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
     if (!this.allowed_channels.includes(interaction.channel.id) && userId !== "99182302885588992") {
@@ -120,8 +117,7 @@ export async function execute(interaction) {
             }
         };
 
-        // If there is no cooldown query, create a new one
-        if (!query) addCooldown(interaction, this);
+        updateOrAddCooldown(interaction, this);
 
         createCountdownCanvas(interaction, Event);
 
