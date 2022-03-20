@@ -13,19 +13,13 @@ export const enabled = true;
 export async function execute(interaction) {
 
     // Get user ID from message or interaction
-    const userId = interaction.user.id;
-
+    // const userId = interaction.user.id;
     // if (userId !== "99182302885588992") return interaction.reply({ content: "Come back later.", ephemeral: true }); // Temp locked to me
-
-    // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
-    if (!this.allowed_channels.includes(interaction.channel.id) && userId !== "99182302885588992") {
-        return interaction.reply({ content: "Please try this in <#850376380822323230> or <#177094649473794049> instead!", ephemeral: true });
-    }
 
     try {
 
         let countdownTime, countdownName, canvasBackground, countdownPassed_canvasMessage, countdownPassed_canvasBackground, countdownMessage;
-        let buttons = [];
+        const buttons = [];
 
         // Get selected event
         const event = interaction.options.getString("event");
