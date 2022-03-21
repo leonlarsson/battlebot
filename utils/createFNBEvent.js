@@ -65,9 +65,10 @@ export const createFNBEvent = (client, interaction) => {
             console.log(`Created FNB event: ${event.name}`);
             const successMessage = `✅ Created FNB event: \`${event.name}\`\n${environment === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`;
 
-            // If command was run from an interaction, reply to that interaction
+            // If command was run from an interaction, reply to that interaction, and try to send in #fnb-news on BFD
             if (interaction) {
                 interaction.editReply({ content: successMessage, components: [] });
+                client.channels.cache.get(fnbNewsChannelId)?.send(successMessage);
             } else {
                 // Attempt to send to both channels
                 [confirmationChannelId, fnbNewsChannelId].forEach(channel => client.channels.cache.get(channel)?.send(successMessage));
