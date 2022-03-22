@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration.js"
-dayjs.extend(duration);
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import createCountdownCanvas from "../../utils/createCountdownCanvas.js";
+dayjs.extend(duration);
 
 export const name = "when";
 export const allowed_channels = ["850376380822323230", "177094649473794049", "470275028030849024"];
@@ -82,29 +82,20 @@ export async function execute(interaction) {
                 if (Event.HasPassed()) return countdownPassed_canvasMessage;
 
                 // Less than a minute left
-                if (duration.asMinutes() < 1) {
-                    return `${Event.Seconds} ${Event.SecondsText()}`;
-                }
+                if (duration.asMinutes() < 1) return `${Event.Seconds} ${Event.SecondsText()}`;
 
                 // Less than an hour left
-                if (duration.asHours() < 1) {
-                    return `${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
-                }
+                if (duration.asHours() < 1) return `${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
 
                 // Less than 6 hours left
-                if (duration.asHours() < 6) {
-                    return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
-                }
+                if (duration.asHours() < 6) return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
+
 
                 // Less than a day left
-                if (duration.asDays() < 1) {
-                    return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
-                }
+                if (duration.asDays() < 1) return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
 
                 // More than a day and less than a month
-                if (duration.asDays() >= 1 && duration.asMonths() < 1) {
-                    return `${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
-                }
+                if (duration.asDays() >= 1 && duration.asMonths() < 1) return `${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
 
                 // More than a month left
                 return `${Event.Months} ${Event.MonthsText()}, ${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}`;

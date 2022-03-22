@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Client, CommandInteraction, MessageActionRow, MessageButton } from "discord.js";
+import { ButtonStyle } from "discord-api-types/v9";
 import { createFNBEvent } from "../../utils/createFNBEvent.js";
 
 export const name = "fnb_create_event";
@@ -20,11 +21,11 @@ export async function execute(interaction, client) {
         .addComponents(
             new MessageButton()
                 .setLabel("Yes, create event")
-                .setStyle("PRIMARY")
+                .setStyle(ButtonStyle.Primary)
                 .setCustomId("create"),
             new MessageButton()
                 .setLabel("No, cancel")
-                .setStyle("DANGER")
+                .setStyle(ButtonStyle.Danger)
                 .setCustomId("cancel")
         );
 

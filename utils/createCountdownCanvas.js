@@ -1,5 +1,6 @@
-import Canvas from "canvas";
 import { MessageAttachment, MessageActionRow, MessageButton } from "discord.js";
+import { ButtonStyle, PermissionFlagsBits } from "discord-api-types/v9";
+import Canvas from "canvas";
 
 export default async (interaction, Event) => {
 
@@ -47,14 +48,14 @@ export default async (interaction, Event) => {
                 row.addComponents(
                     new MessageButton()
                         .setLabel(button.Text)
-                        .setStyle('LINK')
+                        .setStyle(ButtonStyle.Link)
                         .setURL(button.Link)
                 );
             });
         }
 
         // If the user does NOT have EMBED_LINKS, send an ephemeral reply instead.
-        const ephemeral = !interaction.channel.permissionsFor(interaction.user).has("EMBED_LINKS");
+        const ephemeral = !interaction.channel.permissionsFor(interaction.user).has(PermissionFlagsBits.EmbedLinks);
 
         // If there are buttons, send the row
         if (Event.Buttons[0]) {

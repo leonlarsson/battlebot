@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Client, CommandInteraction } from "discord.js";
+import { PermissionFlagsBits } from "discord-api-types/v9";
 
 export const name = "fnb_category";
 export const isPublic = true;
@@ -19,12 +20,11 @@ export async function execute(interaction, client) {
     await interaction.guild.channels.fetch();
     await interaction.guild.fetch();
     const fnbCategory = client.channels.cache.get("907954291732512799");
-
     if (fnbCategory) {
         if (interaction.options.getString("action") === "activate") {
             console.log(`${interaction.user.tag} (${interaction.user.id}) requested to activate FNB category.`);
             const moveFNB = fnbCategory.setPosition(7, { reason: `${interaction.user.tag} asked me to move the FNB category up.` });
-            const changePerms = fnbCategory.permissionOverwrites.edit(interaction.guild.roles.everyone, { "CONNECT": null });
+            const changePerms = fnbCategory.permissionOverwrites.edit(interaction.guild.roles.everyone, { [PermissionFlagsBits.Connect]: null });
 
             Promise.all([moveFNB, changePerms])
                 .then(() => interaction.reply("✅ FNB category moved up and voice connect permission was enabled."))
@@ -36,7 +36,7 @@ export async function execute(interaction, client) {
         } else {
             console.log(`${interaction.user.tag} (${interaction.user.id}) requested to deactivate FNB category.`);
             const moveFNB = fnbCategory.setPosition(10, { reason: `${interaction.user.tag} asked me to move the FNB category down.` });
-            const changePerms = fnbCategory.permissionOverwrites.edit(interaction.guild.roles.everyone, { "CONNECT": false });
+            const changePerms = fnbCategory.permissionOverwrites.edit(interaction.guild.roles.everyone, { [PermissionFlagsBits.Connect]: false });
 
             Promise.all([moveFNB, changePerms])
                 .then(() => interaction.reply("✅ FNB category moved down and voice connect permission was disabled."))

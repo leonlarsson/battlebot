@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Client, CommandInteraction } from "discord.js";
+import { GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } from "discord-api-types/v9";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
@@ -55,8 +56,8 @@ export const createFNBEvent = (client, interaction) => {
         guild.scheduledEvents.create({
             name: `#FridayNightBattlefield - ${fnbStart.format("MMMM D")}`,
             description: `Welcome to **#FridayNightBattlefield**, a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information, look in <#${fnbNewsChannelId}>.\n\n__**Start times**__\n🇪🇺 EU: <t:${fnbStart.unix()}:R> (${fnbStart.utc().format("MMM D, hh:mm A")} UTC)\n🇺🇸 NA: <t:${fnbNAStart.unix()}:R> (${fnbNAStart.tz("America/New_York").format("MMM D, hh:mm A z")})`,
-            privacyLevel: "GUILD_ONLY",
-            entityType: "EXTERNAL",
+            privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
+            entityType: GuildScheduledEventEntityType.External,
             entityMetadata: { location: "The FridayNightBattlefield Category" },
             scheduledStartTime: fnbStart,
             scheduledEndTime: fnbEnd,

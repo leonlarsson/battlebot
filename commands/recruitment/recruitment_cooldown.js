@@ -1,12 +1,13 @@
-import { MessageEmbed, MessageActionRow, MessageButton, Permissions } from "discord.js";
+import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
+import { ButtonStyle, PermissionFlagsBits } from "discord-api-types/v9";
 import HumanizeDuration from "humanize-duration";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js"
-dayjs.extend(utc);
 import Cooldowns from "../../db/models/cooldown.js";
+dayjs.extend(utc);
 
 export const name = "recruitment_cooldown";
-export const permissions = [Permissions.FLAGS.BAN_MEMBERS];
+export const permissions = PermissionFlagsBits.BanMembers;
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
@@ -42,12 +43,12 @@ export async function execute(interaction) {
             new MessageButton()
                 .setCustomId("clearCooldown")
                 .setLabel("Clear Cooldown")
-                .setStyle('PRIMARY'),
+                .setStyle(ButtonStyle.Primary),
             new MessageButton()
                 .setCustomId("setLongCooldown")
                 .setEmoji("⚠")
                 .setLabel("Set Cooldown To Year 9999")
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
         );
 
     const cooldownViewEmbed = new MessageEmbed()

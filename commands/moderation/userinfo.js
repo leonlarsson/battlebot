@@ -1,11 +1,12 @@
-import { MessageEmbed, Permissions } from "discord.js";
+import { MessageEmbed } from "discord.js";
+import { PermissionFlagsBits } from "discord-api-types/v9";
+import HumanizeDuration from "humanize-duration";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js"
 dayjs.extend(utc);
-import HumanizeDuration from "humanize-duration";
 
 export const name = "userinfo";
-export const permissions = [Permissions.FLAGS.MANAGE_MESSAGES];
+export const permissions = PermissionFlagsBits.ManageMessages;
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
