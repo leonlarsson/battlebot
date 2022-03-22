@@ -7,7 +7,7 @@ if (environment === "live") {
 } else if (environment === "dev") {
     collectionName = cooldownsCollectionName_dev;
 } else {
-    console.log("No environment specified.");
+    throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
 }
 
 const cooldownSchema = mongoose.Schema({

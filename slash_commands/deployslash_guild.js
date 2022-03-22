@@ -15,7 +15,7 @@ if (config.environment === "live") {
     clientId = config.clientId_dev;
     guildId = config.slashGuild_dev;
 } else {
-    console.log("No environment specified.");
+    throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
 }
 
 const rest = new REST({ version: '9' }).setToken(botToken);

@@ -10,7 +10,7 @@ if (config.environment === "live") {
 } else if (config.environment === "dev") {
 	botToken = config.botToken_dev;
 } else {
-	console.log("No environment specified.");
+	throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
 }
 
 // Events
