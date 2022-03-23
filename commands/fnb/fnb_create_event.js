@@ -36,22 +36,20 @@ export async function execute(interaction, client) {
         i.reply({ content: "You can't use this.", ephemeral: true });
         return false;
     }
-    const collector = responseMsg.createMessageComponentCollector({ filter, time: 20000, max: 1 });
 
-    collector.on("collect", i => {
-        if (i.customId === "create") {
-            console.log(`${interaction.user.tag} (${interaction.user.id}) confirmed FNB event-creation.`);
-            createFNBEvent(client, interaction);
-        }
+    responseMsg.awaitMessageComponent({ filter, time: 20000 })
+        .then(buttonInteraction => {
 
-        if (i.customId === "cancel") {
-            return i.update({ content: "Cancelling FNB event-creation.", components: [] });
-        }
-    });
+            if (buttonInteraction.customId === "create") {
+                console.log(`${interaction.user.tag} (${interaction.user.id}) confirmed FNB event-creation.`);
+                createFNBEvent(client, interaction);
+            }
 
-    collector.on("end", (collected, endReason) => {
-        if (collected.size === 0 && endReason === "time") {
+            if (buttonInteraction.customId === "cancel") {
+                return buttonInteraction.update({ content: "Cancelling FNB event-creation.", components: [] });
+            }
+
+        }).catch(() => {
             interaction.editReply({ content: "Cancelling FNB event-creation.", components: [] });
-        }
-    });
+        });
 }

@@ -1,4 +1,5 @@
-import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
+// eslint-disable-next-line no-unused-vars
+import { MessageEmbed, MessageActionRow, MessageButton, CommandInteraction } from "discord.js";
 import { ButtonStyle, PermissionFlagsBits } from "discord-api-types/v9";
 import HumanizeDuration from "humanize-duration";
 import dayjs from "dayjs";
@@ -10,6 +11,9 @@ export const name = "recruitment_cooldown";
 export const permissions = PermissionFlagsBits.BanMembers;
 export const isPublic = true;
 export const enabled = true;
+/**
+ * @param {CommandInteraction} interaction The interaction.
+ */
 export async function execute(interaction) {
 
     const targetUser = interaction.options.getUser("user");
@@ -19,9 +23,7 @@ export async function execute(interaction) {
     // Get all queries and remove the expired cooldowns
     const allQueries = await Cooldowns.find({});
     allQueries.forEach(query => {
-        if (query.cooldownEndsAtTimestamp < now) {
-            query.remove();
-        }
+        if (query.cooldownEndsAtTimestamp < now) query.remove();
     });
 
     // Find cooldown for user
@@ -61,38 +63,34 @@ export async function execute(interaction) {
 
     const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
 
-    const clearCooldownFilter = i => i.user.id === interaction.user.id; // Only the interaction user
-    const collector = responseMsg.createMessageComponentCollector({ filter: clearCooldownFilter, time: 30000, max: 1 });
+    const clearCooldownFilter = i => i.user.id === interaction.user.id;
+    responseMsg.awaitMessageComponent({ filter: clearCooldownFilter, time: 30000 })
+        .then(async buttonInteraction => {
 
-    // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
-    collector.on("collect", async i => {
-        if (i.customId === "clearCooldown") {
-            query.remove();
-            i.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${i.user.tag} ✅__**`).setFooter({ text: "Cooldown cleared." })], components: [] });
-            console.log(`${i.user.tag} (${i.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown.`);
-        }
+            // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
+            if (buttonInteraction.customId === "clearCooldown") {
+                query.remove();
+                buttonInteraction.update({ embeds: [cooldownViewEmbed.setDescription(`**__✅ COOLDOWN CLEARED BY ${buttonInteraction.user.tag} ✅__**`).setFooter({ text: "Cooldown cleared." })], components: [] });
+                console.log(`${buttonInteraction.user.tag} (${buttonInteraction.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown.`);
+            }
 
-        if (i.customId === "setLongCooldown") {
-            // Set the new timestamp
-            await query.updateOne({ cooldownEndsAtTimestamp: 253370764800000, cooldownEndsDate: new Date(253370764800000) });
+            if (buttonInteraction.customId === "setLongCooldown") {
+                // Set the new timestamp
+                await query.updateOne({ cooldownEndsAtTimestamp: 253370764800000, cooldownEndsDate: new Date(253370764800000) });
 
-            // Update embed
-            const newEmbed = cooldownViewEmbed
-                .setDescription(`**__✅ COOLDOWN SET TO YEAR 9999 BY ${i.user.tag} ✅__**`)
-                .setFooter({ text: "Cooldown increased (a lot)." })
-                .setFields(
-                    { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
-                    { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${dayjs.utc(253370764800000).format("dddd, D MMM YYYY, hh:mm A UTC")}` }
-                );
+                // Update embed
+                const newEmbed = cooldownViewEmbed
+                    .setDescription(`**__✅ COOLDOWN SET TO YEAR 9999 BY ${buttonInteraction.user.tag} ✅__**`)
+                    .setFooter({ text: "Cooldown increased (a lot)." })
+                    .setFields(
+                        { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
+                        { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${dayjs.utc(253370764800000).format("dddd, D MMM YYYY, hh:mm A UTC")}` }
+                    );
 
-            i.update({ embeds: [newEmbed], components: [] });
-            console.log(`${i.user.tag} (${i.user.id}) set ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown to year 9999.`);
-        }
-    });
-
-    // On collector end: If no collections, remove button and footer.
-    collector.on("end", collected => {
-        if (collected.size === 0)
-            return interaction.editReply({ embeds: [cooldownViewEmbed.setFooter({ text: "" })], components: [] });
-    });
+                buttonInteraction.update({ embeds: [newEmbed], components: [] });
+                console.log(`${buttonInteraction.user.tag} (${buttonInteraction.user.id}) set ${targetUser.tag}'s (${targetUser.id}) recruitment cooldown to year 9999.`);
+            }
+        }).catch(() => {
+            interaction.editReply({ embeds: [cooldownViewEmbed.setFooter({ text: "" })], components: [] });
+        });
 }
