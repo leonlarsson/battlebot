@@ -14,6 +14,7 @@ export async function execute(interaction, client) {
     if (interaction.commandName === "fnb") {
         if (interaction.options.getSubcommand() === "category") commandUsed = "fnb_category";
         if (interaction.options.getSubcommand() === "create_event") commandUsed = "fnb_create_event";
+        if (interaction.options.getSubcommand() === "info") commandUsed = "fnb_info";
     }
 
     if (interaction.commandName === "portal") {

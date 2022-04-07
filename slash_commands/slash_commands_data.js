@@ -32,7 +32,7 @@ export default [
         options: [
             {
                 name: "category",
-                description: "Activate or deactivate the FNB category.",
+                description: "[ADMIN] Activate or deactivate the FNB category.",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
@@ -55,7 +55,12 @@ export default [
             },
             {
                 name: "create_event",
-                description: "Manually creates an FNB event. Use only if the automated one fails.",
+                description: "[ADMIN] Manually creates an FNB event. Use only if the automated one fails.",
+                type: ApplicationCommandOptionType.Subcommand
+            },
+            {
+                name: "info",
+                description: "What is FNB?",
                 type: ApplicationCommandOptionType.Subcommand
             }
         ]
@@ -64,7 +69,7 @@ export default [
     // Portal experience command
     {
         name: "portal",
-        description: "Post about your Portal Experience.",
+        description: "Portal Experience sharing commands.",
         type: ApplicationCommandType.ChatInput,
         options: [
             {
@@ -97,7 +102,7 @@ export default [
             // Portal sharing cooldown action
             {
                 name: "cooldown",
-                description: "Cooldown actions for Portal sharing.",
+                description: "[ADMIN] Cooldown actions for Portal sharing.",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
@@ -114,7 +119,7 @@ export default [
     // Recruitment commands
     {
         name: "recruitment",
-        description: "Create a recruitment post.",
+        description: "Recruitment commands.",
         type: ApplicationCommandType.ChatInput,
         options: [
             {
@@ -158,7 +163,7 @@ export default [
             // Recruitment cooldown clear / view
             {
                 name: "cooldown",
-                description: "Cooldown actions for recruitment posts.",
+                description: "[ADMIN] Cooldown actions for recruitment posts.",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
