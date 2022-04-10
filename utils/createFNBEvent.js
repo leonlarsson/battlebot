@@ -2,10 +2,8 @@
 import { Client, CommandInteraction } from "discord.js";
 import { GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } from "discord-api-types/v9";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
-dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(advancedFormat);
 import { CronJob } from "cron";
@@ -45,9 +43,9 @@ export const createFNBEvent = (client, interaction) => {
         const fnbNewsChannelId = "907954362637234246"; // #fnb-news on BFD
 
         const guild = client.guilds.cache.get(guildId);
-        const fnbStart = dayjs().day(5).hour(21).minute(30);
-        const fnbNAStart = dayjs().day(6).hour(2).minute(0);
-        const fnbEnd = dayjs().day(6).hour(5).minute(0);
+        const fnbStart = dayjs().tz("Europe/Stockholm").day(5).hour(21).minute(30);
+        const fnbNAStart = dayjs().tz("America/New_York").day(5).hour(21).minute(0);
+        const fnbEnd = dayjs().tz("Europe/Stockholm").day(6).hour(5).minute(0);
 
         // Return if guild is not there
         if (!guild) return console.log(`Failed to find guild ${guildId}`);
@@ -55,7 +53,7 @@ export const createFNBEvent = (client, interaction) => {
         // Build and create event
         guild.scheduledEvents.create({
             name: `#FridayNightBattlefield - ${fnbStart.format("MMMM D")}`,
-            description: `Welcome to **#FridayNightBattlefield**, a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information, look in <#${fnbNewsChannelId}>.\n\n__**Start times**__\n🇪🇺 EU: <t:${fnbStart.unix()}:R> (${fnbStart.utc().format("MMM D, hh:mm A")} UTC)\n🇺🇸 NA: <t:${fnbNAStart.unix()}:R> (${fnbNAStart.tz("America/New_York").format("MMM D, hh:mm A z")})`,
+            description: `Welcome to **#FridayNightBattlefield**, a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information, look in <#${fnbNewsChannelId}>.\n\n__**Start times**__\n🇪🇺 EU: <t:${fnbStart.unix()}:R> (${fnbStart.tz("UTC").format("MMM D, hh:mm A z")})\n🇺🇸 NA: <t:${fnbNAStart.unix()}:R> (${fnbNAStart.format("MMM D, hh:mm A z")})`,
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: { location: "The FridayNightBattlefield Category" },
