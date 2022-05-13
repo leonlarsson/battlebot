@@ -104,39 +104,7 @@ export default [
             {
                 name: "post",
                 description: "Post a recruitment post.",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-                        name: "name",
-                        description: "Your platoon/community name.",
-                        type: ApplicationCommandOptionType.String,
-                        required: true,
-                    },
-                    {
-                        name: "platform",
-                        description: "The platform(s) you play on. (PC, Xbox & PlayStation)",
-                        type: ApplicationCommandOptionType.String,
-                        required: true
-                    },
-                    {
-                        name: "game",
-                        description: "The Battlefield game(s) you play.",
-                        type: ApplicationCommandOptionType.String,
-                        required: true
-                    },
-                    {
-                        name: "region",
-                        description: "The region(s) you play in. (EU, NA, etc.)",
-                        type: ApplicationCommandOptionType.String,
-                        required: true
-                    },
-                    {
-                        name: "description",
-                        description: "A brief description of your platoon/community.",
-                        type: ApplicationCommandOptionType.String,
-                        required: true
-                    }
-                ]
+                type: ApplicationCommandOptionType.Subcommand
             },
 
             // Recruitment cooldown clear / view

@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent } from "discord.js";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
@@ -8,28 +10,89 @@ export const cooldown = 172800000; // ms: 48 hours
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
-    // Lock to me only
-    // if (interaction.user.id !== "99182302885588992") return interaction.reply({ content: "No.", ephemeral: true });
+
+    // Build the text inputs
+    const recruitmentNameInput = new TextInputComponent()
+        .setCustomId("recruitmentNameInput")
+        .setRequired(true)
+        .setMinLength(5)
+        .setMaxLength(50)
+        .setStyle("SHORT")
+        .setLabel("Name:")
+        .setPlaceholder("Mozzy's Cool Clan");
+
+    const recruitmentPlatformInput = new TextInputComponent()
+        .setCustomId("recruitmentPlatformInput")
+        .setRequired(true)
+        .setMinLength(1)
+        .setMaxLength(50)
+        .setStyle("SHORT")
+        .setLabel("Platform(s):")
+        .setPlaceholder("PC and PlayStation");
+
+    const recruitmentGameInput = new TextInputComponent()
+        .setCustomId("recruitmentGameInput")
+        .setRequired(true)
+        .setMinLength(1)
+        .setMaxLength(70)
+        .setStyle("SHORT")
+        .setLabel("Game(s):")
+        .setPlaceholder("Battlefield 1 only");
+
+    const recruitmentRegionInput = new TextInputComponent()
+        .setCustomId("recruitmentRegionInput")
+        .setRequired(true)
+        .setMinLength(1)
+        .setMaxLength(50)
+        .setStyle("SHORT")
+        .setLabel("Region(s):")
+        .setPlaceholder("All regions - Mr. Worldwide!");
+
+    const recruitmentDescriptionInput = new TextInputComponent()
+        .setCustomId("recruitmentDescriptionInput")
+        .setRequired(true)
+        .setMinLength(5)
+        .setMaxLength(400)
+        .setStyle("PARAGRAPH")
+        .setLabel("Description (NO LINEBREAKS):")
+        .setPlaceholder("This is an absolutely amazing clan. No linebreaks allowed.");
+
+    // Create action rows
+    const recruitmentModalActionRow1 = new MessageActionRow().addComponents(recruitmentNameInput);
+    const recruitmentModalActionRow2 = new MessageActionRow().addComponents(recruitmentPlatformInput);
+    const recruitmentModalActionRow3 = new MessageActionRow().addComponents(recruitmentGameInput);
+    const recruitmentModalActionRow4 = new MessageActionRow().addComponents(recruitmentRegionInput);
+    const recruitmentModalActionRow5 = new MessageActionRow().addComponents(recruitmentDescriptionInput);
+
+    // Build modal
+    const recruitmentModal = new Modal()
+        .setCustomId("recruitmentModal")
+        .setTitle("Share Your Recruitment Post")
+        .addComponents(recruitmentModalActionRow1, recruitmentModalActionRow2, recruitmentModalActionRow3, recruitmentModalActionRow4, recruitmentModalActionRow5);
+
+    // Show modal
+    interaction.showModal(recruitmentModal);
+
+}
+
+/**
+ * Handles the Recruitment modal submission.
+ * @param {ModalSubmitInteraction} interaction The modal submit interaction.
+ */
+export const handleRecruitmentModal = async interaction => {
 
     // Removing embeds on links and censor invite links
-    const name = cleanMessage(interaction.options.getString("name"));
-    const description = cleanMessage(interaction.options.getString("description"));
-    const platform = cleanMessage(interaction.options.getString("platform"));
-    const game = cleanMessage(interaction.options.getString("game"));
-    const region = cleanMessage(interaction.options.getString("region"));
+    const recruitmentName = cleanMessage(interaction.fields.getTextInputValue("recruitmentNameInput"));
+    const recruitmentPlatform = cleanMessage(interaction.fields.getTextInputValue("recruitmentPlatformInput"));
+    const recruitmentGame = cleanMessage(interaction.fields.getTextInputValue("recruitmentGameInput"));
+    const recruitmRegion = cleanMessage(interaction.fields.getTextInputValue("recruitmentRegionInput"));
+    const recruitmentDescription = cleanMessage(interaction.fields.getTextInputValue("recruitmentDescriptionInput"));
 
-    // Check length
-    if (name.length > 50) return interaction.reply({ content: `\`Name\` needs to be 50 characters or less. You were at ${name.length}.`, ephemeral: true });
-    if (description.length > 600) return interaction.reply({ content: `\`Description\` needs to be 600 characters or less. You were at ${description.length}.`, ephemeral: true });
-    if (platform.length > 50) return interaction.reply({ content: `\`Platform\` needs to be 50 characters or less. You were at ${platform.length}.`, ephemeral: true });
-    if (game.length > 70) return interaction.reply({ content: `\`Game\` needs to be 70 characters or less. You were at ${game.length}.`, ephemeral: true });
-    if (region.length > 50) return interaction.reply({ content: `\`Region\` needs to be 50 characters or less. You were at ${region.length}.`, ephemeral: true });
+    // Check newlines, and inform the user if there are newlines
+    if (recruitmentName.includes("\n") || recruitmentPlatform.includes("\n") || recruitmentGame.includes("\n") || recruitmRegion.includes("\n") || recruitmentDescription.includes("\n"))
+        return interaction.reply({ content: `Your message cannot contain any linebreaks.\n**Name**: ${recruitmentName}\n**Platform(s)**: ${recruitmentPlatform}\n**Game(s)**: ${recruitmentGame}\n**Region(s)**: ${recruitmRegion}\n**Description**: ${recruitmentDescription}`, ephemeral: true });
 
-    // Check newlines
-    if (name.includes("\n") || description.includes("\n") || platform.includes("\n") || game.includes("\n") || region.includes("\n"))
-        return interaction.reply({ content: "Your message cannot contain any linebreaks. Keep it all on one line and try again.", ephemeral: true });
+    interaction.reply({ content: `*Recruitment post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Name**: ${recruitmentName}\n**Platform(s)**: ${recruitmentPlatform}\n**Game(s)**: ${recruitmentGame}\n**Region(s)**: ${recruitmRegion}\n**Description**: ${recruitmentDescription}`, allowedMentions: { users: [interaction.user.id] } });
 
-    interaction.reply({ content: `*Recruitment post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Name**: ${name}\n**Platform(s)**: ${platform}\n**Game(s)**: ${game}\n**Region(s)**: ${region}\n**Description**: ${description}`, allowedMentions: { users: [interaction.user.id] } });
-
-    updateOrAddCooldown(interaction, this);
-}
+    updateOrAddCooldown(interaction, { name, cooldown });
+};
