@@ -54,6 +54,7 @@ export const createFNBEvent = (client, interaction) => {
         guild.scheduledEvents.create({
             name: `#FridayNightBattlefield - ${fnbStart.format("MMMM D")}`,
             description: `Welcome to **#FridayNightBattlefield**, a weekly event where players get together to play Battlefield in a friendly atmosphere with DICE developers and Electronic Arts staff. It is a long-standing event with deep roots in the Battlefield community.\n\nThe event is hosted in multiple languages, has many dedicated servers for everyone to join in on.\nFor more information, look in <#${fnbNewsChannelId}>.\n\n__**Start times**__\n🇪🇺 EU: <t:${fnbStart.unix()}:R> (${fnbStart.tz("UTC").format("MMM D, hh:mm A z")})\n🇺🇸 NA: <t:${fnbNAStart.unix()}:R> (${fnbNAStart.format("MMM D, hh:mm A z")})`,
+            image: "./assets/images/FNB.png",
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: { location: "The FridayNightBattlefield Category" },
