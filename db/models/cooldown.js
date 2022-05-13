@@ -20,7 +20,7 @@ const cooldownSchema = mongoose.Schema({
     commandUsedTimestamp: Number,
     commandUsedDate: String,
     cooldownEndsAtTimestamp: Number,
-    cooldownEndsDate: String,
+    cooldownEndsDate: String
 });
 
 export default mongoose.model(collectionName, cooldownSchema, collectionName);

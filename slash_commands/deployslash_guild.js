@@ -26,7 +26,7 @@ const rest = new REST({ version: '9' }).setToken(botToken);
 
         await rest.put(
             Routes.applicationGuildCommands(clientId, guildId),
-            { body: slashCommandsData },
+            { body: slashCommandsData }
         );
 
         console.log(`Successfully deployed Slash Commands on guild ${guildId}.`);

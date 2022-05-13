@@ -25,7 +25,7 @@ const rest = new REST({ version: '9' }).setToken(botToken);
 
         await rest.put(
             Routes.applicationGuildCommands(clientId, guildId),
-            { body: [] },
+            { body: [] }
         );
 
         console.log(`Successfully removed Slash Commands on guild ${guildId}.`);
