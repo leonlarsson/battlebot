@@ -42,18 +42,20 @@ for (const folder of commandFolders) {
 	}
 }
 
-// Error handling (bad)
-process.on('unhandledRejection', error => {
-	if (error.code == 10008) {
-		console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`);
-	} else if (error.code == 50001) {
-		console.error(`${error}: ERROR HANDLER - Missing access. Did the bot lose access to a channel?`);
-	} else if (error.code == 50013) {
-		console.error(`${error}: ERROR HANDLER - Missing permissions. Missing a permission somewhere.`);
-	} else {
-		console.trace(`${error}: ERROR HANDLER - Something broke.`);
-	}
-});
+// Error handling - only for live
+if (config.environment === "live") {
+	process.on('unhandledRejection', error => {
+		if (error.code == 10008) {
+			console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`);
+		} else if (error.code == 50001) {
+			console.error(`${error}: ERROR HANDLER - Missing access. Did the bot lose access to a channel?`);
+		} else if (error.code == 50013) {
+			console.error(`${error}: ERROR HANDLER - Missing permissions. Missing a permission somewhere.`);
+		} else {
+			console.trace(`${error}: ERROR HANDLER - Something broke.`);
+		}
+	});
+}
 
 // Connect to DB
 mongoose.connect(config.mongoDB_srv)
