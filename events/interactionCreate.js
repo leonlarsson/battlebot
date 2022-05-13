@@ -1,8 +1,15 @@
 import HumanizeDuration from "humanize-duration";
+import { handlePortalModal } from "../commands/portal/portal_post.js";
 import { checkIfCooldownExpired, getCooldownQuery } from "../utils/handleCooldowns.js";
 
 export const name = "interactionCreate";
 export async function execute(interaction, client) {
+
+    // Handle the modal interactions
+    if (interaction.isModalSubmit()) {
+        if (interaction.customId === "portalModal") return handlePortalModal(interaction);
+    }
+
     if (!interaction.isCommand() && !interaction.isContextMenu()) return;
 
     // Define command used

@@ -75,28 +75,7 @@ export default [
             {
                 name: "post",
                 description: "Share your Portal Experience.",
-                type: ApplicationCommandOptionType.Subcommand,
-                options: [
-                    {
-
-                        name: "name",
-                        description: "Your Portal Experience name.",
-                        type: ApplicationCommandOptionType.String,
-                        required: true,
-                    },
-                    {
-                        name: "description",
-                        description: "A description of your Portal Experience.",
-                        type: ApplicationCommandOptionType.String,
-                        required: true
-                    },
-                    {
-                        name: "experience_code",
-                        description: "Your Portal Experience Code.",
-                        type: ApplicationCommandOptionType.String,
-                        required: true
-                    }
-                ]
+                type: ApplicationCommandOptionType.Subcommand
             },
 
             // Portal sharing cooldown action

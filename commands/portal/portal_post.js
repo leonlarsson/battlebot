@@ -1,40 +1,85 @@
+// eslint-disable-next-line no-unused-vars
+import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent } from "discord.js";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
 export const name = "portal_post";
 export const allowed_channels = ["908101543646089236"];
 export const wrong_channel_message = "This is only available in <#908101543646089236>";
-export const cooldown = 43200000; // ms: 12 hours
+export const cooldown = 43_200_000; // ms: 12 hours
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
-    // Lock to me only
-    // if (interaction.user.id !== "99182302885588992") return interaction.reply({ content: "No.", ephemeral: true });
+
+    // Build the text inputs
+    const portalExperienceCodeInput = new TextInputComponent()
+        .setCustomId("portalExperienceCodeInput")
+        .setRequired(true)
+        .setMinLength(1)
+        .setMaxLength(10)
+        .setStyle("SHORT")
+        .setLabel("Experience Code:")
+        .setPlaceholder("AATCVC");
+
+    const portalNameInput = new TextInputComponent()
+        .setCustomId("portalNameInput")
+        .setRequired(true)
+        .setMinLength(5)
+        .setMaxLength(100)
+        .setStyle("SHORT")
+        .setLabel("Experience Name:")
+        .setPlaceholder("Mozzy's 24/7 Nosehair Canals TDM");
+
+    const portalDescriptionInput = new TextInputComponent()
+        .setCustomId("portalDescriptionInput")
+        .setRequired(true)
+        .setMinLength(5)
+        .setMaxLength(400)
+        .setStyle("PARAGRAPH")
+        .setLabel("Experience Description (NO LINEBREAKS):")
+        .setPlaceholder("This is an absolutely amazing experience. No linebreaks allowed.");
+
+    // Create action rows
+    const portalModalActionRow1 = new MessageActionRow().addComponents(portalExperienceCodeInput);
+    const portalModalActionRow2 = new MessageActionRow().addComponents(portalNameInput);
+    const portalModalActionRow3 = new MessageActionRow().addComponents(portalDescriptionInput);
+
+    // Build modal
+    const portalModal = new Modal()
+        .setCustomId("portalModal")
+        .setTitle("Share Your Portal Experience")
+        .addComponents(portalModalActionRow1, portalModalActionRow2, portalModalActionRow3);
+
+    // Show modal
+    interaction.showModal(portalModal);
+}
+
+/**
+ * Handles the Portal modal submission.
+ * @param {ModalSubmitInteraction} interaction The modal submit interaction.
+ */
+export const handlePortalModal = async interaction => {
 
     // Removing embeds on links and censor invite links
-    const name = cleanMessage(interaction.options.getString("name"));
-    const description = cleanMessage(interaction.options.getString("description"));
-    const experienceCode = cleanMessage(interaction.options.getString("experience_code"));
+    const experienceCode = cleanMessage(interaction.fields.getTextInputValue("portalExperienceCodeInput"));
+    const experienceName = cleanMessage(interaction.fields.getTextInputValue("portalNameInput"));
+    const experienceDescription = cleanMessage(interaction.fields.getTextInputValue("portalDescriptionInput"));
 
-    // Check length
-    if (name.length > 150) return interaction.reply({ content: `\`Name\` needs to be 150 characters or less. You were at ${name.length}.`, ephemeral: true });
-    if (description.length > 600) return interaction.reply({ content: `\`Description\` needs to be 600 characters or less. You were at ${description.length}.`, ephemeral: true });
-    if (experienceCode.length > 50) return interaction.reply({ content: `\`Experience Code\` needs to be 50 characters or less. You were at ${experienceCode.length}.`, ephemeral: true });
+    // Check newlines, and inform the user if there are newlines
+    if (experienceName.includes("\n") || experienceCode.includes("\n") || experienceDescription.includes("\n"))
+        return interaction.reply({ content: `Your message cannot contain any linebreaks.\n\n**Experience Code**: ${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\n**Name**: ${interaction.fields.getTextInputValue("portalNameInput")}\n**Description**: ${interaction.fields.getTextInputValue("portalDescriptionInput")}`, ephemeral: true });
 
-    // Check newlines
-    if (name.includes("\n") || description.includes("\n") || experienceCode.includes("\n"))
-        return interaction.reply({ content: "Your message cannot contain any linebreaks. Keep it all on one line and try again.", ephemeral: true });
-
-    const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Experience Name**: ${name}\n**Experience Description**: ${description}\n**Experience Code**: ${experienceCode}\n`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
+    const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Experience Code**: ${experienceCode}\n**Experience Name**: ${experienceName}\n**Experience Description**: ${experienceDescription}`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
 
     // Currently set to "<:UpVote:718281782813786154>" on BFD
-    msg.react(interaction.guild.emojis.cache.get("718281782813786154"));
+    const reaction = interaction.guild.emojis.cache.get("718281782813786154");
+    if (reaction) msg.react(reaction);
 
     msg.startThread({
-        name: name,
+        name: experienceName,
         autoArchiveDuration: 1440,
         reason: "Auto-created thread for Portal Experience sharing post."
     });
 
-    updateOrAddCooldown(interaction, this);
-}
+    updateOrAddCooldown(interaction, { name, cooldown });
+};
