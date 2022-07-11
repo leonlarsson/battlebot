@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent } from "discord.js";
+import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent, MessageEmbed } from "discord.js";
+import superagent from "superagent";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
@@ -75,10 +76,38 @@ export const handlePortalModal = async interaction => {
     const reaction = interaction.guild.emojis.cache.get("718281782813786154");
     if (reaction) msg.react(reaction);
 
+    // Start thread, fetch experience, and post if found
     msg.startThread({
         name: experienceName,
         autoArchiveDuration: 1440,
         reason: "Auto-created thread for Portal Experience sharing post."
+    }).then(async thread => {
+        try {
+            const { body } = await superagent.get(`https://api.gametools.network/bf2042/playground/?experiencecode=${encodeURIComponent(interaction.fields.getTextInputValue("portalExperienceCodeInput"))}&blockydata=false`)
+                .set("Accept", "application/json")
+                .set("Accept-Encoding", "gzip")
+                .timeout(5000)
+                .retry(2);
+
+            const playground = body.originalPlayground;
+            const tags = body.tag;
+
+            let mapRotationNumber = 0;
+            const experienceEmbed = new MessageEmbed()
+                .setTitle(`Portal Experience: ${playground.playgroundName}`)
+                .setColor("#26ffdf")
+                .setFooter({ text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() })
+                .addFields(
+                    { name: "Basic Info", value: `Description: **${playground.playgroundDescription}**${playground.owner ? `\nOwner: **${playground.owner.name}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
+                    { name: "Tags", value: tags?.map(tag => `\`${tag.metadata.translations[0].localizedText}\``).join(" ") || "None" },
+                    { name: "Map/Mode Rotation", value: `${playground.mapRotation.maps?.map(rotation => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}` }
+                );
+
+            thread.send({ embeds: [experienceEmbed] });
+
+        } catch (error) {
+            console.log("portal_post: failed to post fetched experience data:", error.message);
+        }
     });
 
     updateOrAddCooldown(interaction, { name, cooldown });
