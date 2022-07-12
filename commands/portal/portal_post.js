@@ -98,7 +98,7 @@ export const handlePortalModal = async interaction => {
                 .setColor("#26ffdf")
                 .setFooter({ text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() })
                 .addFields(
-                    { name: "Basic Info", value: `Description: **${playground.playgroundDescription}**${playground.owner ? `\nOwner: **${playground.owner.name}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
+                    { name: "Basic Info", value: `Description: **${playground.playgroundDescription}**${playground.owner?.name ? `\nOwner: **${playground.owner.name}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
                     { name: "Tags", value: tags?.map(tag => `\`${tag.metadata.translations[0].localizedText}\``).join(" ") || "None" },
                     { name: "Map/Mode Rotation", value: `${playground.mapRotation.maps?.map(rotation => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}` }
                 );
