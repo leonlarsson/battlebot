@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent, MessageEmbed } from "discord.js";
+import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent, MessageEmbed, Util } from "discord.js";
 import { fetch } from "undici";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
@@ -101,11 +101,11 @@ export const handlePortalModal = async interaction => {
 
         let mapRotationNumber = 0;
         const experienceEmbed = new MessageEmbed()
-            .setTitle(`Portal Experience: ${playground.playgroundName}`)
+            .setTitle(`Portal Experience: ${Util.escapeMarkdown(playground.playgroundName)}`)
             .setColor("#26ffdf")
             .setFooter({ text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() })
             .addFields(
-                { name: "Basic Info", value: `Description: **${playground.playgroundDescription}**${playground.owner?.name ? `\nOwner: **${playground.owner.name}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
+                { name: "Basic Info", value: `Description: **${Util.escapeMarkdown(playground.playgroundDescription)}**${playground.owner?.name ? `\nOwner: **${Util.escapeMarkdown(playground.owner.name)}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
                 { name: "Tags", value: tags?.map(tag => `\`${tag.metadata.translations[0].localizedText}\``).join(" ") || "None" },
                 { name: "Map/Mode Rotation", value: `${playground.mapRotation.maps?.map(rotation => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}` }
             );
