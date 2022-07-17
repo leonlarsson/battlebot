@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent, MessageEmbed } from "discord.js";
-import superagent from "superagent";
+import { fetch } from "undici";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
@@ -61,16 +61,15 @@ export async function execute(interaction) {
  */
 export const handlePortalModal = async interaction => {
 
-    // Removing embeds on links and censor invite links
-    const experienceCode = cleanMessage(interaction.fields.getTextInputValue("portalExperienceCodeInput"));
-    const experienceName = cleanMessage(interaction.fields.getTextInputValue("portalNameInput"));
-    const experienceDescription = cleanMessage(interaction.fields.getTextInputValue("portalDescriptionInput"));
+    const experienceCode = interaction.fields.getTextInputValue("portalExperienceCodeInput");
+    const experienceName = interaction.fields.getTextInputValue("portalNameInput");
+    const experienceDescription = interaction.fields.getTextInputValue("portalDescriptionInput");
 
     // Check newlines, and inform the user if there are newlines
     if (experienceName.includes("\n") || experienceCode.includes("\n") || experienceDescription.includes("\n"))
-        return interaction.reply({ content: `Your message cannot contain any linebreaks.\n\n**Experience Code**: ${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\n**Name**: ${interaction.fields.getTextInputValue("portalNameInput")}\n**Description**: ${interaction.fields.getTextInputValue("portalDescriptionInput")}`, ephemeral: true });
+        return interaction.reply({ content: `Your message cannot contain any linebreaks.\n\n**Experience Code**: ${experienceCode}\n**Name**: ${experienceName}\n**Description**: ${experienceDescription}`, ephemeral: true });
 
-    const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Experience Code**: ${experienceCode}\n**Experience Name**: ${experienceName}\n**Experience Description**: ${experienceDescription}`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
+    const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Experience Code**: ${cleanMessage(experienceCode)}\n**Experience Name**: ${cleanMessage(experienceName)}\n**Experience Description**: ${cleanMessage(experienceDescription)}`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
 
     // Currently set to "<:UpVote:718281782813786154>" on BFD
     const reaction = interaction.guild.emojis.cache.get("718281782813786154");
@@ -82,32 +81,36 @@ export const handlePortalModal = async interaction => {
         autoArchiveDuration: 1440,
         reason: "Auto-created thread for Portal Experience sharing post."
     }).then(async thread => {
-        try {
-            const { body } = await superagent.get(`https://api.gametools.network/bf2042/playground/?experiencecode=${encodeURIComponent(interaction.fields.getTextInputValue("portalExperienceCodeInput"))}&blockydata=false`)
-                .set("Accept", "application/json")
-                .set("Accept-Encoding", "gzip")
-                .timeout(5000)
-                .retry(2);
 
-            const playground = body.originalPlayground;
-            const tags = body.tag;
+        const experienceApiURL = new URL("https://api.gametools.network/bf2042/playground");
+        experienceApiURL.searchParams.set("experiencecode", experienceCode);
+        experienceApiURL.searchParams.set("blockydata", false);
 
-            let mapRotationNumber = 0;
-            const experienceEmbed = new MessageEmbed()
-                .setTitle(`Portal Experience: ${playground.playgroundName}`)
-                .setColor("#26ffdf")
-                .setFooter({ text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() })
-                .addFields(
-                    { name: "Basic Info", value: `Description: **${playground.playgroundDescription}**${playground.owner?.name ? `\nOwner: **${playground.owner.name}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
-                    { name: "Tags", value: tags?.map(tag => `\`${tag.metadata.translations[0].localizedText}\``).join(" ") || "None" },
-                    { name: "Map/Mode Rotation", value: `${playground.mapRotation.maps?.map(rotation => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}` }
-                );
+        const res = await fetch(experienceApiURL.href, {
+            headers: {
+                "Accept": "application/json",
+                "Accept-Encoding": "gzip"
+            }
+        }).catch(() => { });
 
-            thread.send({ embeds: [experienceEmbed] });
+        if (!res.ok) return;
+        const json = await res.json();
 
-        } catch (error) {
-            console.log("portal_post: failed to post fetched experience data:", error.message);
-        }
+        const playground = json.originalPlayground;
+        const tags = json.tag;
+
+        let mapRotationNumber = 0;
+        const experienceEmbed = new MessageEmbed()
+            .setTitle(`Portal Experience: ${playground.playgroundName}`)
+            .setColor("#26ffdf")
+            .setFooter({ text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() })
+            .addFields(
+                { name: "Basic Info", value: `Description: **${playground.playgroundDescription}**${playground.owner?.name ? `\nOwner: **${playground.owner.name}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
+                { name: "Tags", value: tags?.map(tag => `\`${tag.metadata.translations[0].localizedText}\``).join(" ") || "None" },
+                { name: "Map/Mode Rotation", value: `${playground.mapRotation.maps?.map(rotation => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}` }
+            );
+
+        thread.send({ embeds: [experienceEmbed] });
     });
 
     updateOrAddCooldown(interaction, { name, cooldown });

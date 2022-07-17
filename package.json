@@ -22,7 +22,7 @@
     "mongoose": "^6.0.12",
     "morse-decoder": "^3.0.1",
     "regex-escape": "^3.4.10",
-    "superagent": "^8.0.0"
+    "undici": "^5.7.0"
   },
   "devDependencies": {
     "eslint": "^8.1.0",
