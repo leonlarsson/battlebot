@@ -82,17 +82,17 @@ export async function execute(interaction) {
 export const handleRecruitmentModal = async interaction => {
 
     // Removing embeds on links and censor invite links
-    const recruitmentName = cleanMessage(interaction.fields.getTextInputValue("recruitmentNameInput"));
-    const recruitmentPlatform = cleanMessage(interaction.fields.getTextInputValue("recruitmentPlatformInput"));
-    const recruitmentGame = cleanMessage(interaction.fields.getTextInputValue("recruitmentGameInput"));
-    const recruitmRegion = cleanMessage(interaction.fields.getTextInputValue("recruitmentRegionInput"));
-    const recruitmentDescription = cleanMessage(interaction.fields.getTextInputValue("recruitmentDescriptionInput"));
+    const recruitmentName = interaction.fields.getTextInputValue("recruitmentNameInput");
+    const recruitmentPlatform = interaction.fields.getTextInputValue("recruitmentPlatformInput");
+    const recruitmentGame = interaction.fields.getTextInputValue("recruitmentGameInput");
+    const recruitmRegion = interaction.fields.getTextInputValue("recruitmentRegionInput");
+    const recruitmentDescription = interaction.fields.getTextInputValue("recruitmentDescriptionInput");
 
     // Check newlines, and inform the user if there are newlines
     if (recruitmentName.includes("\n") || recruitmentPlatform.includes("\n") || recruitmentGame.includes("\n") || recruitmRegion.includes("\n") || recruitmentDescription.includes("\n"))
         return interaction.reply({ content: `Your message cannot contain any linebreaks.\n**Name**: ${recruitmentName}\n**Platform(s)**: ${recruitmentPlatform}\n**Game(s)**: ${recruitmentGame}\n**Region(s)**: ${recruitmRegion}\n**Description**: ${recruitmentDescription}`, ephemeral: true });
 
-    interaction.reply({ content: `*Recruitment post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Name**: ${recruitmentName}\n**Platform(s)**: ${recruitmentPlatform}\n**Game(s)**: ${recruitmentGame}\n**Region(s)**: ${recruitmRegion}\n**Description**: ${recruitmentDescription}`, allowedMentions: { users: [interaction.user.id] } });
+    interaction.reply({ content: `*Recruitment post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(recruitmentName)}\n**Platform(s)**: ${cleanMessage(recruitmentPlatform)}\n**Game(s)**: ${cleanMessage(recruitmentGame)}\n**Region(s)**: ${cleanMessage(recruitmRegion)}\n**Description**: ${cleanMessage(recruitmentDescription)}`, allowedMentions: { users: [interaction.user.id] } });
 
     updateOrAddCooldown(interaction, { name, cooldown });
 };
