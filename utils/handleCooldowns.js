@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import mongoose from "mongoose";
 import Cooldowns from "../db/models/cooldown.js";
 
 /**
  * Get a cooldown query for a command.
- * @param {CommandInteraction} interaction The interaction.
+ * @param {ChatInputCommandInteraction} interaction The interaction.
  * @param {Object} command - The command.
  * @returns {Promise<Object|false} Returns the query or false.
  */
@@ -34,7 +34,7 @@ export async function checkIfCooldownExpired(query) {
 
 /**
  * Updates a cooldown query or adds one.
- * @param {CommandInteraction} interaction The interaction.
+ * @param {ChatInputCommandInteraction} interaction The interaction.
  * @param {Object} command - The command.
  */
 export async function updateOrAddCooldown(interaction, command) {
@@ -62,7 +62,7 @@ export async function updateCooldown(command, query) {
 
 /**
  * Adds a cooldown query.
- * @param {CommandInteraction} interaction The interaction.
+ * @param {ChatInputCommandInteraction} interaction The interaction.
  * @param {Object} command - The command.
  */
 export async function addCooldown(interaction, command) {

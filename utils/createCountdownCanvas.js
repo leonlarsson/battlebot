@@ -1,5 +1,4 @@
-import { MessageAttachment, MessageActionRow, MessageButton } from "discord.js";
-import { ButtonStyle, PermissionFlagsBits } from "discord-api-types/v9";
+import { AttachmentBuilder, ComponentType, ButtonStyle, PermissionFlagsBits } from "discord.js";
 import Canvas from "canvas";
 
 export default async (interaction, Event) => {
@@ -38,19 +37,19 @@ export default async (interaction, Event) => {
         context.textAlign = "center";
         context.fillText(Event.CountdownString(), 500, 302, 950);
 
-        const attachment = new MessageAttachment(canvas.toBuffer(), `${Event.EventName}.png`);
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${Event.EventName}.png` });
 
-        const row = new MessageActionRow();
+        const row = { type: ComponentType.ActionRow, components: [] };
 
         // If there are buttons specified, add to row
         if (Event.Buttons[0]) {
             Event.Buttons.forEach(button => {
-                row.addComponents(
-                    new MessageButton()
-                        .setLabel(button.Text)
-                        .setStyle(ButtonStyle.Link)
-                        .setURL(button.Link)
-                );
+                row.components.push({
+                    type: ComponentType.Button,
+                    style: ButtonStyle.Link,
+                    label: button.text,
+                    url: button.Link
+                });
             });
         }
 

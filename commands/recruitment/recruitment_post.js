@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent } from "discord.js";
+import { ModalSubmitInteraction, ComponentType, TextInputStyle } from "discord.js";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
@@ -11,64 +11,87 @@ export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
 
-    // Build the text inputs
-    const recruitmentNameInput = new TextInputComponent()
-        .setCustomId("recruitmentNameInput")
-        .setRequired(true)
-        .setMinLength(5)
-        .setMaxLength(50)
-        .setStyle("SHORT")
-        .setLabel("Name:")
-        .setPlaceholder("Mozzy's Cool Clan");
-
-    const recruitmentPlatformInput = new TextInputComponent()
-        .setCustomId("recruitmentPlatformInput")
-        .setRequired(true)
-        .setMinLength(1)
-        .setMaxLength(50)
-        .setStyle("SHORT")
-        .setLabel("Platform(s):")
-        .setPlaceholder("PC and PlayStation");
-
-    const recruitmentGameInput = new TextInputComponent()
-        .setCustomId("recruitmentGameInput")
-        .setRequired(true)
-        .setMinLength(1)
-        .setMaxLength(70)
-        .setStyle("SHORT")
-        .setLabel("Game(s):")
-        .setPlaceholder("Battlefield 1 only");
-
-    const recruitmentRegionInput = new TextInputComponent()
-        .setCustomId("recruitmentRegionInput")
-        .setRequired(true)
-        .setMinLength(1)
-        .setMaxLength(50)
-        .setStyle("SHORT")
-        .setLabel("Region(s):")
-        .setPlaceholder("All regions - Mr. Worldwide!");
-
-    const recruitmentDescriptionInput = new TextInputComponent()
-        .setCustomId("recruitmentDescriptionInput")
-        .setRequired(true)
-        .setMinLength(5)
-        .setMaxLength(400)
-        .setStyle("PARAGRAPH")
-        .setLabel("Description (NO LINEBREAKS):")
-        .setPlaceholder("This is an absolutely amazing clan. No linebreaks allowed.");
-
-    // Create action rows
-    const recruitmentModalActionRow1 = new MessageActionRow().addComponents(recruitmentNameInput);
-    const recruitmentModalActionRow2 = new MessageActionRow().addComponents(recruitmentPlatformInput);
-    const recruitmentModalActionRow3 = new MessageActionRow().addComponents(recruitmentGameInput);
-    const recruitmentModalActionRow4 = new MessageActionRow().addComponents(recruitmentRegionInput);
-    const recruitmentModalActionRow5 = new MessageActionRow().addComponents(recruitmentDescriptionInput);
-
-    // Build modal
-    const recruitmentModal = new Modal()
-        .setCustomId("recruitmentModal")
-        .setTitle("Share Your Recruitment Post")
-        .addComponents(recruitmentModalActionRow1, recruitmentModalActionRow2, recruitmentModalActionRow3, recruitmentModalActionRow4, recruitmentModalActionRow5);
+    const recruitmentModal = {
+        title: "Share Your Recruitment Post",
+        custom_id: "recruitmentModal",
+        components: [
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Short,
+                        custom_id: "recruitmentNameInput",
+                        required: true,
+                        min_length: 5,
+                        max_length: 50,
+                        label: "Name:",
+                        placeholder: "Mozzy's Cool Clan"
+                    }
+                ]
+            },
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Short,
+                        custom_id: "recruitmentPlatformInput",
+                        required: true,
+                        min_length: 1,
+                        max_length: 50,
+                        label: "Platform(s):",
+                        placeholder: "PC and PlayStation"
+                    }
+                ]
+            },
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Short,
+                        custom_id: "recruitmentGameInput",
+                        required: true,
+                        min_length: 1,
+                        max_length: 70,
+                        label: "Game(s):",
+                        placeholder: "Battlefield 1 only (GOTY!)"
+                    }
+                ]
+            },
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Short,
+                        custom_id: "recruitmentRegionInput",
+                        required: true,
+                        min_length: 1,
+                        max_length: 50,
+                        label: "Region(s):",
+                        placeholder: "All regions - Mr. Worldwide!"
+                    }
+                ]
+            },
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Paragraph,
+                        custom_id: "recruitmentDescriptionInput",
+                        required: true,
+                        min_length: 5,
+                        max_length: 400,
+                        label: "Description (NO LINEBREAKS):",
+                        placeholder: "This is an absolutely amazing clan. No linebreaks allowed."
+                    }
+                ]
+            }
+        ]
+    };
 
     // Show modal
     interaction.showModal(recruitmentModal);

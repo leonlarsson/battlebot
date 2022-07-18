@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { ModalSubmitInteraction, Modal, MessageActionRow, TextInputComponent, MessageEmbed, Util } from "discord.js";
+import { ModalSubmitInteraction, ComponentType, TextInputStyle, escapeMarkdown, resolveColor } from "discord.js";
 import { fetch } from "undici";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
@@ -12,44 +12,57 @@ export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
 
-    // Build the text inputs
-    const portalExperienceCodeInput = new TextInputComponent()
-        .setCustomId("portalExperienceCodeInput")
-        .setRequired(true)
-        .setMinLength(1)
-        .setMaxLength(10)
-        .setStyle("SHORT")
-        .setLabel("Experience Code:")
-        .setPlaceholder("AATCVC");
-
-    const portalNameInput = new TextInputComponent()
-        .setCustomId("portalNameInput")
-        .setRequired(true)
-        .setMinLength(5)
-        .setMaxLength(100)
-        .setStyle("SHORT")
-        .setLabel("Experience Name:")
-        .setPlaceholder("Mozzy's 24/7 Nosehair Canals TDM");
-
-    const portalDescriptionInput = new TextInputComponent()
-        .setCustomId("portalDescriptionInput")
-        .setRequired(true)
-        .setMinLength(5)
-        .setMaxLength(400)
-        .setStyle("PARAGRAPH")
-        .setLabel("Experience Description (NO LINEBREAKS):")
-        .setPlaceholder("This is an absolutely amazing experience. No linebreaks allowed.");
-
-    // Create action rows
-    const portalModalActionRow1 = new MessageActionRow().addComponents(portalExperienceCodeInput);
-    const portalModalActionRow2 = new MessageActionRow().addComponents(portalNameInput);
-    const portalModalActionRow3 = new MessageActionRow().addComponents(portalDescriptionInput);
-
-    // Build modal
-    const portalModal = new Modal()
-        .setCustomId("portalModal")
-        .setTitle("Share Your Portal Experience")
-        .addComponents(portalModalActionRow1, portalModalActionRow2, portalModalActionRow3);
+    const portalModal = {
+        title: "Share Your Portal Experience",
+        custom_id: "portalModal",
+        components: [
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Short,
+                        custom_id: "portalExperienceCodeInput",
+                        required: true,
+                        min_length: 1,
+                        max_length: 100,
+                        label: "Experience Code:",
+                        placeholder: "AATCVC"
+                    }
+                ]
+            },
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Short,
+                        custom_id: "portalNameInput",
+                        required: true,
+                        min_length: 5,
+                        max_length: 100,
+                        label: "Experience Name:",
+                        placeholder: "Mozzy's 24/7 Nosehair Canals TDM"
+                    }
+                ]
+            },
+            {
+                type: ComponentType.ActionRow,
+                components: [
+                    {
+                        type: ComponentType.TextInput,
+                        style: TextInputStyle.Paragraph,
+                        custom_id: "portalDescriptionInput",
+                        required: true,
+                        min_length: 5,
+                        max_length: 400,
+                        label: "Experience Description (NO LINEBREAKS):",
+                        placeholder: "This is an absolutely amazing experience. No linebreaks allowed."
+                    }
+                ]
+            }
+        ]
+    };
 
     // Show modal
     interaction.showModal(portalModal);
@@ -100,15 +113,16 @@ export const handlePortalModal = async interaction => {
         const tags = json.tag;
 
         let mapRotationNumber = 0;
-        const experienceEmbed = new MessageEmbed()
-            .setTitle(`Portal Experience: ${Util.escapeMarkdown(playground.playgroundName)}`)
-            .setColor("#26ffdf")
-            .setFooter({ text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() })
-            .addFields(
-                { name: "Basic Info", value: `Description: **${Util.escapeMarkdown(playground.playgroundDescription)}**${playground.owner?.name ? `\nOwner: **${Util.escapeMarkdown(playground.owner.name)}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${interaction.fields.getTextInputValue("portalExperienceCodeInput")}\`` },
+        const experienceEmbed = {
+            color: resolveColor("#26ffdf"),
+            title: `Portal Experience: ${escapeMarkdown(playground.playgroundName)}`,
+            footer: { text: `${interaction.client.user.username} - By Mozzy#9999 - Experience info provided by Game Tools - Not affiliated with EA/DICE`, iconURL: interaction.client.user.avatarURL() },
+            fields: [
+                { name: "Basic Info", value: `Description: **${escapeMarkdown(playground.playgroundDescription)}**${playground.owner?.name ? `\nOwner: **${escapeMarkdown(playground.owner.name)}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${experienceCode}\`` },
                 { name: "Tags", value: tags?.map(tag => `\`${tag.metadata.translations[0].localizedText}\``).join(" ") || "None" },
                 { name: "Map/Mode Rotation", value: `${playground.mapRotation.maps?.map(rotation => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}` }
-            );
+            ]
+        };
 
         thread.send({ embeds: [experienceEmbed] });
     });

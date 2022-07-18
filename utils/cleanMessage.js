@@ -2,8 +2,8 @@
 
 /**
  * Cleans a string from links and invite links.
- * @param {String} content Content to clean
- * @returns {String}
+ * @param {string} content Content to clean
+ * @returns {string}
  */
 export default content => {
     const strings = ["Raccoon Club", "Grandma's Knitting Club", "Trash Panda Fanclub", "Baddies", "Paik Fanclub"];

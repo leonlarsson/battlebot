@@ -1,4 +1,4 @@
-import { ApplicationCommandType, ApplicationCommandOptionType } from "discord-api-types/v9"
+import { ApplicationCommandType, ApplicationCommandOptionType } from "discord.js"
 
 export default [
 

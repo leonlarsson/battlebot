@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { Client, CommandInteraction } from "discord.js";
-import { GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } from "discord-api-types/v9";
+import { Client, ChatInputCommandInteraction, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } from "discord.js";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone.js";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
@@ -31,7 +30,7 @@ export const startFNBEventCronJob = client => {
 /**
  * Creates the FNB event.
  * @param {Client} client The client.
- * @param {CommandInteraction=} interaction The interaction, if entry was a command.
+ * @param {ChatInputCommandInteraction=} interaction The interaction, if entry was a command.
  */
 export const createFNBEvent = (client, interaction) => {
 

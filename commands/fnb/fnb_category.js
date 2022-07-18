@@ -1,15 +1,13 @@
 // eslint-disable-next-line no-unused-vars
-import { Client, CommandInteraction } from "discord.js";
-import { PermissionFlagsBits } from "discord-api-types/v9";
+import { ChatInputCommandInteraction, PermissionFlagsBits } from "discord.js";
 
 export const name = "fnb_category";
 export const isPublic = true;
 export const enabled = true;
 /**
- * @param {CommandInteraction} interaction The interaction.
- * @param {Client} client The client.
+ * @param {ChatInputCommandInteraction} interaction The interaction.
  */
-export async function execute(interaction, client) {
+export async function execute(interaction) {
 
     // Set allowed roles. FNB Staff & Admin (on BFD)
     const allowedRoles = ["907750002313539634", "140941611415633920"];
@@ -19,7 +17,7 @@ export async function execute(interaction, client) {
     // Set FNB category (on BFD)
     await interaction.guild.channels.fetch();
     await interaction.guild.fetch();
-    const fnbCategory = client.channels.cache.get("907954291732512799");
+    const fnbCategory = interaction.client.channels.cache.get("907954291732512799");
     if (fnbCategory) {
         if (interaction.options.getString("action") === "activate") {
             console.log(`${interaction.user.tag} (${interaction.user.id}) requested to activate FNB category.`);

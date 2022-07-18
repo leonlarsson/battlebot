@@ -1,5 +1,5 @@
 import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import { Routes } from "discord.js";
 import * as config from "../config.js";
 
 let botToken;
@@ -17,7 +17,7 @@ if (config.environment === "live") {
     throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
 }
 
-const rest = new REST({ version: '9' }).setToken(botToken);
+const rest = new REST().setToken(botToken);
 
 (async () => {
     try {

@@ -1,3 +1,4 @@
+import { InteractionType } from "discord.js";
 import HumanizeDuration from "humanize-duration";
 import { handlePortalModal } from "../commands/portal/portal_post.js";
 import { handleRecruitmentModal } from "../commands/recruitment/recruitment_post.js";
@@ -7,12 +8,12 @@ export const name = "interactionCreate";
 export async function execute(interaction, client) {
 
     // Handle the modal interactions
-    if (interaction.isModalSubmit()) {
+    if (interaction.type === InteractionType.ModalSubmit) {
         if (interaction.customId === "portalModal") return handlePortalModal(interaction);
         if (interaction.customId === "recruitmentModal") return handleRecruitmentModal(interaction);
     }
 
-    if (!interaction.isCommand() && !interaction.isContextMenu()) return;
+    if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
 
     // Define command used
     let commandUsed;
@@ -70,5 +71,5 @@ export async function execute(interaction, client) {
     }
 
     // Run command
-    command.execute(interaction, client);
+    command.execute(interaction);
 }
