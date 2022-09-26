@@ -1,6 +1,6 @@
 import { readdirSync } from "fs";
 import { Client, GatewayIntentBits, Collection } from "discord.js";
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 import mongoose from "mongoose";
 import * as config from "./config.js";
 
