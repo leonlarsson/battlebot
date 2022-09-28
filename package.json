@@ -11,18 +11,18 @@
   "author": "Mozzy",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/rest": "^1.0.0",
+    "@discordjs/rest": "^1.2.0",
     "canvas": "^2.9.1",
     "cron": "^1.8.2",
     "dayjs": "^1.11.2",
-    "discord-api-types": "^0.36.2",
-    "discord.js": "^14.0.2",
+    "discord-api-types": "^0.37.11",
+    "discord.js": "^14.5.0",
     "humanize-duration": "^3.27.2",
     "jmespath": "^0.16.0",
     "mongoose": "^6.0.12",
     "morse-decoder": "^3.0.1",
     "regex-escape": "^3.4.10",
-    "undici": "^5.7.0"
+    "undici": "^5.10.0"
   },
   "devDependencies": {
     "eslint": "^8.1.0",
