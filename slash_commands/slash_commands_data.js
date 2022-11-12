@@ -32,7 +32,7 @@ export default [
         options: [
             {
                 name: "category",
-                description: "[ADMIN] Activate or deactivate the FNB category.",
+                description: "[ADMIN] Manually activate or deactivate the FNB category. Use only if the automated one fails.",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
