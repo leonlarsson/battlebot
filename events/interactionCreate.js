@@ -17,6 +17,7 @@ export async function execute(interaction, client) {
 
     // Define command used
     let commandUsed;
+    if (interaction.commandName === "ChatGPT response") commandUsed = "chatgptresponse";
     if (interaction.commandName === "Show userinfo") commandUsed = "userinfo";
 
     if (interaction.commandName === "when") commandUsed = "when";

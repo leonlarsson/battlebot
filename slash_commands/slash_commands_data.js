@@ -130,5 +130,11 @@ export default [
     {
         name: "Show userinfo",
         type: ApplicationCommandType.User
+    },
+
+    // ChatGPT response
+    {
+        name: "ChatGPT response",
+        type: ApplicationCommandType.Message
     }
 ]
