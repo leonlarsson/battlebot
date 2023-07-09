@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import { ModalSubmitInteraction, ComponentType, TextInputStyle, escapeMarkdown, resolveColor } from "discord.js";
-import { fetch } from "undici";
 import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 

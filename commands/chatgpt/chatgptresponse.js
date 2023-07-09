@@ -1,5 +1,4 @@
 import { blockQuote, PermissionFlagsBits } from "discord.js";
-import { fetch } from "undici";
 
 export const name = "chatgptresponse";
 export const permissions = PermissionFlagsBits.ManageMessages;

@@ -9,7 +9,7 @@ export const allowed_channels = ["850376380822323230", "177094649473794049", "47
 export const wrong_channel_message = "This is only available in <#850376380822323230> and <#177094649473794049>";
 export const cooldown = 5000; // ms: 5 seconds
 export const isPublic = true;
-export const enabled = true;
+export const enabled = false;
 export async function execute(interaction) {
 
     // Get user ID from message or interaction
