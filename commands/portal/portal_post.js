@@ -81,7 +81,7 @@ export const handlePortalModal = async interaction => {
     if (experienceName.includes("\n") || experienceCode.includes("\n") || experienceDescription.includes("\n"))
         return interaction.reply({ content: `Your message cannot contain any linebreaks.\n\n**Experience Code**: ${experienceCode}\n**Name**: ${experienceName}\n**Description**: ${experienceDescription}`, ephemeral: true });
 
-    const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Experience Code**: ${cleanMessage(experienceCode)}\n**Experience Name**: ${cleanMessage(experienceName)}\n**Experience Description**: ${cleanMessage(experienceDescription)}`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
+    const msg = await interaction.reply({ content: `*Portal Experience sharing post from ${interaction.user.username} <@${interaction.user.id}>*\n**Experience Code**: ${cleanMessage(experienceCode)}\n**Experience Name**: ${cleanMessage(experienceName)}\n**Experience Description**: ${cleanMessage(experienceDescription)}`, allowedMentions: { users: [interaction.user.id] }, fetchReply: true });
 
     // Currently set to "<:UpVote:718281782813786154>" on BFD
     const reaction = interaction.guild.emojis.cache.get("718281782813786154");

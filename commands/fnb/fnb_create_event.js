@@ -45,7 +45,7 @@ export async function execute(interaction) {
         .then(buttonInteraction => {
 
             if (buttonInteraction.customId === "create") {
-                console.log(`${interaction.user.tag} (${interaction.user.id}) confirmed FNB event-creation.`);
+                console.log(`${interaction.user.username} (${interaction.user.id}) confirmed FNB event-creation.`);
                 createFNBEvent(interaction.client, interaction);
             }
 

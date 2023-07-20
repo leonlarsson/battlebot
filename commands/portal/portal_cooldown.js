@@ -33,7 +33,7 @@ export async function execute(interaction) {
 
     // If no query is found
     if (!query)
-        return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${targetUser.tag}** (${targetUser.id}).` });
+        return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${targetUser.username}** (${targetUser.id}).` });
 
     // Build day.js
     const cooldownStartTimestamp = dayjs.utc(query.commandUsedTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
@@ -59,7 +59,7 @@ export async function execute(interaction) {
     };
 
     const cooldownViewEmbed = {
-        title: `Portal Experience sharing cooldown for ${targetUser.tag} (${targetUser.id})`,
+        title: `Portal Experience sharing cooldown for ${targetUser.username} (${targetUser.id})`,
         footer: { text: "Click on 'Clear Cooldown' to clear this user's cooldown." },
         fields: [
             { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
@@ -76,8 +76,8 @@ export async function execute(interaction) {
             // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
             if (buttonInteraction.customId === "clearCooldown") {
                 query.remove();
-                buttonInteraction.update({ embeds: [{ ...cooldownViewEmbed, description: `**__✅ COOLDOWN CLEARED BY ${buttonInteraction.user.tag} ✅__**`, footer: { text: "Cooldown cleared." } }], components: [] });
-                console.log(`${buttonInteraction.user.tag} (${buttonInteraction.user.id}) cleared ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown.`);
+                buttonInteraction.update({ embeds: [{ ...cooldownViewEmbed, description: `**✅ __COOLDOWN CLEARED BY ${buttonInteraction.user.username}__ ✅**`, footer: { text: "Cooldown cleared." } }], components: [] });
+                console.log(`${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) Portal Experience sharing cooldown.`);
             }
 
             if (buttonInteraction.customId === "setLongCooldown") {
@@ -87,7 +87,7 @@ export async function execute(interaction) {
                 // Update embed
                 const newEmbed = {
                     ...cooldownViewEmbed,
-                    description: `**__✅ COOLDOWN SET TO YEAR 9999 BY ${buttonInteraction.user.tag} ✅__**`,
+                    description: `**✅ __COOLDOWN SET TO YEAR 9999 BY ${buttonInteraction.user.username}__ ✅**`,
                     footer: { text: "Cooldown increased (a lot)." },
                     field: [
                         { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
@@ -96,7 +96,7 @@ export async function execute(interaction) {
                 }
 
                 buttonInteraction.update({ embeds: [newEmbed], components: [] });
-                console.log(`${buttonInteraction.user.tag} (${buttonInteraction.user.id}) set ${targetUser.tag}'s (${targetUser.id}) Portal Experience sharing cooldown to year 9999.`);
+                console.log(`${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) Portal Experience sharing cooldown to year 9999.`);
             }
         }).catch(() => {
             interaction.editReply({ embeds: [{ ...cooldownViewEmbed, footer: { text: "" } }], components: [] });

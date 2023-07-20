@@ -73,7 +73,7 @@ export async function addCooldown(interaction, command) {
         _id: mongoose.Types.ObjectId(),
         guildName: interaction.guild.name,
         guildId: interaction.guild.id,
-        username: interaction.user.tag,
+        username: interaction.user.username,
         userId: interaction.user.id,
         command: command.name,
         commandUsedTimestamp: now,

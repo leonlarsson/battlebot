@@ -115,7 +115,7 @@ export const handleRecruitmentModal = async interaction => {
     if (recruitmentName.includes("\n") || recruitmentPlatform.includes("\n") || recruitmentGame.includes("\n") || recruitmRegion.includes("\n") || recruitmentDescription.includes("\n"))
         return interaction.reply({ content: `Your message cannot contain any linebreaks.\n**Name**: ${recruitmentName}\n**Platform(s)**: ${recruitmentPlatform}\n**Game(s)**: ${recruitmentGame}\n**Region(s)**: ${recruitmRegion}\n**Description**: ${recruitmentDescription}`, ephemeral: true });
 
-    interaction.reply({ content: `*Recruitment post from ${interaction.user.tag} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(recruitmentName)}\n**Platform(s)**: ${cleanMessage(recruitmentPlatform)}\n**Game(s)**: ${cleanMessage(recruitmentGame)}\n**Region(s)**: ${cleanMessage(recruitmRegion)}\n**Description**: ${cleanMessage(recruitmentDescription)}`, allowedMentions: { users: [interaction.user.id] } });
+    interaction.reply({ content: `*Recruitment post from ${interaction.user.username} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(recruitmentName)}\n**Platform(s)**: ${cleanMessage(recruitmentPlatform)}\n**Game(s)**: ${cleanMessage(recruitmentGame)}\n**Region(s)**: ${cleanMessage(recruitmRegion)}\n**Description**: ${cleanMessage(recruitmentDescription)}`, allowedMentions: { users: [interaction.user.id] } });
 
     updateOrAddCooldown(interaction, { name, cooldown });
 };

@@ -28,7 +28,7 @@ export const startFNBCategoryCronJobs = client => {
  */
 export const activateFNB = (client, interaction) => {
 
-    console.log(interaction ? `${interaction.user.tag} (${interaction.user.id}) requested to activate FNB category.` : "Started automatic activation of the FNB category.");
+    console.log(interaction ? `${interaction.user.username} (${interaction.user.id}) requested to activate FNB category.` : "Started automatic activation of the FNB category.");
 
     const confirmationChannel = client.channels.cache.get("907954411970658335"); // #fnb-bfd-staff
     const fnbCategory = client.channels.cache.get("907954291732512799");
@@ -38,8 +38,8 @@ export const activateFNB = (client, interaction) => {
         return console.log("Failed to find FNB category.");
     }
 
-    const moveFNB = fnbCategory.setPosition(6, { reason: interaction ? `${interaction.user.tag} asked me to activate the FNB category.` : "Automatic activation of the FNB category." });
-    const changePerms = fnbCategory.permissionOverwrites.edit(fnbCategory.guild.roles.everyone, { [PermissionFlagsBits.Connect]: null }, { reason: interaction ? `${interaction.user.tag} asked me to activate the FNB category.` : "Automatic activation of the FNB category." });
+    const moveFNB = fnbCategory.setPosition(6, { reason: interaction ? `${interaction.user.username} asked me to activate the FNB category.` : "Automatic activation of the FNB category." });
+    const changePerms = fnbCategory.permissionOverwrites.edit(fnbCategory.guild.roles.everyone, { [PermissionFlagsBits.Connect]: null }, { reason: interaction ? `${interaction.user.username} asked me to activate the FNB category.` : "Automatic activation of the FNB category." });
 
     Promise.all([moveFNB, changePerms])
         .then(() => interaction ? interaction.reply("✅ FNB category activated.") : confirmationChannel.send("**Automatic FNB activation:**\n✅ FNB category activated."))
@@ -56,7 +56,7 @@ export const activateFNB = (client, interaction) => {
  */
 export const deactivateFNB = (client, interaction) => {
 
-    console.log(interaction ? `${interaction.user.tag} (${interaction.user.id}) requested to deactivate FNB category.` : "Started automatic deactivation of the FNB category.");
+    console.log(interaction ? `${interaction.user.username} (${interaction.user.id}) requested to deactivate FNB category.` : "Started automatic deactivation of the FNB category.");
 
     const confirmationChannel = client.channels.cache.get("907954411970658335"); // #fnb-bfd-staff
     const fnbCategory = client.channels.cache.get("907954291732512799");
@@ -66,8 +66,8 @@ export const deactivateFNB = (client, interaction) => {
         return console.log("Failed to find FNB category.");
     }
 
-    const moveFNB = fnbCategory.setPosition(9, { reason: interaction ? `${interaction.user.tag} asked me to deactivate the FNB category.` : "Automatic deactivation of the FNB category." });
-    const changePerms = fnbCategory.permissionOverwrites.edit(fnbCategory.guild.roles.everyone, { [PermissionFlagsBits.Connect]: false }, { reason: interaction ? `${interaction.user.tag} asked me to deactivate the FNB category.` : "Automatic deactivation of the FNB category." });
+    const moveFNB = fnbCategory.setPosition(9, { reason: interaction ? `${interaction.user.username} asked me to deactivate the FNB category.` : "Automatic deactivation of the FNB category." });
+    const changePerms = fnbCategory.permissionOverwrites.edit(fnbCategory.guild.roles.everyone, { [PermissionFlagsBits.Connect]: false }, { reason: interaction ? `${interaction.user.username} asked me to deactivate the FNB category.` : "Automatic deactivation of the FNB category." });
 
     Promise.all([moveFNB, changePerms])
         .then(() => {
