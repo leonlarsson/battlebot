@@ -2,17 +2,7 @@ import { readdirSync } from "fs";
 import { Client, GatewayIntentBits, Collection } from "discord.js";
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 import mongoose from "mongoose";
-import * as config from "./config.js";
 import "dotenv/config";
-
-let botToken;
-if (process.env.ENVIRONMENT === "live") {
-	botToken = config.botToken;
-} else if (process.env.ENVIRONMENT === "dev") {
-	botToken = config.botToken_dev;
-} else {
-	throw new Error('No environment variable found! Please set process.env.ENVIRONMENT to "live" or "dev"!');
-}
 
 // Events
 client.events = new Collection();
@@ -59,7 +49,7 @@ if (process.env.ENVIRONMENT === "live") {
 }
 
 // Connect to DB
-mongoose.connect(config.mongoDB_srv)
+mongoose.connect(process.env.MONGO_URL)
 	.then(() => {
 		console.log("Connected to the DB.");
 	}).catch(error => {
@@ -67,4 +57,4 @@ mongoose.connect(config.mongoDB_srv)
 	})
 
 console.log(`Attempting to log in - Environment: ${process.env.ENVIRONMENT}`);
-client.login(botToken);
+client.login(process.env.BOT_TOKEN);
