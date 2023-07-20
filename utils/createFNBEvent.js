@@ -57,8 +57,8 @@ export const createFNBEvent = (client, interaction) => {
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: { location: "The FridayNightBattlefield Category" },
-            scheduledStartTime: fnbStart,
-            scheduledEndTime: fnbEnd,
+            scheduledStartTime: fnbStart.toDate(),
+            scheduledEndTime: fnbEnd.toDate(),
             reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`
         }).then(event => {
             console.log(`Created FNB event: ${event.name}`);
