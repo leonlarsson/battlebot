@@ -45,7 +45,7 @@ for (const folder of commandFolders) {
 
 // Error handling - only for live
 if (process.env.ENVIRONMENT === "live") {
-	process.on('unhandledRejection', error => {
+	process.on("unhandledRejection", error => {
 		if (error.code == 10008) {
 			console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`);
 		} else if (error.code == 50001) {
