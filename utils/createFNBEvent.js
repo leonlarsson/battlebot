@@ -46,8 +46,6 @@ export const createFNBEvent = (client, interaction) => {
         const fnbNAStart = dayjs().tz("America/New_York").day(5).hour(21).minute(0);
         const fnbEnd = dayjs().tz("Europe/Stockholm").day(6).hour(5).minute(0);
 
-        console.log({ fnbStart: { raw: fnbStart, toDate: fnbStart.toDate(), iso: fnbStart.toDate().toISOString() }, fnbNAStart: { raw: fnbNAStart, toDate: fnbNAStart.toDate(), iso: fnbNAStart.toDate().toISOString() }, fnbEnd: { raw: fnbEnd, toDate: fnbEnd.toDate(), iso: fnbEnd.toDate().toISOString() } });
-
         // Return if guild is not there
         if (!guild) return console.log(`Failed to find guild ${guildId}`);
 
@@ -59,8 +57,8 @@ export const createFNBEvent = (client, interaction) => {
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: { location: "The FridayNightBattlefield Category" },
-            scheduledStartTime: fnbStart.toDate(),
-            scheduledEndTime: fnbEnd.toDate(),
+            scheduledStartTime: fnbStart.toISOString(),
+            scheduledEndTime: fnbEnd.toISOString(),
             reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`
         }).then(event => {
             console.log(`Created FNB event: ${event.name}`);
