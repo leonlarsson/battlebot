@@ -6,16 +6,16 @@ import slashCommandsData from "./slash_commands_data.js";
 let botToken;
 let clientId;
 let guildId;
-if (config.environment === "live") {
+if (process.env.ENVIRONMENT === "live") {
     botToken = config.botToken;
     clientId = config.clientId;
     guildId = config.slashGuild;
-} else if (config.environment === "dev") {
+} else if (process.env.ENVIRONMENT === "dev") {
     botToken = config.botToken_dev;
     clientId = config.clientId_dev;
     guildId = config.slashGuild_dev;
 } else {
-    throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
+    throw new Error('No environment variable found! Please set process.env.ENVIRONMENT to "live" or "dev"!');
 }
 
 const rest = new REST().setToken(botToken);

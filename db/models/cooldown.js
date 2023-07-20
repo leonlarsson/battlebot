@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import { environment, cooldownsCollectionName, cooldownsCollectionName_dev } from "../../config.js";
+import { cooldownsCollectionName, cooldownsCollectionName_dev } from "../../config.js";
 
 let collectionName;
-if (environment === "live") {
+if (process.env.ENVIRONMENT === "live") {
     collectionName = cooldownsCollectionName;
-} else if (environment === "dev") {
+} else if (process.env.ENVIRONMENT === "dev") {
     collectionName = cooldownsCollectionName_dev;
 } else {
-    throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
+    throw new Error('No environment variable found! Please set process.env.ENVIRONMENT to "live" or "dev"!');
 }
 
 const cooldownSchema = mongoose.Schema({

@@ -1,5 +1,3 @@
-export const environment = "dev";
-
 export const mongoDB_srv = "mongodb+srv://leon:bN6Mf9IT3jLSeoqh@battlebot.cmapq.mongodb.net/BattlebotDB?retryWrites=true&w=majority";
 export const cooldownsCollectionName = "cooldowns";
 export const cooldownsCollectionName_dev = "cooldowns_dev";

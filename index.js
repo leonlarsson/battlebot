@@ -3,14 +3,15 @@ import { Client, GatewayIntentBits, Collection } from "discord.js";
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 import mongoose from "mongoose";
 import * as config from "./config.js";
+import "dotenv/config";
 
 let botToken;
-if (config.environment === "live") {
+if (process.env.ENVIRONMENT === "live") {
 	botToken = config.botToken;
-} else if (config.environment === "dev") {
+} else if (process.env.ENVIRONMENT === "dev") {
 	botToken = config.botToken_dev;
 } else {
-	throw new Error('No environment variable found! Please set config.environment to "live" or "dev"!');
+	throw new Error('No environment variable found! Please set process.env.ENVIRONMENT to "live" or "dev"!');
 }
 
 // Events
@@ -43,7 +44,7 @@ for (const folder of commandFolders) {
 }
 
 // Error handling - only for live
-if (config.environment === "live") {
+if (process.env.ENVIRONMENT === "live") {
 	process.on('unhandledRejection', error => {
 		if (error.code == 10008) {
 			console.error(`${error}: ERROR HANDLER - Unknown message. Was the message deleted?`);
@@ -65,5 +66,5 @@ mongoose.connect(config.mongoDB_srv)
 		console.log(error);
 	})
 
-console.log(`Attempting to log in - Environment: ${config.environment}`);
+console.log(`Attempting to log in - Environment: ${process.env.ENVIRONMENT}`);
 client.login(botToken);

@@ -6,7 +6,6 @@ import advancedFormat from "dayjs/plugin/advancedFormat.js";
 dayjs.extend(utc)
 dayjs.extend(advancedFormat);
 import { CronJob } from "cron";
-import { environment } from "../config.js";
 
 /** 
  * Starts a cron job to create to FNB event.
@@ -37,8 +36,8 @@ export const createFNBEvent = (client, interaction) => {
     try {
 
         // If live, use BFD as guild and #fnb-bfd-staff as channel. Otherwise Mozzy server and #bot-dev
-        const guildId = environment === "live" ? "140933721929940992" : "99183009621622784";
-        const confirmationChannelId = environment === "live" ? "907954411970658335" : "845402419038650418";
+        const guildId = process.env.ENVIRONMENT === "live" ? "140933721929940992" : "99183009621622784";
+        const confirmationChannelId = process.env.ENVIRONMENT === "live" ? "907954411970658335" : "845402419038650418";
         const fnbNewsChannelId = "907954362637234246"; // #fnb-news on BFD
 
         const guild = client.guilds.cache.get(guildId);
@@ -61,7 +60,7 @@ export const createFNBEvent = (client, interaction) => {
             reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`
         }).then(event => {
             console.log(`Created FNB event: ${event.name}`);
-            const successMessage = `✅ Created FNB event: \`${event.name}\`\n${environment === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`;
+            const successMessage = `✅ Created FNB event: \`${event.name}\`\n${process.env.ENVIRONMENT === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`;
 
             // If command was run from an interaction, reply to that interaction, and try to send in #fnb-news on BFD
             if (interaction) {
