@@ -9,11 +9,12 @@ import { CronJob } from "cron";
 export const startFNBCategoryCronJobs = client => {
     try {
         // Activate FNB category every Friday at 15:00
-        const test = new CronJob("00 15 * * FRI", () => activateFNB(client), null, true, "Europe/Stockholm");
+        const test = new CronJob("00 15 * * FRI", () => activateFNB(client), null, true);
         // Deactivate FNB category every Saturday at 12:00
-        new CronJob("00 12 * * SAT", () => deactivateFNB(client), null, true, "Europe/Stockholm");
+        const test2 = new CronJob("00 12 * * SAT", () => deactivateFNB(client), null, true, "Europe/Stockholm");
 
-        console.log("activateFNB next date:", test.nextDate());
+        console.log("activateFNB next date (no TZ):", test.nextDate());
+        console.log("deactivateFNB next date (Stockholm):", test2.nextDate());
     } catch (error) {
         console.log("Error in startFNBCategoryCronJobs():", error);
     }
