@@ -7,15 +7,13 @@ import { CronJob } from "cron";
  * @param {Client} client The client.
 */
 export const startFNBCategoryCronJobs = client => {
-
     try {
-
         // Activate FNB category every Friday at 15:00
-        new CronJob("00 15 * * FRI", () => activateFNB(client)).start();
-
+        const test = new CronJob("00 15 * * FRI", () => activateFNB(client), null, true, "Europe/Stockholm");
         // Deactivate FNB category every Saturday at 12:00
-        new CronJob("00 12 * * SAT", () => deactivateFNB(client)).start();
+        new CronJob("00 12 * * SAT", () => deactivateFNB(client), null, true, "Europe/Stockholm");
 
+        console.log("activateFNB next date:", test.nextDate());
     } catch (error) {
         console.log("Error in startFNBCategoryCronJobs():", error);
     }

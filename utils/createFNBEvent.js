@@ -12,15 +12,9 @@ import { CronJob } from "cron";
  * @param {Client} client The client.
 */
 export const startFNBEventCronJob = client => {
-
     try {
-
         // Create FNB event every Monday at 12:00 midday
-        const createFNBEventJob = new CronJob("00 12 * * MON", () => createFNBEvent(client));
-
-        // Run job
-        createFNBEventJob.start();
-
+        new CronJob("00 12 * * MON", () => createFNBEvent(client), null, true, "Europe/Stockholm");
     } catch (error) {
         console.log("Error in startFNBEventCron():", error);
     }
