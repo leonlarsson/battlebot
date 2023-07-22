@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, ComponentType, ButtonStyle, PermissionFlag
 import HumanizeDuration from "humanize-duration";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js"
-import Cooldowns from "../../db/models/cooldown.js";
+import { deleteCooldown, getCooldown, setCooldown } from "../../utils/handleCooldowns.js";
 dayjs.extend(utc);
 
 export const name = "portal_cooldown";
@@ -19,25 +19,12 @@ export async function execute(interaction) {
 
     const now = new Date().getTime();
 
-    // Get all queries and remove the expired cooldowns
-    const allQueries = await Cooldowns.find({});
-    allQueries.forEach(query => {
-        if (query.cooldownEndsAtTimestamp < now) query.remove();
-    });
+    const { cooldown, cooldownExpiresTimestamp } = await getCooldown(targetUser.id, "portal_post");
 
-    // Find cooldown for user
-    const query = await Cooldowns.findOne({
-        userId: targetUser.id,
-        command: "portal_post"
-    });
-
-    // If no query is found
-    if (!query)
-        return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${targetUser.username}** (${targetUser.id}).` });
+    if (!cooldown) return interaction.reply({ content: `No Portal Experience sharing cooldown found for user **${targetUser.username}** (${targetUser.id}).` });
 
     // Build day.js
-    const cooldownStartTimestamp = dayjs.utc(query.commandUsedTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
-    const cooldownEndTimestamp = dayjs.utc(query.cooldownEndsAtTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
+    const cooldownExpiresAt = dayjs.utc(cooldownExpiresTimestamp).format("dddd, D MMM YYYY, hh:mm A UTC");
 
     const row = {
         type: ComponentType.ActionRow,
@@ -52,7 +39,6 @@ export async function execute(interaction) {
                 type: ComponentType.Button,
                 style: ButtonStyle.Primary,
                 label: "Set Cooldown To Year 9999",
-                emoji: "⚠",
                 custom_id: "setLongCooldown"
             }
         ]
@@ -62,8 +48,7 @@ export async function execute(interaction) {
         title: `Portal Experience sharing cooldown for ${targetUser.username} (${targetUser.id})`,
         footer: { text: "Click on 'Clear Cooldown' to clear this user's cooldown." },
         fields: [
-            { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
-            { name: "Cooldown ends", value: `In ${HumanizeDuration(query.cooldownEndsAtTimestamp - now, { round: true })}\nOn ${cooldownEndTimestamp}` }
+            { name: "Cooldown ends", value: `In ${HumanizeDuration(cooldownExpiresTimestamp - now, { round: true })}\nOn ${cooldownExpiresAt}` }
         ]
     };
 
@@ -73,16 +58,17 @@ export async function execute(interaction) {
     responseMsg.awaitMessageComponent({ filter: clearCooldownFilter, time: 30000, componentType: ComponentType.Button })
         .then(async buttonInteraction => {
 
-            // On collect, remove cooldown query from DB. Update response and remove button. setLongCooldown sets cooldown to year 9999
+            // On collect, remove cooldown. Update response and remove button. setLongCooldown sets cooldown to year 9999
             if (buttonInteraction.customId === "clearCooldown") {
-                query.remove();
+                await deleteCooldown(targetUser.id, "portal_post");
+
                 buttonInteraction.update({ embeds: [{ ...cooldownViewEmbed, description: `**✅ __COOLDOWN CLEARED BY ${buttonInteraction.user.username}__ ✅**`, footer: { text: "Cooldown cleared." } }], components: [] });
                 console.log(`${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) Portal Experience sharing cooldown.`);
             }
 
             if (buttonInteraction.customId === "setLongCooldown") {
                 // Set the new timestamp
-                await query.updateOne({ cooldownEndsAtTimestamp: 253370764800000, cooldownEndsDate: new Date(253370764800000) });
+                await setCooldown(targetUser.id, "portal_post", 253370764800000);
 
                 // Update embed
                 const newEmbed = {
@@ -90,7 +76,6 @@ export async function execute(interaction) {
                     description: `**✅ __COOLDOWN SET TO YEAR 9999 BY ${buttonInteraction.user.username}__ ✅**`,
                     footer: { text: "Cooldown increased (a lot)." },
                     field: [
-                        { name: "Cooldown initiated", value: `${HumanizeDuration(query.commandUsedTimestamp - now, { round: true })} ago\nOn ${cooldownStartTimestamp}` },
                         { name: "Cooldown ends (updated)", value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${dayjs.utc(253370764800000).format("dddd, D MMM YYYY, hh:mm A UTC")}` }
                     ]
                 }

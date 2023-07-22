@@ -19,7 +19,6 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "humanize-duration": "^3.28.0",
-    "jmespath": "^0.16.0",
-    "mongoose": "^6.0.12"
+    "jmespath": "^0.16.0"
   }
 }

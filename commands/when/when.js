@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration.js"
-import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
+import { setCooldown } from "../../utils/handleCooldowns.js";
 import createCountdownCanvas from "../../utils/createCountdownCanvas.js";
 dayjs.extend(duration);
 
@@ -35,8 +35,8 @@ export async function execute(interaction) {
             countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
             countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
             buttons.push(
-                { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
-                { Text: "Buy", Link: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
+                { label: "Game Page", url: "https://www.ea.com/games/battlefield/battlefield-2042" },
+                { label: "Buy", url: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
             );
 
         } else if (event === "event_name2") {
@@ -50,8 +50,8 @@ export async function execute(interaction) {
             countdownPassed_canvasBackground = "./assets/images/Background_Released.png";
             countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleased <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
             buttons.push(
-                { Text: "Game Page", Link: "https://www.ea.com/games/battlefield/battlefield-2042" },
-                { Text: "Buy", Link: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
+                { label: "Game Page", url: "https://www.ea.com/games/battlefield/battlefield-2042" },
+                { label: "Buy", url: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
             );
 
         }
@@ -90,7 +90,6 @@ export async function execute(interaction) {
                 // Less than 6 hours left
                 if (duration.asHours() < 6) return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
 
-
                 // Less than a day left
                 if (duration.asDays() < 1) return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
 
@@ -102,7 +101,7 @@ export async function execute(interaction) {
             }
         };
 
-        updateOrAddCooldown(interaction, this);
+        setCooldown(interaction.user.id, "when", new Date().getTime() + cooldown);
 
         createCountdownCanvas(interaction, Event);
 

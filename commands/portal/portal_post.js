@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { ModalSubmitInteraction, ComponentType, TextInputStyle, escapeMarkdown, resolveColor } from "discord.js";
-import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
+import { setCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
 export const name = "portal_post";
@@ -126,5 +126,6 @@ export const handlePortalModal = async interaction => {
         thread.send({ embeds: [experienceEmbed] });
     });
 
-    updateOrAddCooldown(interaction, { name, cooldown });
+    // Set cooldown
+    setCooldown(interaction.user.id, name, new Date().getTime() + cooldown);
 };

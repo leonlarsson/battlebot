@@ -1,86 +1,51 @@
-// eslint-disable-next-line no-unused-vars
-import { ChatInputCommandInteraction } from "discord.js";
-import mongoose from "mongoose";
-import Cooldowns from "../db/models/cooldown.js";
+/**
+ * Gets a cooldown.
+ * @param {string} userId The user id.
+ * @param {string} command - The command name.
+ */
+export const getCooldown = async (userId, command) => {
+    const url = new URL("http://127.0.0.1:8787");
+    url.searchParams.set("env", process.env.ENVIRONMENT);
+    url.searchParams.set("user", userId);
+    url.searchParams.set("command", command);
+    const res = await fetch(url.href, { 
+        headers: { "API-KEY": process.env.COOLDOWN_API_KEY }
+     });
+    return await res.json();
+};
 
 /**
- * Get a cooldown query for a command.
- * @param {ChatInputCommandInteraction} interaction The interaction.
- * @param {Object} command - The command.
- * @returns {Promise<Object|false} Returns the query or false.
+ * Sets a cooldown.
+ * @param {string} userId The user id.
+ * @param {string} command - The command name.
+ * @param {number} expireAtTimestampMs - The timestamp to expire at (milliseconds).
  */
-export async function getCooldownQuery(interaction, command) {
-    // Look for command cooldown for the user
-    const query = await Cooldowns.findOne({
-        userId: interaction.user.id,
-        command: command.name
+export const setCooldown = async (userId, command, expireAtTimestampMs) => {
+    const url = new URL("http://127.0.0.1:8787");
+    url.searchParams.set("env", process.env.ENVIRONMENT);
+    url.searchParams.set("user", userId);
+    url.searchParams.set("command", command);
+    url.searchParams.set("expireAt", expireAtTimestampMs);
+    const res = await fetch(url.href, { 
+        method: "POST",
+        headers: { "API-KEY": process.env.COOLDOWN_API_KEY }
     });
-
-    return query ? query : false;
-}
-
-/**
- * Check if the cooldown has expired.
- * @param {Cooldowns} query The cooldown DB object.
- * @returns {Object} expired, expiresAt, expiresIn
- */
-export async function checkIfCooldownExpired(query) {
-    const now = new Date().getTime();
-    const expiresAt = query.cooldownEndsAtTimestamp;
-    const expiresIn = query.cooldownEndsAtTimestamp - now;
-    const expired = expiresAt < now;
-    return { expired, expiresAt, expiresIn };
-}
+    return await res.json();
+};
 
 /**
- * Updates a cooldown query or adds one.
- * @param {ChatInputCommandInteraction} interaction The interaction.
- * @param {Object} command - The command.
+ * Deletes a cooldown.
+ * @param {string} userId The user id.
+ * @param {string} command - The command name.
  */
-export async function updateOrAddCooldown(interaction, command) {
-
-    const query = await getCooldownQuery(interaction, command);
-    const now = new Date().getTime();
-
-    if (query && query.cooldownEndsAtTimestamp < now) {
-        updateCooldown(command, query);
-    } else if (!query) {
-        addCooldown(interaction, command)
-    }
-}
-
-/**
- * Updates a cooldown query.
- * @param {Object} command The command.
- * @param {Object} query - The cooldown DB object.
- */
-export async function updateCooldown(command, query) {
-    const now = new Date().getTime();
-    const cooldownEnd = now + command.cooldown;
-    await query.updateOne({ commandUsedTimestamp: now, commandUsedDate: new Date(now), cooldownEndsAtTimestamp: cooldownEnd, cooldownEndsDate: new Date(cooldownEnd) });
-}
-
-/**
- * Adds a cooldown query.
- * @param {ChatInputCommandInteraction} interaction The interaction.
- * @param {Object} command - The command.
- */
-export async function addCooldown(interaction, command) {
-    const now = new Date().getTime();
-
-    const cooldownEnd = (now + command.cooldown);
-    const cooldown = new Cooldowns({
-        _id: mongoose.Types.ObjectId(),
-        guildName: interaction.guild.name,
-        guildId: interaction.guild.id,
-        username: interaction.user.username,
-        userId: interaction.user.id,
-        command: command.name,
-        commandUsedTimestamp: now,
-        commandUsedDate: new Date(now),
-        cooldownEndsAtTimestamp: cooldownEnd,
-        cooldownEndsDate: new Date(cooldownEnd)
-    });
-
-    cooldown.save().catch(err => console.error(err));
-}
+export const deleteCooldown = async (userId, command) => {
+    const url = new URL("http://127.0.0.1:8787");
+    url.searchParams.set("env", process.env.ENVIRONMENT);
+    url.searchParams.set("user", userId);
+    url.searchParams.set("command", command);
+    const res = await fetch(url.href, { 
+        method: "DELETE",
+        headers: { "API-KEY": process.env.COOLDOWN_API_KEY }
+     });
+    return await res.json();
+};

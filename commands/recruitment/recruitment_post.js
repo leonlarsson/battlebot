@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { ModalSubmitInteraction, ComponentType, TextInputStyle } from "discord.js";
-import { updateOrAddCooldown } from "../../utils/handleCooldowns.js";
+import { setCooldown } from "../../utils/handleCooldowns.js";
 import cleanMessage from "../../utils/cleanMessage.js";
 
 export const name = "recruitment_post";
@@ -117,5 +117,6 @@ export const handleRecruitmentModal = async interaction => {
 
     interaction.reply({ content: `*Recruitment post from ${interaction.user.username} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(recruitmentName)}\n**Platform(s)**: ${cleanMessage(recruitmentPlatform)}\n**Game(s)**: ${cleanMessage(recruitmentGame)}\n**Region(s)**: ${cleanMessage(recruitmRegion)}\n**Description**: ${cleanMessage(recruitmentDescription)}`, allowedMentions: { users: [interaction.user.id] } });
 
-    updateOrAddCooldown(interaction, { name, cooldown });
+    // Set cooldown
+    setCooldown(interaction.user.id, name, new Date().getTime() + cooldown);
 };

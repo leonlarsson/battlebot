@@ -2,7 +2,7 @@ import { InteractionType } from "discord.js";
 import HumanizeDuration from "humanize-duration";
 import { handlePortalModal } from "../commands/portal/portal_post.js";
 import { handleRecruitmentModal } from "../commands/recruitment/recruitment_post.js";
-import { checkIfCooldownExpired, getCooldownQuery } from "../utils/handleCooldowns.js";
+import { getCooldown } from "../utils/handleCooldowns.js";
 
 export const name = "interactionCreate";
 export async function execute(interaction, client) {
@@ -64,11 +64,8 @@ export async function execute(interaction, client) {
 
     // Check cooldown. If there is a cooldown and it hasn't expired, return and notify
     if (command.cooldown) {
-        const cooldown = await getCooldownQuery(interaction, command);
-        if (cooldown) {
-            const { expired, expiresIn } = await checkIfCooldownExpired(cooldown);
-            if (!expired) return interaction.reply({ content: `Please wait \`${HumanizeDuration(expiresIn, { round: true, conjunction: " and " })}\` before using this command again.`, ephemeral: true });
-        }
+        const { cooldown, cooldownExpiresTimestamp } = await getCooldown(interaction.user.id, command.name);
+        if (cooldown) return interaction.reply({ content: `Please wait \`${HumanizeDuration(cooldownExpiresTimestamp - new Date().getTime(), { round: true, conjunction: " and " })}\` before using this command again.`, ephemeral: true });
     }
 
     // Run command

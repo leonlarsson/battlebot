@@ -42,13 +42,13 @@ export default async (interaction, Event) => {
         const row = { type: ComponentType.ActionRow, components: [] };
 
         // If there are buttons specified, add to row
-        if (Event.Buttons[0]) {
+        if (Event.Buttons.length) {
             Event.Buttons.forEach(button => {
                 row.components.push({
                     type: ComponentType.Button,
                     style: ButtonStyle.Link,
-                    label: button.text,
-                    url: button.Link
+                    label: button.label,
+                    url: button.url
                 });
             });
         }
@@ -56,13 +56,8 @@ export default async (interaction, Event) => {
         // If the user does NOT have EMBED_LINKS, send an ephemeral reply instead.
         const ephemeral = !interaction.channel.permissionsFor(interaction.user).has(PermissionFlagsBits.EmbedLinks);
 
-        // If there are buttons, send the row
-        if (Event.Buttons[0]) {
-            await interaction.reply({ content: Event.MessageText, files: [attachment], components: [row], ephemeral });
-        } else {
-            await interaction.reply({ content: Event.MessageText, files: [attachment], ephemeral });
-        }
-
+        interaction.reply({ content: Event.MessageText, files: [attachment], components: Event.Buttons.length ? [row] : [], ephemeral });
+        
     } catch (error) {
         console.log(error);
     }

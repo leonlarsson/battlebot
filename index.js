@@ -1,8 +1,6 @@
 import { readdirSync } from "fs";
 import { Client, GatewayIntentBits, Collection } from "discord.js";
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
-import mongoose from "mongoose";
-import { mongoUrl } from "./config.js";
 import "dotenv/config";
 
 // Events
@@ -48,14 +46,6 @@ if (process.env.ENVIRONMENT === "live") {
 		}
 	});
 }
-
-// Connect to DB
-mongoose.connect(mongoUrl)
-	.then(() => {
-		console.log("Connected to the DB.");
-	}).catch(error => {
-		console.log(error);
-	})
 
 console.log(`Attempting to log in - Environment: ${process.env.ENVIRONMENT}`);
 client.login(process.env.BOT_TOKEN);
