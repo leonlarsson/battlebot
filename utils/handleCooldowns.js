@@ -4,7 +4,7 @@
  * @param {string} command - The command name.
  */
 export const getCooldown = async (userId, command) => {
-    const url = new URL("http://127.0.0.1:8787");
+    const url = new URL("https://battlebot-api.ragnarok.workers.dev");
     url.searchParams.set("env", process.env.ENVIRONMENT);
     url.searchParams.set("user", userId);
     url.searchParams.set("command", command);
@@ -21,7 +21,7 @@ export const getCooldown = async (userId, command) => {
  * @param {number} expireAtTimestampMs - The timestamp to expire at (milliseconds).
  */
 export const setCooldown = async (userId, command, expireAtTimestampMs) => {
-    const url = new URL("http://127.0.0.1:8787");
+    const url = new URL("https://battlebot-api.ragnarok.workers.dev");
     url.searchParams.set("env", process.env.ENVIRONMENT);
     url.searchParams.set("user", userId);
     url.searchParams.set("command", command);
@@ -39,7 +39,7 @@ export const setCooldown = async (userId, command, expireAtTimestampMs) => {
  * @param {string} command - The command name.
  */
 export const deleteCooldown = async (userId, command) => {
-    const url = new URL("http://127.0.0.1:8787");
+    const url = new URL("https://battlebot-api.ragnarok.workers.dev");
     url.searchParams.set("env", process.env.ENVIRONMENT);
     url.searchParams.set("user", userId);
     url.searchParams.set("command", command);
