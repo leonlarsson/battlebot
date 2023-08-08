@@ -1,7 +1,6 @@
-import { blockQuote, PermissionFlagsBits } from "discord.js";
+import { blockQuote } from "discord.js";
 
 export const name = "chatgptresponse";
-export const permissions = PermissionFlagsBits.ManageMessages;
 export const isPublic = true;
 export const enabled = true;
 export async function execute(interaction) {
@@ -34,7 +33,7 @@ export async function execute(interaction) {
 
         const json = await res.json();
         if (res.ok) {
-            interaction.editReply(`Reply to <${message.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
+            interaction.editReply(`ChatGPT's reply to <${message.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
         } else {
             interaction.editReply("Something went wrong getting ChatGPT reply. Likely the message was too long or I am being rate-limited.");
         }
