@@ -11,12 +11,12 @@
   "author": "Mozzy",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/rest": "^1.7.1",
+    "@discordjs/rest": "^2.0.0",
     "canvas": "^2.10.2",
     "cron": "^1.8.2",
     "dayjs": "^1.11.9",
-    "discord-api-types": "^0.37.47",
-    "discord.js": "^14.11.0",
+    "discord-api-types": "^0.37.52",
+    "discord.js": "^14.12.1",
     "dotenv": "^16.3.1",
     "humanize-duration": "^3.28.0",
     "jmespath": "^0.16.0"
