@@ -40,7 +40,11 @@ export async function execute(interaction) {
 
         if (res.ok) {
             const json = await res.json();
-            interaction.editReply(`ChatGPT's reply to <${message.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
+            try {
+                interaction.editReply(`ChatGPT's reply to <${message.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
+            } catch (error) {
+                interaction.editReply("Sorry, the response was probably too long.");
+            }
         } else {
             interaction.editReply("Something went wrong getting ChatGPT reply. Likely the message was too long or I am being rate-limited.");
         }
