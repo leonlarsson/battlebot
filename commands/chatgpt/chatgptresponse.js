@@ -1,8 +1,11 @@
-import { blockQuote } from "discord.js";
+import { ChatInputCommandInteraction, blockQuote } from "discord.js";
 
 export const name = "chatgptresponse";
 export const isPublic = true;
 export const enabled = true;
+/**
+ * @param {ChatInputCommandInteraction} interaction 
+ */
 export async function execute(interaction) {
 
     await interaction.deferReply();
@@ -41,7 +44,7 @@ export async function execute(interaction) {
         if (res.ok) {
             const json = await res.json();
             try {
-                interaction.editReply(`ChatGPT's reply to <${message.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
+                await interaction.editReply(`ChatGPT's reply to <${message.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
             } catch (error) {
                 interaction.editReply("Sorry, the response was probably too long.");
             }
