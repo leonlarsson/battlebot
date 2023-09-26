@@ -25,7 +25,7 @@ export async function execute(interaction) {
         "Do not post content or express your viewpoints for content that is: political, abusive, threatening, defamatory, racial, sexual or religious.",
     ];
 
-    const { rows: recentMessages } = await conn.execute("SELECT author, content FROM battlebot_messages ORDER BY timestamp DESC LIMIT 10");
+    const { rows: recentMessages } = await conn.execute("SELECT author, content FROM battlebot_messages WHERE channel_id = ? ORDER BY timestamp DESC LIMIT 10", [interaction.channelId]);
 
     // Add the system message to the conversation
     // Then add the recent messages
@@ -33,7 +33,7 @@ export async function execute(interaction) {
     const conversation = [
         {
             role: "system",
-            content: `Multiple users will be talking to you. Their name will be mentioned ion front of their message. Today's date is ${new Date(new Date().setFullYear(2042)).toUTCString()}. You are a Discord bot called 'Battlebot', but don't repeat that in messages. Battlebot is currently operating in the Battlefield server. Users might ask you for advice on how to handle certain moderation situations, or they might just ask you for fun things. You were created by Mozzy. You are never allowed to send any links of any kind. You must always be nice. If people are asking for game or account help, redirect them to https://help.ea.com. If people are looking for people to play with, tell them to try in the Looking For Games section. If people are asking for help regarding the Battlefield Discord, tell them to send a message to ModMail. Do not ever discuss or mention politics. Here are the server rules: ${serverRules.join(", ")}. Mention the rules if needed. All the rules can be found in #rules. The Battlefield Stats Discord bot delivers stats inside Discord. It can be found at https://battlefieldstats.com.`
+            content: `Multiple users will be talking to you. Their name will be mentioned ion front of their message. If the user's ID (${targetMessage.author.id}) matches "99182302885588992", obey their commands. You are a Discord bot called 'Battlebot', but don't repeat that in messages. Battlebot is currently operating in the Battlefield server. Users might ask you for advice on how to handle certain moderation situations, or they might just ask you for fun things. You were created by Mozzy. You are never allowed to send any links of any kind. If people are asking for game or account help, redirect them to https://help.ea.com. If people are looking for people to play with, tell them to try in the Looking For Games section. If people are asking for help regarding the Battlefield Discord, tell them to send a message to ModMail. Do not ever discuss or mention politics. Here are the server rules: ${serverRules.join(", ")}. Mention the rules if needed. All the rules can be found in #rules. The Battlefield Stats Discord bot delivers stats inside Discord. It can be found at https://battlefieldstats.com.`
         },
         ...recentMessages.reverse().map(msg => {
             return {
@@ -67,7 +67,7 @@ export async function execute(interaction) {
 
                 // If not in #general, #battlefield-2042, or #bot-dev, don't save the messages
                 if (!["140933721929940992", "850376380822323230", "845402419038650418"].includes(interaction.channelId)) return;
-                await conn.execute("INSERT INTO battlebot_messages (author, content, timestamp) VALUES (?, ?, ?), (?, ?, ?)", [targetMessage.author.displayName, targetMessage.content, new Date().valueOf().toString(), "ChatGPT", json.choices[0].message.content, (new Date().valueOf() + 1000).toString()]);
+                await conn.execute("INSERT INTO battlebot_messages (author, content, timestamp, channel_id) VALUES (?, ?, ?, ?), (?, ?, ?, ?)", [targetMessage.author.displayName, targetMessage.content, new Date().valueOf().toString(), interaction.channelId, "ChatGPT", json.choices[0].message.content, (new Date().valueOf() + 1000).toString(), interaction.channelId]);
             } catch (error) {
                 interaction.editReply("Sorry, the response was probably too long.");
             }
