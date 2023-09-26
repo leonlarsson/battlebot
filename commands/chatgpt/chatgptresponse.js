@@ -15,6 +15,9 @@ export const enabled = true;
  */
 export async function execute(interaction) {
 
+    // If not in ChadGPT thread or #bot-dev, refuse
+    if (!["1156306367775264808", "845402419038650418"].includes(interaction.channelId)) return interaction.reply({content: "This command can only be used in <#1156306367775264808>.", ephemeral: true});
+
     await interaction.deferReply();
 
     const targetMessage = interaction.targetMessage;
@@ -65,8 +68,9 @@ export async function execute(interaction) {
             try {
                 await interaction.editReply(`ChatGPT's reply to <${targetMessage.url}>:\n ${blockQuote(json.choices[0].message.content)}`);
 
-                // If not in #general, #battlefield-2042, or #bot-dev, don't save the messages
-                if (!["140933721929940992", "850376380822323230", "845402419038650418"].includes(interaction.channelId)) return;
+                // If not in #general, #battlefield-2042, or #bot-dev, don't save the messages - DISABLED DUE TO BEING LOCKED TO CHADGPT THREAD
+                // if (!["140933721929940992", "850376380822323230", "845402419038650418"].includes(interaction.channelId)) return;
+                
                 await conn.execute("INSERT INTO battlebot_messages (author, content, timestamp, channel_id) VALUES (?, ?, ?, ?), (?, ?, ?, ?)", [targetMessage.author.displayName, targetMessage.content, new Date().valueOf().toString(), interaction.channelId, "ChatGPT", json.choices[0].message.content, (new Date().valueOf() + 1000).toString(), interaction.channelId]);
             } catch (error) {
                 interaction.editReply("Sorry, the response was probably too long.");
