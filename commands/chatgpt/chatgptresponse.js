@@ -41,7 +41,7 @@ export async function execute(interaction) {
         ...recentMessages.reverse().map(msg => {
             return {
                 role: msg.author === "ChatGPT" ? "assistant" : "user",
-                name: msg.author,
+                name: msg.author.replace(/[^a-zA-Z0-9_]/g, '').slice(0, 64),
                 content: msg.content
             };
         }),
