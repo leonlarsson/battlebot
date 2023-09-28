@@ -47,7 +47,7 @@ export async function execute(interaction) {
         }),
         {
             role: "user",
-            name: targetMessage.author.displayName,
+            name: targetMessage.author.displayName.replace(/[^a-zA-Z0-9_]/g, '').slice(0, 64),
             content: targetMessage.content
         },
     ];
@@ -78,6 +78,7 @@ export async function execute(interaction) {
                 interaction.editReply("Sorry, the response was probably too long.");
             }
         } else {
+            console.log(res.status, res.statusText);
             interaction.editReply("Something went wrong getting ChatGPT reply. Likely the message was too long or I am being rate-limited.");
         }
     } catch (error) {
