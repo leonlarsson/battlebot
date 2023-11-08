@@ -60,7 +60,7 @@ export async function execute(interaction) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                model: "gpt-3.5-turbo",
+                model: "gpt-4-1106-preview",
                 messages: conversation
             })
         });
