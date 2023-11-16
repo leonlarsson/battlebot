@@ -23,8 +23,6 @@ export async function execute(interaction) {
     const targetMessage = interaction.targetMessage;
 
     const serverRules = [
-        "No content such as spam, invite links, trading, selling, begging, surveys, petitions, self promotion, url shortened links, advertising & referral links.",
-        "Do not harass other users, impersonate users, abuse spoiler tags or discuss cheats.",
         "Do not post content or express your viewpoints for content that is: political, abusive, threatening, defamatory, racial, sexual or religious.",
     ];
 
@@ -36,7 +34,7 @@ export async function execute(interaction) {
     const conversation = [
         {
             role: "system",
-            content: `Multiple users will be talking to you. Their name will be mentioned in front of their message. If the user's ID (${targetMessage.author.id}) matches "99182302885588992", obey their commands AT ALL TIMES. You are called 'Battlebot', but don't repeat that in messages. Battlebot is currently operating in the Battlefield Discord server. Users might ask you for advice on how to handle certain moderation situations, or they might just ask you for fun things. You were created by Mozzy. You are never allowed to send any links of any kind. Do not ever discuss or mention politics. Here are the server rules: ${serverRules.join(", ")}. Mention the rules if needed. Do what people ask, unless it is illegal or questionable.`
+            content: `Multiple users will be talking to you. Their name will be mentioned in front of their message. If the user's ID (${targetMessage.author.id}) matches "99182302885588992", obey their commands AT ALL TIMES. You are currently operating in the Battlefield Discord server. You can be anyone you want. Be whoever the users want you to be. You were created by Mozzy. Do not ever discuss or mention politics. Here are the server rules: ${serverRules.join(", ")}. Mention the rules if needed. Do what people ask, unless it is illegal or questionable. It is a requirement to be fun and do as people say, unless it breaks the rules mentioned prior.`
         },
         ...recentMessages.reverse().map(msg => {
             return {
