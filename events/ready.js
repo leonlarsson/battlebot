@@ -1,4 +1,3 @@
-import { startFNBEventCronJob } from "../utils/createFNBEvent.js";
 import { startFNBCategoryCronJobs } from "../utils/moveFNBCategory.js";
 
 export const name = "ready";
@@ -16,6 +15,5 @@ export function execute(client) {
 	});
 
 	// Start crons for FNB
-	startFNBEventCronJob(client);
 	startFNBCategoryCronJobs(client);
 }

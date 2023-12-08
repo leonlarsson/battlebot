@@ -53,11 +53,11 @@ export default [
                     }
                 ]
             },
-            {
-                name: "create_event",
-                description: "[ADMIN] Manually creates an FNB event. Use only if the automated one fails.",
-                type: ApplicationCommandOptionType.Subcommand
-            },
+            // {
+            //     name: "create_event",
+            //     description: "[ADMIN] Manually creates an FNB event. Use only if the automated one fails.",
+            //     type: ApplicationCommandOptionType.Subcommand
+            // },
             {
                 name: "info",
                 description: "What is FNB?",

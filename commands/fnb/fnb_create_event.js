@@ -4,7 +4,7 @@ import { createFNBEvent } from "../../utils/createFNBEvent.js";
 
 export const name = "fnb_create_event";
 export const isPublic = true;
-export const enabled = true;
+export const enabled = false;
 /**
  * @param {ChatInputCommandInteraction} interaction The interaction.
  */
