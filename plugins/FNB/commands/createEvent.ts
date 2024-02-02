@@ -1,4 +1,4 @@
-import { createFNBEvent } from "@/utils/createFNBEvent";
+import { guildPluginSlashCommand } from "knub";
 import {
   ButtonInteraction,
   ButtonStyle,
@@ -7,11 +7,12 @@ import {
   type APIActionRowComponent,
   type APIButtonComponent,
 } from "discord.js";
-import { guildPluginSlashCommand, slashOptions } from "knub";
+import { createFNBEvent } from "@/utils/createFNBEvent";
 
 export default guildPluginSlashCommand({
   name: "create_event",
   description: "[ADMIN] Manually creates an FNB event. Use only if the automated one fails.",
+  configPermission: "can_create",
   signature: [],
   async run({ interaction }) {
     // Set allowed roles. FNB Staff & Admin (on BFD)

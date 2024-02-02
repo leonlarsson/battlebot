@@ -3,6 +3,7 @@ import { Client, Collection, GatewayIntentBits } from "discord.js";
 import type { Event } from "./types";
 import { Knub } from "knub";
 import { FNBPlugin } from "./plugins/FNB/FNBPlugin";
+import { getGuildConfig } from "./guildConfigs";
 
 // Check for required environment variables
 const requiredEnvVars = ["ENVIRONMENT", "CLIENT_ID", "BOT_TOKEN", "SLASH_GUILD_ID", "COOLDOWN_API_KEY"];
@@ -33,6 +34,7 @@ const knub = new Knub(client, {
   guildPlugins: [FNBPlugin],
   options: {
     autoRegisterSlashCommands: false,
+    getConfig: id => getGuildConfig(id),
   },
 });
 
