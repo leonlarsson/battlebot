@@ -1,4 +1,4 @@
-import type { Client, PermissionResolvable, Snowflake } from "discord.js";
+import type { ClientEvents, PermissionResolvable, Snowflake } from "discord.js";
 
 declare module "bun" {
   interface Env {
@@ -10,11 +10,10 @@ declare module "bun" {
   }
 }
 
-// TODO: Give same treatment as Command<T>
-export type Event = {
-  name: string;
+export type Event<TEventName extends keyof ClientEvents> = {
+  name: TEventName;
   once?: boolean;
-  execute: (client: Client, ...args: any[]) => void;
+  execute: (...props: ClientEvents[TEventName]) => void;
 };
 
 export type Command<InteractionType> = {

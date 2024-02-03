@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, ContextMenuCommandInteraction, Events, ModalSubmitInteraction } from "discord.js";
+import { Events } from "discord.js";
 import { commands } from "@/index";
 import getCommandUsed from "@/utils/getCommandUsed";
 import { getCooldown } from "@/utils/handleCooldowns";
@@ -7,10 +7,7 @@ import humanizeDuration from "humanize-duration";
 
 export default createEvent({
   name: Events.InteractionCreate,
-  execute: async (
-    client,
-    interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction | ModalSubmitInteraction,
-  ) => {
+  execute: async interaction => {
     // Handle the modal interactions
     // if (interaction.isModalSubmit()) {
     //   if (interaction.customId === "portalModal") return handlePortalModal(interaction);

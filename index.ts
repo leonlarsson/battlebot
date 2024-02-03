@@ -1,13 +1,6 @@
 import { readdir } from "fs/promises";
-import {
-  ChatInputCommandInteraction,
-  Client,
-  Collection,
-  ContextMenuCommandInteraction,
-  GatewayIntentBits,
-} from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import type { Command, Event } from "./types";
-// import type { Command, ContextMenuCommand, Event, SlashCommand } from "./types";
 
 // Check for required environment variables
 const requiredEnvVars = ["ENVIRONMENT", "CLIENT_ID", "BOT_TOKEN", "SLASH_GUILD_ID", "COOLDOWN_API_KEY"];
@@ -22,24 +15,36 @@ const client = new Client({
 });
 
 // Set up event handling
-export const events = new Collection<string, Event>();
-const eventFiles = await readdir("./events");
-eventFiles.forEach(async eventFile => {
-  const event: Event = (await import(`./events/${eventFile}`)).default;
-  events.set(event.name, event);
-  if (event.once) {
-    client.once(event.name, (...args) => event.execute(client, ...args));
-  } else {
-    client.on(event.name, (...args) => event.execute(client, ...args));
-  }
-});
+export const [events, commands] = await Promise.all([loadEvents(), loadCommands()]);
 
-type CommandTypes = Command<ChatInputCommandInteraction | ContextMenuCommandInteraction>;
-export const commands = new Collection<string, CommandTypes>();
-const commandFiles = (await readdir("./commands", { recursive: true })).filter(file => file.endsWith(".ts"));
-commandFiles.forEach(async commandFile => {
-  const command: CommandTypes = (await import(`./commands/${commandFile}`)).default;
-  commands.set(command.name, command);
-});
-
+// Start bot
 client.login(process.env.BOT_TOKEN);
+
+async function loadEvents(): Promise<Collection<string, Event<any>>> {
+  const events = new Collection<string, Event<any>>();
+
+  const eventFiles = await readdir("./events");
+  eventFiles.forEach(async eventFile => {
+    const event: Event<any> = (await import(`./events/${eventFile}`)).default;
+    events.set(event.name, event);
+    if (event.once) {
+      client.once(event.name, args => event.execute(args));
+    } else {
+      client.on(event.name, args => event.execute(args));
+    }
+  });
+
+  return events;
+}
+
+async function loadCommands(): Promise<Collection<string, Command<any>>> {
+  const commands = new Collection<string, Command<any>>();
+
+  const commandFiles = (await readdir("./commands", { recursive: true })).filter(file => file.endsWith(".ts"));
+  commandFiles.forEach(async commandFile => {
+    const command: Command<any> = (await import(`./commands/${commandFile}`)).default;
+    commands.set(command.name, command);
+  });
+
+  return commands;
+}

@@ -1,7 +1,4 @@
-import {
-  ApplicationCommandType,
-  ApplicationCommandOptionType,
-} from "discord.js";
+import { ApplicationCommandType, ApplicationCommandOptionType } from "discord.js";
 
 export default [
   // When/countdown command
@@ -34,14 +31,12 @@ export default [
     options: [
       {
         name: "category",
-        description:
-          "[ADMIN] Manually activate or deactivate the FNB category. Use only if the automated one fails.",
+        description: "[ADMIN] Manually activate or deactivate the FNB category. Use only if the automated one fails.",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "action",
-            description:
-              "Whether to deactivate (move down) or activate (move up) the FNB category.",
+            description: "Whether to deactivate (move down) or activate (move up) the FNB category.",
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [

@@ -12,11 +12,7 @@ export const getCooldown = async (userId: string, command: string) => {
   };
 };
 
-export const setCooldown = async (
-  userId: string,
-  command: string,
-  expireAtTimestampMs: number
-) => {
+export const setCooldown = async (userId: string, command: string, expireAtTimestampMs: number) => {
   const url = new URL("https://battlebot-api.ragnarok.workers.dev");
   url.searchParams.set("env", process.env.ENVIRONMENT);
   url.searchParams.set("user", userId);
