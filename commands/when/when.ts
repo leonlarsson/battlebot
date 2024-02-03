@@ -12,8 +12,8 @@ const cooldown = 5_000; // ms: 5 seconds
 
 export default createCommand<ChatInputCommandInteraction>({
   name: "when",
-  enabled: false,
-  isPublic: true,
+  enabled: true,
+  isPublic: false,
   allowedChannels: ["850376380822323230", "177094649473794049", "845402419038650418"], // #battlefield-2042, #battlefield, #bot-dev
   wrongChannelReply: "This is only available in <#850376380822323230> and <#177094649473794049>",
   cooldown,

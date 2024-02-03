@@ -44,59 +44,44 @@ export default createEvent({
       return;
     }
 
+    // Check if user is Mozzy, bypassing all checks
+    const isMozzy = interaction.user.id === "99182302885588992";
+
     // Check if command is public
-    if (command.isPublic === false && interaction.user.id !== "99182302885588992") {
-      interaction.reply({
-        content: "Command is not available.",
-        ephemeral: true,
-      });
+    if (!isMozzy && command.isPublic === false) {
+      interaction.reply({ content: "Command is not public.", ephemeral: true });
       return;
     }
 
     // Check for valid roles
-    if (command.allowedRoles && !command.allowedRoles.some(r => interaction.member.roles.cache.has(r))) {
-      interaction.reply({ content: "1You can't use this.", ephemeral: true });
+    if (!isMozzy && command.allowedRoles && !command.allowedRoles.some(r => interaction.member.roles.cache.has(r))) {
+      interaction.reply({ content: "Insuffcient permission: roles.", ephemeral: true });
       return;
     }
 
     // Check for valid channels
-    if (command.allowedChannels && !command.allowedChannels.includes(interaction.channelId)) {
-      interaction.reply({ content: command.wrongChannelReply ?? "You can't use this here", ephemeral: true });
+    if (!isMozzy && command.allowedChannels && !command.allowedChannels.includes(interaction.channelId)) {
+      interaction.reply({ content: command.wrongChannelReply ?? "You can't use this here.", ephemeral: true });
       return;
     }
 
     // Check for valid users
-    if (command.allowedUsers && !command.allowedUsers.includes(interaction.user.id)) {
-      interaction.reply({ content: "3You can't use this.", ephemeral: true });
+    if (!isMozzy && command.allowedUsers && !command.allowedUsers.includes(interaction.user.id)) {
+      interaction.reply({ content: "Insuffcient permission: users.", ephemeral: true });
       return;
     }
 
     // Perm check
-    if (command.requiredPermissions) {
+    if (!isMozzy && command.requiredPermissions) {
       const authorPerms = interaction.channel?.permissionsFor(interaction.user);
       if (!authorPerms || !authorPerms.has(command.requiredPermissions)) {
-        interaction.reply({
-          content: "You don't have permission to run this.",
-          ephemeral: true,
-        });
-        return;
-      }
-    }
-
-    // Check for valid channel(s)
-    if (command.allowedChannels) {
-      // If channel isn't part of allowed_channels and the user isn't Mozzy, return.
-      if (!command.allowedChannels.includes(interaction.channel.id) && interaction.user.id !== "99182302885588992") {
-        interaction.reply({
-          content: command.wrongChannelReply,
-          ephemeral: true,
-        });
+        interaction.reply({ content: "Insuffcient permission: permissions.", ephemeral: true });
         return;
       }
     }
 
     // Check cooldown. If there is a cooldown and it hasn't expired, return and notify
-    if (command.cooldown) {
+    if (!isMozzy && command.cooldown) {
       const { cooldown, cooldownExpiresTimestamp } = await getCooldown(interaction.user.id, command.name);
 
       if (cooldown) {
