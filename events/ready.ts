@@ -1,5 +1,6 @@
 import { ActivityType, Events } from "discord.js";
 import createEvent from "@/utils/createEvent";
+import { startFNBCategoryCronJobs } from "@/utils/moveFNBCategory";
 
 export default createEvent({
   name: Events.ClientReady,
@@ -10,5 +11,8 @@ export default createEvent({
       name: "Battlefield",
       type: ActivityType.Playing,
     });
+
+    // Start crons for FNB
+    startFNBCategoryCronJobs(client);
   },
 });
