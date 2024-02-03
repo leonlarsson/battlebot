@@ -26,7 +26,7 @@ const client = new Client({
 
 // Set up event handling
 export const [events, commands] = await Promise.all([loadEvents(), loadCommands()]);
-console.log({ events, commands });
+console.log({ events, commands, bun: Bun.version });
 
 // Start bot
 client.login(process.env.BOT_TOKEN);
