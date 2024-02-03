@@ -6,11 +6,10 @@ import {
   ButtonInteraction,
   ChatInputCommandInteraction,
 } from "discord.js";
-import type { Command } from "@/types";
-import { createCommand } from "@/utils/createCommand";
 import { createFNBEvent } from "@/utils/createFNBEvent";
+import createCommand from "@/utils/createCommand";
 
-export default createCommand<Command<ChatInputCommandInteraction>>({
+export default createCommand<ChatInputCommandInteraction>({
   name: "fnb_create_event",
   enabled: true,
   isPublic: true,

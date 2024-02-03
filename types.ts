@@ -1,10 +1,4 @@
-import type {
-  ChatInputCommandInteraction,
-  Client,
-  ContextMenuCommandInteraction,
-  PermissionResolvable,
-  Snowflake,
-} from "discord.js";
+import type { Client, PermissionResolvable, Snowflake } from "discord.js";
 
 declare module "bun" {
   interface Env {

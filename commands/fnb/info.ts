@@ -1,8 +1,7 @@
-import type { Command } from "@/types";
-import { createCommand } from "@/utils/createCommand";
+import createCommand from "@/utils/createCommand";
 import type { ChatInputCommandInteraction } from "discord.js";
 
-export default createCommand<Command<ChatInputCommandInteraction>>({
+export default createCommand<ChatInputCommandInteraction>({
   name: "fnb_info",
   enabled: true,
   isPublic: true,
