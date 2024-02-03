@@ -9,6 +9,8 @@ export default (interaction: BaseInteraction): string | null => {
   // If interaction is a chat input command, return the command name and subcommand
   if (interaction.isChatInputCommand() && /fnb|portal|recruitment/.test(interaction.commandName)) {
     return `${interaction.commandName}_${interaction.options.getSubcommand()}`;
+  } else if (interaction.isChatInputCommand()) {
+    return interaction.commandName;
   }
 
   return null;
