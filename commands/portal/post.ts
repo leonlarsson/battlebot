@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
-import { setCooldown } from "@/utils/handleCooldowns.js";
+import { setCooldown } from "@/utils/handleCooldowns";
 dayjs.extend(utc);
 import createCommand from "@/utils/createCommand";
 import cleanMessage from "@/utils/cleanMessage";
