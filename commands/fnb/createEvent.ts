@@ -1,35 +1,22 @@
-import { guildPluginSlashCommand } from "knub";
 import {
-  ButtonInteraction,
   ButtonStyle,
   ComponentType,
-  type GuildMember,
   type APIActionRowComponent,
   type APIButtonComponent,
+  ButtonInteraction,
+  ChatInputCommandInteraction,
 } from "discord.js";
+import type { Command } from "@/types";
+import { createCommand } from "@/utils/createCommand";
 import { createFNBEvent } from "@/utils/createFNBEvent";
-import type { FNBPluginType } from "../types";
 
-export default guildPluginSlashCommand<FNBPluginType>()({
-  name: "create_event",
-  description: "[ADMIN] Manually creates an FNB event. Use only if the automated one fails.",
-  configPermission: "can_create",
-  signature: [],
-  async run({ interaction }) {
-    // Set allowed roles. FNB Staff & Admin (on BFD)
-    const allowedRoles = ["907750002313539634", "140941611415633920"];
-
-    if (
-      !allowedRoles.some(r => (interaction.member as GuildMember | null)?.roles.cache.has(r)) &&
-      interaction.user.id !== "99182302885588992"
-    ) {
-      interaction.reply({
-        content: "You can't use this.",
-        ephemeral: true,
-      });
-      return;
-    }
-
+export default createCommand<Command<ChatInputCommandInteraction>>({
+  name: "fnb_create_event",
+  enabled: true,
+  isPublic: true,
+  // Set allowed roles. FNB Staff & Admin (on BFD)
+  allowedRoles: ["907750002313539634", "140941611415633920"],
+  execute: async interaction => {
     const row = {
       type: ComponentType.ActionRow,
       components: [

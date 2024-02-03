@@ -1,11 +1,10 @@
 import { ChannelType, Events, Message, Client } from "discord.js";
-import type { Event } from "../types";
+import createEvent from "@/utils/createEvent";
 
-export default {
+export default createEvent({
   name: Events.MessageCreate,
   execute: (_client: Client, message: Message) => {
-    const isAnnouncementChannel =
-      message.channel.type === ChannelType.GuildAnnouncement;
+    const isAnnouncementChannel = message.channel.type === ChannelType.GuildAnnouncement;
     const inDirectCommChannel = message.channelId === "908502197170503740";
     const isCorrectWebhook = message.webhookId === "1113160068171575297";
 
@@ -14,4 +13,4 @@ export default {
       message.crosspost();
     }
   },
-} satisfies Event;
+});

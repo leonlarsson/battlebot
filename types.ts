@@ -1,4 +1,10 @@
-import type { Client, PermissionResolvable, Snowflake } from "discord.js";
+import type {
+  ChatInputCommandInteraction,
+  Client,
+  ContextMenuCommandInteraction,
+  PermissionResolvable,
+  Snowflake,
+} from "discord.js";
 
 declare module "bun" {
   interface Env {
@@ -10,13 +16,14 @@ declare module "bun" {
   }
 }
 
+// TODO: Give same treatment as Command<T>
 export type Event = {
   name: string;
   once?: boolean;
   execute: (client: Client, ...args: any[]) => void;
 };
 
-export type Command = {
+export type Command<InteractionType> = {
   name: string;
   cooldown?: number;
   enabled: boolean;
@@ -24,5 +31,7 @@ export type Command = {
   requiredPermissions?: PermissionResolvable[];
   allowedChannels?: Snowflake[];
   wrongChannelReply?: string;
-  execute: (client: Client, ...args: any[]) => void;
+  allowedRoles?: Snowflake[];
+  allowedUsers?: Snowflake[];
+  execute: (interaction: InteractionType) => void;
 };

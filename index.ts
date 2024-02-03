@@ -1,9 +1,13 @@
 import { readdir } from "fs/promises";
-import { Client, Collection, GatewayIntentBits } from "discord.js";
-import type { Event } from "./types";
-import { Knub } from "knub";
-import { FNBPlugin } from "./plugins/FNB/FNBPlugin";
-import { getGuildConfig } from "./guildConfigs";
+import {
+  ChatInputCommandInteraction,
+  Client,
+  Collection,
+  ContextMenuCommandInteraction,
+  GatewayIntentBits,
+} from "discord.js";
+import type { Command, Event } from "./types";
+// import type { Command, ContextMenuCommand, Event, SlashCommand } from "./types";
 
 // Check for required environment variables
 const requiredEnvVars = ["ENVIRONMENT", "CLIENT_ID", "BOT_TOKEN", "SLASH_GUILD_ID", "COOLDOWN_API_KEY"];
@@ -30,13 +34,12 @@ eventFiles.forEach(async eventFile => {
   }
 });
 
-const knub = new Knub(client, {
-  guildPlugins: [FNBPlugin],
-  options: {
-    autoRegisterApplicationCommands: false,
-    getConfig: id => getGuildConfig(id),
-  },
+type CommandTypes = Command<ChatInputCommandInteraction | ContextMenuCommandInteraction>;
+export const commands = new Collection<string, CommandTypes>();
+const commandFiles = (await readdir("./commands", { recursive: true })).filter(file => file.endsWith(".ts"));
+commandFiles.forEach(async commandFile => {
+  const command: CommandTypes = (await import(`./commands/${commandFile}`)).default;
+  commands.set(command.name, command);
 });
 
-knub.initialize();
 client.login(process.env.BOT_TOKEN);

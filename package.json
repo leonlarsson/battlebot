@@ -20,8 +20,6 @@
     "cron": "^3.1.6",
     "dayjs": "^1.11.10",
     "discord.js": "^14.14.1",
-    "humanize-duration": "^3.31.0",
-    "knub": "next",
-    "zod": "^3.22.4"
+    "humanize-duration": "^3.31.0"
   }
 }
