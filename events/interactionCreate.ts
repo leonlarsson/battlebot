@@ -1,20 +1,21 @@
 import { Events } from "discord.js";
+import humanizeDuration from "humanize-duration";
 import { commands } from "@/index";
 import getCommandUsed from "@/utils/getCommandUsed";
 import { getCooldown } from "@/utils/handleCooldowns";
 import createEvent from "@/utils/createEvent";
-import humanizeDuration from "humanize-duration";
+import { handlePortalModal } from "@/commands/portal/post";
+import { handleRecruitmentModal } from "@/commands/recruitment/post";
 
 export default createEvent({
   name: Events.InteractionCreate,
   execute: async interaction => {
     // Handle the modal interactions
-    // if (interaction.isModalSubmit()) {
-    //   if (interaction.customId === "portalModal") return handlePortalModal(interaction);
-    //   if (interaction.customId === "recruitmentModal") return handleRecruitmentModal(interaction);
-
-    //   return;
-    // }
+    if (interaction.isModalSubmit()) {
+      if (interaction.customId === "portalModal") return handlePortalModal(interaction);
+      if (interaction.customId === "recruitmentModal") return handleRecruitmentModal(interaction);
+      return;
+    }
 
     if (!interaction.inCachedGuild() || !interaction.channel?.isTextBased()) return;
 
@@ -54,19 +55,19 @@ export default createEvent({
 
     // Check for valid roles
     if (command.allowedRoles && !command.allowedRoles.some(r => interaction.member.roles.cache.has(r))) {
-      interaction.reply({ content: "You can't use this.", ephemeral: true });
+      interaction.reply({ content: "1You can't use this.", ephemeral: true });
       return;
     }
 
     // Check for valid channels
     if (command.allowedChannels && !command.allowedChannels.includes(interaction.channelId)) {
-      interaction.reply({ content: "You can't use this.", ephemeral: true });
+      interaction.reply({ content: command.wrongChannelReply ?? "You can't use this here", ephemeral: true });
       return;
     }
 
     // Check for valid users
     if (command.allowedUsers && !command.allowedUsers.includes(interaction.user.id)) {
-      interaction.reply({ content: "You can't use this.", ephemeral: true });
+      interaction.reply({ content: "3You can't use this.", ephemeral: true });
       return;
     }
 
@@ -97,7 +98,8 @@ export default createEvent({
     // Check cooldown. If there is a cooldown and it hasn't expired, return and notify
     if (command.cooldown) {
       const { cooldown, cooldownExpiresTimestamp } = await getCooldown(interaction.user.id, command.name);
-      if (cooldown)
+
+      if (cooldown) {
         interaction.reply({
           content: `Please wait \`${humanizeDuration(cooldownExpiresTimestamp - new Date().getTime(), {
             round: true,
@@ -105,7 +107,8 @@ export default createEvent({
           })}\` before using this command again.`,
           ephemeral: true,
         });
-      return;
+        return;
+      }
     }
 
     // Run command

@@ -6,6 +6,7 @@ export const getCooldown = async (userId: string, command: string) => {
   const res = await fetch(url.href, {
     headers: { "API-KEY": process.env.COOLDOWN_API_KEY },
   });
+
   return (await res.json()) as {
     cooldown: boolean;
     cooldownExpiresTimestamp: number;
