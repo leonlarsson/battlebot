@@ -3,7 +3,17 @@ import { Client, Collection, GatewayIntentBits } from "discord.js";
 import type { Command, Event } from "./types";
 
 // Check for required environment variables
-const requiredEnvVars = ["ENVIRONMENT", "CLIENT_ID", "BOT_TOKEN", "SLASH_GUILD_ID", "COOLDOWN_API_KEY"];
+const requiredEnvVars = [
+  "ENVIRONMENT",
+  "CLIENT_ID",
+  "BOT_TOKEN",
+  "SLASH_GUILD_ID",
+  "COOLDOWN_API_KEY",
+  "OPENAI_API_KEY",
+  "DATABASE_HOST",
+  "DATABASE_USERNAME",
+  "DATABASE_PASSWORD",
+];
 requiredEnvVars.forEach(envVar => {
   if (!process.env[envVar]) {
     throw new Error(`Missing required environment variable: ${envVar}`);

@@ -7,6 +7,10 @@ declare module "bun" {
     BOT_TOKEN: string;
     SLASH_GUILD_ID: string;
     COOLDOWN_API_KEY: string;
+    OPENAI_API_KEY: string;
+    DATABASE_HOST: string;
+    DATABASE_USERNAME: string;
+    DATABASE_PASSWORD: string;
   }
 }
 
