@@ -33,7 +33,7 @@ eventFiles.forEach(async eventFile => {
 const knub = new Knub(client, {
   guildPlugins: [FNBPlugin],
   options: {
-    autoRegisterSlashCommands: false,
+    autoRegisterApplicationCommands: false,
     getConfig: id => getGuildConfig(id),
   },
 });
