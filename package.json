@@ -1,25 +1,28 @@
 {
   "name": "battlebot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "module": "index.ts",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "deployslash_guild": "node slash_commands/deployslash_guild.js",
-    "removeslash_guild": "node slash_commands/removeslash_guild.js"
+    "dev": "bun --watch index.ts",
+    "slash:deploy": "bun ./slash-commands/deploySlashGuild.ts",
+    "slash:remove": "bun ./slash-commands/removeSlashGuild.ts"
   },
-  "author": "Mozzy",
-  "license": "ISC",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
   "dependencies": {
-    "@discordjs/rest": "^2.0.0",
-    "@planetscale/database": "^1.11.0",
-    "canvas": "^2.10.2",
-    "cron": "^1.8.2",
-    "dayjs": "^1.11.9",
-    "discord-api-types": "^0.37.52",
-    "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1",
-    "humanize-duration": "^3.28.0",
-    "jmespath": "^0.16.0"
+    "@discordjs/rest": "^2.2.0",
+    "@napi-rs/canvas": "^0.1.44",
+    "@planetscale/database": "^1.14.0",
+    "@types/humanize-duration": "^3.27.4",
+    "cron": "^3.1.6",
+    "dayjs": "^1.11.10",
+    "discord.js": "^14.14.1",
+    "humanize-duration": "^3.31.0",
+    "openai": "^4.26.0"
   }
 }
