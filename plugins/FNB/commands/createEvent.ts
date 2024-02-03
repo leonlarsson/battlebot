@@ -8,8 +8,9 @@ import {
   type APIButtonComponent,
 } from "discord.js";
 import { createFNBEvent } from "@/utils/createFNBEvent";
+import type { FNBPluginType } from "../types";
 
-export default guildPluginSlashCommand({
+export default guildPluginSlashCommand<FNBPluginType>()({
   name: "create_event",
   description: "[ADMIN] Manually creates an FNB event. Use only if the automated one fails.",
   configPermission: "can_create",

@@ -1,7 +1,8 @@
 import { guildPluginSlashCommand, slashOptions } from "knub";
 import { activateFNB, deactivateFNB } from "@/utils/moveFNBCategory";
+import type { FNBPluginType } from "../types";
 
-export default guildPluginSlashCommand({
+export default guildPluginSlashCommand<FNBPluginType>()({
   name: "category",
   description: "[ADMIN] Manually activate or deactivate the FNB category. Use only if the automated one fails.",
   configPermission: "can_category",

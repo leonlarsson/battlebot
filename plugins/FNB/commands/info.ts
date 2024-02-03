@@ -1,7 +1,8 @@
 import type { GuildMember } from "discord.js";
 import { guildPluginSlashCommand } from "knub";
+import type { FNBPluginType } from "../types";
 
-export default guildPluginSlashCommand({
+export default guildPluginSlashCommand<FNBPluginType>()({
   name: "info",
   description: "What is FNB?",
   signature: [],
