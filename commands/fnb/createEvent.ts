@@ -11,7 +11,7 @@ import createCommand from "@/utils/createCommand";
 
 export default createCommand<ChatInputCommandInteraction>({
   name: "fnb_create_event",
-  enabled: true,
+  enabled: false,
   isPublic: true,
   // Set allowed roles. FNB Staff & Admin (on BFD)
   allowedRoles: ["907750002313539634", "140941611415633920"],
