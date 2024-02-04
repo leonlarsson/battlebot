@@ -14,6 +14,7 @@ const requiredEnvVars = [
   "DATABASE_USERNAME",
   "DATABASE_PASSWORD",
 ];
+
 requiredEnvVars.forEach(envVar => {
   if (!process.env[envVar]) {
     throw new Error(`Missing required environment variable: ${envVar}`);
@@ -26,7 +27,6 @@ const client = new Client({
 
 // Set up event handling
 export const [events, commands] = await Promise.all([loadEvents(), loadCommands()]);
-console.log({ events, commands, bun: Bun.version });
 
 // Start bot
 client.login(process.env.BOT_TOKEN);
