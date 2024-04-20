@@ -1,12 +1,4 @@
-import {
-  PermissionFlagsBits,
-  type ChatInputCommandInteraction,
-  ComponentType,
-  TextInputStyle,
-  ModalSubmitInteraction,
-  resolveColor,
-  escapeMarkdown,
-} from "discord.js";
+import { ComponentType, TextInputStyle, ModalSubmitInteraction } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import { setCooldown } from "@/utils/handleCooldowns.js";
@@ -16,7 +8,7 @@ import cleanMessage from "@/utils/cleanMessage";
 
 const cooldown = 172_800_000; // ms: 48 hours
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "recruitment_post",
   enabled: true,
   isPublic: true,
@@ -128,7 +120,11 @@ export const handleRecruitmentModal = async (interaction: ModalSubmitInteraction
     });
 
   interaction.reply({
-    content: `*Recruitment post from ${interaction.user.username} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(name)}\n**Platform(s)**: ${cleanMessage(platform)}\n**Game(s)**: ${cleanMessage(game)}\n**Region(s)**: ${cleanMessage(region)}\n**Description**: ${cleanMessage(description)}`,
+    content: `*Recruitment post from ${interaction.user.username} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(
+      name
+    )}\n**Platform(s)**: ${cleanMessage(platform)}\n**Game(s)**: ${cleanMessage(game)}\n**Region(s)**: ${cleanMessage(
+      region
+    )}\n**Description**: ${cleanMessage(description)}`,
     allowedMentions: { users: [interaction.user.id] },
   });
 

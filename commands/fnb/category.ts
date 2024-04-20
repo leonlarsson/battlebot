@@ -1,8 +1,7 @@
 import createCommand from "@/utils/createCommand";
 import { activateFNB, deactivateFNB } from "@/utils/moveFNBCategory";
-import type { ChatInputCommandInteraction } from "discord.js";
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "fnb_category",
   enabled: true,
   isPublic: true,

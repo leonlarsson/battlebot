@@ -4,12 +4,11 @@ import {
   type APIActionRowComponent,
   type APIButtonComponent,
   ButtonInteraction,
-  ChatInputCommandInteraction,
 } from "discord.js";
 import { createFNBEvent } from "@/utils/createFNBEvent";
 import createCommand from "@/utils/createCommand";
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "fnb_create_event",
   enabled: false,
   isPublic: true,

@@ -1,6 +1,5 @@
 import {
   PermissionFlagsBits,
-  type ChatInputCommandInteraction,
   User,
   ComponentType,
   ButtonStyle,
@@ -15,7 +14,7 @@ import { deleteCooldown, getCooldown, setCooldown } from "@/utils/handleCooldown
 dayjs.extend(utc);
 import createCommand from "@/utils/createCommand";
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "recruitment_cooldown",
   enabled: true,
   isPublic: true,
@@ -85,7 +84,7 @@ export default createCommand<ChatInputCommandInteraction>({
             components: [],
           });
           console.log(
-            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) recruitment cooldown.`,
+            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) recruitment cooldown.`
           );
         }
 
@@ -101,14 +100,16 @@ export default createCommand<ChatInputCommandInteraction>({
             field: [
               {
                 name: "Cooldown ends (updated)",
-                value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${dayjs.utc(253370764800000).format("dddd, D MMM YYYY, hh:mm A UTC")}`,
+                value: `In ${HumanizeDuration(253370764800000 - now, { round: true })}\nOn ${dayjs
+                  .utc(253370764800000)
+                  .format("dddd, D MMM YYYY, hh:mm A UTC")}`,
               },
             ],
           };
 
           buttonInteraction.update({ embeds: [newEmbed], components: [] });
           console.log(
-            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) recruitment cooldown to year 9999.`,
+            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) recruitment cooldown to year 9999.`
           );
         }
       })

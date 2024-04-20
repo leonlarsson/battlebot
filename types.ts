@@ -1,4 +1,4 @@
-import type { ClientEvents, PermissionResolvable, Snowflake } from "discord.js";
+import type { ChatInputCommandInteraction, ClientEvents, PermissionResolvable, Snowflake } from "discord.js";
 
 declare module "bun" {
   interface Env {
@@ -20,7 +20,7 @@ export type Event<TEventName extends keyof ClientEvents> = {
   execute: (...props: ClientEvents[TEventName]) => void;
 };
 
-export type Command<InteractionType> = {
+export type Command<InteractionType = ChatInputCommandInteraction> = {
   name: string;
   cooldown?: number;
   enabled: boolean;

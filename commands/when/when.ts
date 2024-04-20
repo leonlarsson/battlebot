@@ -1,4 +1,3 @@
-import type { ChatInputCommandInteraction } from "discord.js";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration.js";
 dayjs.extend(duration);
@@ -10,7 +9,7 @@ const cooldown = 5_000; // ms: 5 seconds
 
 // THIS CODE IS OLDER THAN BATTLEFIELD 2042. That's why it's pretty shit and it will likely never be run again
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "when",
   enabled: true,
   isPublic: false,
@@ -45,7 +44,7 @@ export default createCommand<ChatInputCommandInteraction>({
         countdownMessage = `**Battlefield 2042 | Release**\nReleases <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>) *Exact time is an estimate*`;
         buttons.push(
           { label: "Game Page", url: "https://www.ea.com/games/battlefield/battlefield-2042" },
-          { label: "Buy", url: "https://www.ea.com/games/battlefield/battlefield-2042/buy" },
+          { label: "Buy", url: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
         );
       } else if (event === "event_name2") {
         const backgroundNum = Math.floor(Math.random() * 3);
@@ -58,7 +57,7 @@ export default createCommand<ChatInputCommandInteraction>({
         countdownMessage = `**Battlefield 2042 | Release (Gold/Ultimate)**\nReleased <t:${countdownTime.unix()}:R> (<t:${countdownTime.unix()}:F>)`;
         buttons.push(
           { label: "Game Page", url: "https://www.ea.com/games/battlefield/battlefield-2042" },
-          { label: "Buy", url: "https://www.ea.com/games/battlefield/battlefield-2042/buy" },
+          { label: "Buy", url: "https://www.ea.com/games/battlefield/battlefield-2042/buy" }
         );
       }
 
@@ -95,7 +94,9 @@ export default createCommand<ChatInputCommandInteraction>({
 
           // Less than 6 hours left
           if (duration.asHours() < 6)
-            return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${Event.Seconds} ${Event.SecondsText()}`;
+            return `${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}, ${
+              Event.Seconds
+            } ${Event.SecondsText()}`;
 
           // Less than a day left
           if (duration.asDays() < 1)
@@ -103,10 +104,14 @@ export default createCommand<ChatInputCommandInteraction>({
 
           // More than a day and less than a month
           if (duration.asDays() >= 1 && duration.asMonths() < 1)
-            return `${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}, ${Event.Minutes} ${Event.MinutesText()}`;
+            return `${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}, ${
+              Event.Minutes
+            } ${Event.MinutesText()}`;
 
           // More than a month left
-          return `${Event.Months} ${Event.MonthsText()}, ${Event.Days} ${Event.DaysText()}, ${Event.Hours} ${Event.HoursText()}`;
+          return `${Event.Months} ${Event.MonthsText()}, ${Event.Days} ${Event.DaysText()}, ${
+            Event.Hours
+          } ${Event.HoursText()}`;
         },
       };
 

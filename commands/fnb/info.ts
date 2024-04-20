@@ -1,7 +1,6 @@
 import createCommand from "@/utils/createCommand";
-import type { ChatInputCommandInteraction } from "discord.js";
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "fnb_info",
   enabled: true,
   isPublic: true,

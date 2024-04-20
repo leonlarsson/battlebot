@@ -1,12 +1,4 @@
-import {
-  PermissionFlagsBits,
-  type ChatInputCommandInteraction,
-  ComponentType,
-  TextInputStyle,
-  ModalSubmitInteraction,
-  resolveColor,
-  escapeMarkdown,
-} from "discord.js";
+import { ComponentType, TextInputStyle, ModalSubmitInteraction, resolveColor, escapeMarkdown } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import { setCooldown } from "@/utils/handleCooldowns";
@@ -16,7 +8,7 @@ import cleanMessage from "@/utils/cleanMessage";
 
 const cooldown = 43_200_000; // ms: 12 hours
 
-export default createCommand<ChatInputCommandInteraction>({
+export default createCommand({
   name: "portal_post",
   enabled: true,
   isPublic: true,
@@ -95,7 +87,11 @@ export const handlePortalModal = async (interaction: ModalSubmitInteraction) => 
     });
 
   const msg = await interaction.reply({
-    content: `*Portal Experience sharing post from ${interaction.user.username} <@${interaction.user.id}>*\n**Experience Code**: ${cleanMessage(experienceCode)}\n**Experience Name**: ${cleanMessage(experienceName)}\n**Experience Description**: ${cleanMessage(experienceDescription)}`,
+    content: `*Portal Experience sharing post from ${interaction.user.username} <@${
+      interaction.user.id
+    }>*\n**Experience Code**: ${cleanMessage(experienceCode)}\n**Experience Name**: ${cleanMessage(
+      experienceName
+    )}\n**Experience Description**: ${cleanMessage(experienceDescription)}`,
     allowedMentions: { users: [interaction.user.id] },
     fetchReply: true,
   });
@@ -140,7 +136,13 @@ export const handlePortalModal = async (interaction: ModalSubmitInteraction) => 
         fields: [
           {
             name: "Basic Info",
-            value: `Description: **${escapeMarkdown(playground.playgroundDescription)}**${playground.owner?.name ? `\nOwner: **${escapeMarkdown(playground.owner.name)}**` : ""}\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${playground.createdAt.seconds}:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${playground.updatedAt.seconds}:R>)\nExperience Code: \`${experienceCode}\``,
+            value: `Description: **${escapeMarkdown(playground.playgroundDescription)}**${
+              playground.owner?.name ? `\nOwner: **${escapeMarkdown(playground.owner.name)}**` : ""
+            }\nMutators: **${playground.mutators.length}**\nCreated At: <t:${playground.createdAt.seconds}> (<t:${
+              playground.createdAt.seconds
+            }:R>)\nUpdated At: <t:${playground.updatedAt.seconds}> (<t:${
+              playground.updatedAt.seconds
+            }:R>)\nExperience Code: \`${experienceCode}\``,
           },
           {
             name: "Tags",
@@ -148,7 +150,14 @@ export const handlePortalModal = async (interaction: ModalSubmitInteraction) => 
           },
           {
             name: "Map/Mode Rotation",
-            value: `${playground.mapRotation.maps?.map((rotation: any) => `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`).join("\n") || "None"}`,
+            value: `${
+              playground.mapRotation.maps
+                ?.map(
+                  (rotation: any) =>
+                    `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`
+                )
+                .join("\n") || "None"
+            }`,
           },
         ],
       };
