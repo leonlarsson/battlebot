@@ -35,8 +35,8 @@ export const activateFNB = (client: Client, interaction?: ChatInputCommandIntera
 
   const moveFNB = fnbCategory.setPosition(6, {
     reason: interaction
-      ? `${interaction.user.username} asked me to activate the FNB category.`
-      : "Automatic activation of the FNB category.",
+      ? `${interaction.user.username} asked me to activate the FNB category (position).`
+      : "Automatic activation of the FNB category (position).",
   });
 
   const changePerms = fnbCategory.permissionOverwrites.edit(
@@ -44,16 +44,22 @@ export const activateFNB = (client: Client, interaction?: ChatInputCommandIntera
     { [PermissionFlagsBits.Connect.toString()]: null },
     {
       reason: interaction
-        ? `${interaction.user.username} asked me to activate the FNB category.`
-        : "Automatic activation of the FNB category.",
+        ? `${interaction.user.username} asked me to activate the FNB category (permissions).`
+        : "Automatic activation of the FNB category (permissions).",
     }
   );
 
   Promise.all([moveFNB, changePerms])
-    .then(() => {
+    .then(([movedCategory]) => {
       interaction
         ? interaction.reply("✅ FNB category activated.")
         : confirmationChannel?.send("**Automatic FNB activation:**\n✅ FNB category activated.");
+
+      // DEBUG
+      console.log("Category position after activation (should be 6):", {
+        position: movedCategory.position,
+        rawPosition: movedCategory.rawPosition,
+      });
     })
     .catch(e => {
       interaction
@@ -86,8 +92,8 @@ export const deactivateFNB = (client: Client, interaction?: ChatInputCommandInte
 
   const moveFNB = fnbCategory.setPosition(9, {
     reason: interaction
-      ? `${interaction.user.username} asked me to deactivate the FNB category.`
-      : "Automatic deactivation of the FNB category.",
+      ? `${interaction.user.username} asked me to deactivate the FNB category (position).`
+      : "Automatic deactivation of the FNB category (position).",
   });
 
   const changePerms = fnbCategory.permissionOverwrites.edit(
@@ -95,16 +101,22 @@ export const deactivateFNB = (client: Client, interaction?: ChatInputCommandInte
     { [PermissionFlagsBits.Connect.toString()]: false },
     {
       reason: interaction
-        ? `${interaction.user.username} asked me to deactivate the FNB category.`
-        : "Automatic deactivation of the FNB category.",
+        ? `${interaction.user.username} asked me to deactivate the FNB category (permissions).`
+        : "Automatic deactivation of the FNB category (permissions).",
     }
   );
 
   Promise.all([moveFNB, changePerms])
-    .then(() => {
+    .then(([movedCategory]) => {
       interaction
         ? interaction.reply("✅ FNB category deactivated.")
         : confirmationChannel?.send("**Automatic FNB deactivation:**\n✅ FNB category deactivated.");
+
+      // DEBUG
+      console.log("Category position after deactivation (should be 9):", {
+        position: movedCategory.position,
+        rawPosition: movedCategory.rawPosition,
+      });
     })
     .catch(e => {
       interaction
