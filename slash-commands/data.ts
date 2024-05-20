@@ -1,28 +1,6 @@
 import { ApplicationCommandType, ApplicationCommandOptionType } from "discord.js";
 
 export default [
-  // When/countdown command
-  {
-    name: "when",
-    description: "Displays a countdown to an upcoming Battlefield event.",
-    default_permission: false,
-    type: ApplicationCommandType.ChatInput,
-    options: [
-      {
-        name: "event",
-        description: "The event to show a countdown to.",
-        type: ApplicationCommandOptionType.String,
-        required: true,
-        choices: [
-          {
-            name: "Event Name",
-            value: "event_name",
-          },
-        ],
-      },
-    ],
-  },
-
   // FNB categpry move command
   {
     name: "fnb",
