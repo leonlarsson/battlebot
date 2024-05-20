@@ -9,5 +9,5 @@ export default (content: string): string => {
   return content
     .replace(inviteRegex, "[INVITE REMOVED]")
     .replace(linkRegex, `<$1>`)
-    .replace(ssRegex, strings[Math.floor(Math.random() * strings.length)]);
+    .replace(ssRegex, strings[Math.floor(Math.random() * strings.length)] as string);
 };

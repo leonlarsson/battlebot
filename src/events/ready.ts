@@ -1,6 +1,6 @@
 import { ActivityType, Events } from "discord.js";
-import createEvent from "@/utils/createEvent";
-import { startFNBCategoryCronJobs } from "@/utils/moveFNBCategory";
+import createEvent from "#utils/createEvent.js";
+import { startFNBCategoryCronJobs } from "#utils/moveFNBCategory.js";
 
 export default createEvent({
   name: Events.ClientReady,

@@ -1,12 +1,14 @@
-FROM oven/bun
+FROM node:20
+
+# Set the working directory
+WORKDIR /app
 
 # Copy the lock and package file
-COPY bun.lockb . 
-COPY package.json . 
+COPY package*.json . 
 
 # Install dependencies
-RUN bun install
+RUN npm install
 
 COPY . .
 
-CMD ["bun", "index.ts"]
+CMD ["node", "dist/index.ts"]

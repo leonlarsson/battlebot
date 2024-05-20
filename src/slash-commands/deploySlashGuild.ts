@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord.js";
-import slashCommandsData from "./data";
+import slashCommandsData from "./data.js";
 
 const rest = new REST().setToken(process.env.BOT_TOKEN);
 

@@ -1,10 +1,10 @@
 import { ComponentType, TextInputStyle, ModalSubmitInteraction, resolveColor, escapeMarkdown } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
-import { setCooldown } from "@/utils/handleCooldowns";
+import { setCooldown } from "#utils/handleCooldowns.js";
 dayjs.extend(utc);
-import createCommand from "@/utils/createCommand";
-import cleanMessage from "@/utils/cleanMessage";
+import createCommand from "#utils/createCommand.js";
+import cleanMessage from "#utils/cleanMessage.js";
 
 const cooldown = 43_200_000; // ms: 12 hours
 

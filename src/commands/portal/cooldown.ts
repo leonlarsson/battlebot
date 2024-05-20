@@ -10,12 +10,12 @@ import {
 import HumanizeDuration from "humanize-duration";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
-import { deleteCooldown, getCooldown, setCooldown } from "@/utils/handleCooldowns.js";
+import { deleteCooldown, getCooldown, setCooldown } from "#utils/handleCooldowns.js";
 dayjs.extend(utc);
-import createCommand from "@/utils/createCommand";
+import createCommand from "#utils/createCommand.js";
 
 export default createCommand({
-  name: "recruitment_cooldown",
+  name: "portal_cooldown",
   enabled: true,
   isPublic: true,
   requiredPermissions: [PermissionFlagsBits.BanMembers],
@@ -24,11 +24,11 @@ export default createCommand({
 
     const now = new Date().getTime();
 
-    const { cooldown, cooldownExpiresTimestamp } = await getCooldown(targetUser.id, "recruitment_post");
+    const { cooldown, cooldownExpiresTimestamp } = await getCooldown(targetUser.id, "portal_post");
 
     if (!cooldown)
       return interaction.reply({
-        content: `No recruitment cooldown found for user **${targetUser.username}** (${targetUser.id}).`,
+        content: `No Portal Experience sharing cooldown found for user **${targetUser.username}** (${targetUser.id}).`,
       });
 
     // Build day.js
@@ -53,7 +53,7 @@ export default createCommand({
     } satisfies APIActionRowComponent<APIButtonComponent>;
 
     const cooldownViewEmbed = {
-      title: `Recruitment cooldown for ${targetUser.username} (${targetUser.id})`,
+      title: `Portal Experience sharing cooldown for ${targetUser.username} (${targetUser.id})`,
       footer: { text: "Click on 'Clear Cooldown' to clear this user's cooldown." },
       fields: [
         {
@@ -63,7 +63,11 @@ export default createCommand({
       ],
     };
 
-    const responseMsg = await interaction.reply({ embeds: [cooldownViewEmbed], components: [row], fetchReply: true });
+    const responseMsg = await interaction.reply({
+      embeds: [cooldownViewEmbed],
+      components: [row],
+      fetchReply: true,
+    });
 
     const clearCooldownFilter = (i: ButtonInteraction) => i.user.id === interaction.user.id;
     responseMsg
@@ -71,7 +75,7 @@ export default createCommand({
       .then(async buttonInteraction => {
         // On collect, remove cooldown. Update response and remove button. setLongCooldown sets cooldown to year 9999
         if (buttonInteraction.customId === "clearCooldown") {
-          await deleteCooldown(targetUser.id, "recruitment_post");
+          await deleteCooldown(targetUser.id, "portal_post");
 
           buttonInteraction.update({
             embeds: [
@@ -84,13 +88,13 @@ export default createCommand({
             components: [],
           });
           console.log(
-            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) recruitment cooldown.`
+            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) Portal Experience sharing cooldown.`
           );
         }
 
         if (buttonInteraction.customId === "setLongCooldown") {
           // Set the new timestamp
-          await setCooldown(targetUser.id, "recruitment_post", 253370764800000);
+          await setCooldown(targetUser.id, "portal_post", 253370764800000);
 
           // Update embed
           const newEmbed = {
@@ -109,7 +113,7 @@ export default createCommand({
 
           buttonInteraction.update({ embeds: [newEmbed], components: [] });
           console.log(
-            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) recruitment cooldown to year 9999.`
+            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) Portal Experience sharing cooldown to year 9999.`
           );
         }
       })

@@ -1,5 +1,5 @@
 import { ChannelType, Events } from "discord.js";
-import createEvent from "@/utils/createEvent";
+import createEvent from "#utils/createEvent.js";
 
 export default createEvent({
   name: Events.MessageCreate,
