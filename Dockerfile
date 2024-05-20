@@ -1,14 +1,23 @@
-FROM node:20
+FROM node:lts-alpine as build
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the lock and package file
-COPY package*.json . 
+COPY package*.json .
 
-# Install dependencies
 RUN npm install
 
 COPY . .
 
-CMD ["node", "dist/index.ts"]
+RUN npm run build
+
+FROM node:lts-alpine as production
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm ci --omit=dev
+
+COPY --from=build /app/dist ./dist
+
+CMD [ "node", "dist/index.js" ]
