@@ -1,19 +1,23 @@
 {
   "name": "battlebot",
-  "module": "index.ts",
-  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun index.ts",
-    "dev": "bun --watch index.ts",
-    "slash:deploy": "bun ./slash-commands/deploySlashGuild.ts",
-    "slash:remove": "bun ./slash-commands/removeSlashGuild.ts"
+    "start": "node --env-file=.env dist/index.js",
+    "dev": "tsc-watch --build --onSuccess \"npm run dev:node\"",
+    "dev:node": "node --env-file=.env --enable-source-maps --watch dist/index.js",
+    "build": "tsc",
+    "docker:build": "docker build --pull --rm -t battlebot:latest .",
+    "docker:run": "docker run --env-file .env battlebot:latest",
+    "slash:deploy": "node --env-file=.env dist/slash-commands/deploySlashGuild.js",
+    "slash:remove": "node --env-file=.env dist/slash-commands/removeSlashGuild.js"
+  },
+  "imports": {
+    "#*": "./dist/*"
   },
   "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+    "@types/node": "^20.12.12",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "@discordjs/rest": "^2.2.0",

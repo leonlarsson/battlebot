@@ -1,16 +1,18 @@
 import type { ChatInputCommandInteraction, ClientEvents, PermissionResolvable, Snowflake } from "discord.js";
 
-declare module "bun" {
-  interface Env {
-    ENVIRONMENT: "dev" | "live";
-    CLIENT_ID: string;
-    BOT_TOKEN: string;
-    SLASH_GUILD_ID: string;
-    COOLDOWN_API_KEY: string;
-    OPENAI_API_KEY: string;
-    DATABASE_HOST: string;
-    DATABASE_USERNAME: string;
-    DATABASE_PASSWORD: string;
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      ENVIRONMENT: "dev" | "live";
+      CLIENT_ID: string;
+      BOT_TOKEN: string;
+      SLASH_GUILD_ID: string;
+      COOLDOWN_API_KEY: string;
+      OPENAI_API_KEY: string;
+      DATABASE_HOST: string;
+      DATABASE_USERNAME: string;
+      DATABASE_PASSWORD: string;
+    }
   }
 }
 

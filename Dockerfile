@@ -1,12 +1,26 @@
-FROM oven/bun
+FROM node:lts-alpine as build
 
-# Copy the lock and package file
-COPY bun.lockb . 
-COPY package.json . 
+WORKDIR /app
 
-# Install dependencies
-RUN bun install
+COPY package*.json .
+
+RUN npm install
 
 COPY . .
 
-CMD ["bun", "index.ts"]
+RUN npm run build
+
+FROM node:lts-alpine as production
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm ci --omit=dev
+
+COPY --from=build /app/dist ./dist
+
+# Copy the assets folder
+COPY ./assets ./assets
+
+CMD [ "node", "dist/index.js" ]

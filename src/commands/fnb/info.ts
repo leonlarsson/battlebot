@@ -1,4 +1,4 @@
-import createCommand from "@/utils/createCommand";
+import createCommand from "#utils/createCommand.js";
 
 export default createCommand({
   name: "fnb_info",

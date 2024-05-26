@@ -5,8 +5,8 @@ import {
   type APIButtonComponent,
   ButtonInteraction,
 } from "discord.js";
-import { createFNBEvent } from "@/utils/createFNBEvent";
-import createCommand from "@/utils/createCommand";
+import { createFNBEvent } from "#utils/createFNBEvent.js";
+import createCommand from "#utils/createCommand.js";
 
 export default createCommand({
   name: "fnb_create_event",
