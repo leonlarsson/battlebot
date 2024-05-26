@@ -3,10 +3,11 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file=.env dist/index.js",
-    "dev": "npm run dev:tsc | npm run dev:node",
-    "dev:tsc": "tsc --watch --preserveWatchOutput",
+    "dev": "tsc-watch --build --onSuccess \"npm run dev:node\"",
     "dev:node": "node --env-file=.env --enable-source-maps --watch dist/index.js",
     "build": "tsc",
+    "docker:build": "docker build --pull --rm -t battlebot:latest .",
+    "docker:run": "docker run --env-file .env battlebot:latest",
     "slash:deploy": "node --env-file=.env dist/slash-commands/deploySlashGuild.js",
     "slash:remove": "node --env-file=.env dist/slash-commands/removeSlashGuild.js"
   },
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
+    "tsc-watch": "^6.2.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {

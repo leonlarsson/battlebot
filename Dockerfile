@@ -20,4 +20,7 @@ RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
 
+# Copy the assets folder
+COPY ./assets ./assets
+
 CMD [ "node", "dist/index.js" ]
