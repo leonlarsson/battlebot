@@ -1,14 +1,13 @@
-import {
-  AutoModerationActionType,
-  ButtonStyle,
-  ComponentType,
-  Events,
-  PermissionFlagsBits,
-  TextChannel,
-  type APIActionRowComponent,
-  type APIButtonComponent,
-} from "discord.js";
+import { AutoModerationActionType, ComponentType, Events, PermissionFlagsBits, TextChannel } from "discord.js";
 import createEvent from "#utils/createEvent.js";
+import { createMessageLink } from "#utils/createMessageLink.js";
+import {
+  buildBaseAndActionsAutoModActionRow,
+  buildBaseAndCommandLinkAutoModActionRow,
+  buildBaseAutoModActionRow,
+} from "#utils/buildActionRows.js";
+
+const modCommandsChannelId = process.env.ENVIRONMENT === "live" ? "591426310317015072" : "845402419038650418";
 
 export default createEvent({
   name: Events.AutoModerationActionExecution,
@@ -26,23 +25,11 @@ export default createEvent({
       return;
     }
 
-    const kickButtonRow: APIActionRowComponent<APIButtonComponent> = {
-      type: ComponentType.ActionRow,
-      components: [
-        {
-          type: ComponentType.Button,
-          style: ButtonStyle.Danger,
-          label: "Kick Member",
-          custom_id: `kick_member_${automod.member.id}`,
-        },
-        {
-          type: ComponentType.Button,
-          style: ButtonStyle.Success,
-          label: "Remove Timeout",
-          custom_id: `remove_timeout_${automod.member.id}`,
-        },
-      ],
-    };
+    const messageLinkToAutomodAlert = createMessageLink(
+      automod.guild.id,
+      automod.action.metadata.channelId ?? "123",
+      automod.alertSystemMessageId ?? "456"
+    );
 
     const automodAlertChannel = automod.channel?.client.channels.cache.find(
       x => x.id === automod.action.metadata.channelId
@@ -51,8 +38,8 @@ export default createEvent({
     if (!automodAlertChannel) return;
 
     const responseMsg = await automodAlertChannel.send({
-      content: `Member **${automod.member.displayName}** has been flagged as a compromised account. What would you like to do?`,
-      components: [kickButtonRow],
+      content: `Member **${automod.member.toString()}** has been flagged as a compromised account. What would you like to do?`,
+      components: [buildBaseAndActionsAutoModActionRow(messageLinkToAutomodAlert, automod.member.id)],
     });
 
     await responseMsg
@@ -61,70 +48,74 @@ export default createEvent({
         filter: i => i.member.permissions.has(PermissionFlagsBits.BanMembers),
       })
       .then(async buttonInteraction => {
-        // Check if bot has both kick permission and timeout permission
-        const botHasPermissionToKick = buttonInteraction.appPermissions.has(PermissionFlagsBits.KickMembers);
-        const botHasPermissionToTimeout = buttonInteraction.appPermissions.has(PermissionFlagsBits.ModerateMembers);
-
         if (!automod.member) {
           await buttonInteraction.update({
             content: ":x: Member not found.",
-            components: [],
+            components: [buildBaseAutoModActionRow(messageLinkToAutomodAlert)],
+          });
+          return;
+        }
+
+        const modCommandsChannel = automod.guild.channels.cache.get(modCommandsChannelId) as TextChannel | undefined;
+        if (!modCommandsChannel) {
+          await buttonInteraction.update({
+            content: ":x: Mod commands channel not found.",
+            components: [buildBaseAutoModActionRow(messageLinkToAutomodAlert)],
           });
           return;
         }
 
         // Kick member
         if (buttonInteraction.customId === `kick_member_${automod.member.id}`) {
-          // Check kick permission
-          if (!botHasPermissionToKick) {
-            await buttonInteraction.update({
-              content: ":x: Bot does not have the required permissions to kick members. Please fix.",
-              components: [],
-            });
-            return;
-          }
-
           try {
-            await automod.member.kick("Compromised account");
+            const kickCommandMessage = await modCommandsChannel.send(
+              `!kick ${automod.member.id} -mod ${buttonInteraction.member.id} Compromised account. ${messageLinkToAutomodAlert}`
+            );
             buttonInteraction.update({
               allowedMentions: {
                 users: [],
               },
               content: `:wave: Compromised account ${automod.member.toString()} has been kicked by ${buttonInteraction.member.toString()}.`,
-              components: [],
+              components: [
+                buildBaseAndCommandLinkAutoModActionRow(
+                  "Go to !kick command",
+                  messageLinkToAutomodAlert,
+                  kickCommandMessage
+                ),
+              ],
             });
           } catch (error) {
             buttonInteraction.update({
-              content: `:x: Unable to kick compromised account ${automod.member.toString()}.`,
-              components: [],
+              content: ":x: Unable to send !kick command.",
+              components: [buildBaseAutoModActionRow(messageLinkToAutomodAlert)],
             });
           }
         }
 
         // Remove timeout
         if (buttonInteraction.customId === `remove_timeout_${automod.member.id}`) {
-          // Check timeout permission
-          if (!botHasPermissionToTimeout) {
-            await buttonInteraction.update({
-              content: ":x: Bot does not have the required permissions to manage timeouts. Please fix.",
-              components: [],
-            });
-            return;
-          }
-
           try {
-            await automod.member.timeout(null, `Timeout removed by ${buttonInteraction.member.toString()}`);
+            const unmuteCommandMessage = await modCommandsChannel.send(
+              `!unmute ${automod.member.id} -mod ${buttonInteraction.member.id} Not a compromised account`
+            );
+
             buttonInteraction.update({
               allowedMentions: {
                 users: [],
               },
               content: `:white_check_mark: Member ${automod.member.toString()} has had their timeout removed by ${buttonInteraction.member.toString()}.`,
-              components: [],
+              components: [
+                buildBaseAndCommandLinkAutoModActionRow(
+                  "Go to !unmute command",
+                  messageLinkToAutomodAlert,
+                  unmuteCommandMessage
+                ),
+              ],
             });
           } catch (error) {
             buttonInteraction.update({
-              content: `:x: Unable to remove timeout of compromised account ${automod.member.toString()}.`,
-              components: [],
+              content: ":x: Unable to send !unmute command.",
+              components: [buildBaseAutoModActionRow(messageLinkToAutomodAlert)],
             });
           }
         }
