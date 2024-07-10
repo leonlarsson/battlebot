@@ -15,18 +15,18 @@
     "#*": "./dist/*"
   },
   "devDependencies": {
+    "@types/humanize-duration": "^3.27.4",
     "@types/node": "^20.12.12",
     "tsc-watch": "^6.2.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@discordjs/rest": "^2.2.0",
-    "@planetscale/database": "^1.14.0",
-    "@types/humanize-duration": "^3.27.4",
-    "cron": "^3.1.6",
-    "dayjs": "^1.11.10",
-    "discord.js": "^14.14.1",
-    "humanize-duration": "^3.31.0",
-    "openai": "^4.26.0"
+    "@discordjs/rest": "^2.3.0",
+    "@planetscale/database": "^1.18.0",
+    "cron": "^3.1.7",
+    "dayjs": "^1.11.11",
+    "discord.js": "^14.15.3",
+    "humanize-duration": "^3.32.1",
+    "openai": "^4.52.5"
   }
 }
