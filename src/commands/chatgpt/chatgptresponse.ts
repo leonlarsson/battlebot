@@ -13,7 +13,7 @@ const conn = connect({
 
 export default createCommand<MessageContextMenuCommandInteraction>({
   name: "ChatGPT response",
-  enabled: true,
+  enabled: false,
   isPublic: true,
   // ChadGPT thread or #bot-dev
   allowedChannels: ["1156306367775264808", "845402419038650418"],
