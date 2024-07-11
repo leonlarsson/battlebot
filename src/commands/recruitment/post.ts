@@ -1,10 +1,10 @@
-import { ComponentType, TextInputStyle, ModalSubmitInteraction } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import { ComponentType, type ModalSubmitInteraction, TextInputStyle } from "discord.js";
 import { setCooldown } from "#utils/handleCooldowns.js";
 dayjs.extend(utc);
-import createCommand from "#utils/createCommand.js";
 import cleanMessage from "#utils/cleanMessage.js";
+import createCommand from "#utils/createCommand.js";
 
 const cooldown = 172_800_000; // ms: 48 hours
 
@@ -15,7 +15,7 @@ export default createCommand({
   allowedChannels: ["739938247089848351", "845402419038650418"], // #recruitment, #bot-dev
   wrongChannelReply: "This is only available in <#739938247089848351>",
   cooldown,
-  execute: async interaction => {
+  execute: async (interaction) => {
     const recruitmentModal = {
       title: "Share Your Recruitment Post",
       custom_id: "recruitmentModal",
@@ -121,9 +121,9 @@ export const handleRecruitmentModal = async (interaction: ModalSubmitInteraction
 
   interaction.reply({
     content: `*Recruitment post from ${interaction.user.username} <@${interaction.user.id}>*\n**Name**: ${cleanMessage(
-      name
+      name,
     )}\n**Platform(s)**: ${cleanMessage(platform)}\n**Game(s)**: ${cleanMessage(game)}\n**Region(s)**: ${cleanMessage(
-      region
+      region,
     )}\n**Description**: ${cleanMessage(description)}`,
     allowedMentions: { users: [interaction.user.id] },
   });

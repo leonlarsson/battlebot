@@ -1,10 +1,10 @@
-import { ComponentType, TextInputStyle, ModalSubmitInteraction, resolveColor, escapeMarkdown } from "discord.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import { ComponentType, type ModalSubmitInteraction, TextInputStyle, escapeMarkdown, resolveColor } from "discord.js";
 import { setCooldown } from "#utils/handleCooldowns.js";
 dayjs.extend(utc);
-import createCommand from "#utils/createCommand.js";
 import cleanMessage from "#utils/cleanMessage.js";
+import createCommand from "#utils/createCommand.js";
 
 const cooldown = 43_200_000; // ms: 12 hours
 
@@ -15,7 +15,7 @@ export default createCommand({
   allowedChannels: ["908101543646089236", "845402419038650418"], // #portal-sharing, #bot-dev
   wrongChannelReply: "This is only available in <#908101543646089236>",
   cooldown,
-  execute: async interaction => {
+  execute: async (interaction) => {
     const portalModal = {
       title: "Share Your Portal Experience",
       custom_id: "portalModal",
@@ -90,14 +90,14 @@ export const handlePortalModal = async (interaction: ModalSubmitInteraction) => 
     content: `*Portal Experience sharing post from ${interaction.user.username} <@${
       interaction.user.id
     }>*\n**Experience Code**: ${cleanMessage(experienceCode)}\n**Experience Name**: ${cleanMessage(
-      experienceName
+      experienceName,
     )}\n**Experience Description**: ${cleanMessage(experienceDescription)}`,
     allowedMentions: { users: [interaction.user.id] },
     fetchReply: true,
   });
 
   // Currently set to "<:UpVote:718281782813786154>" on BFD
-  const reaction = interaction.guild!.emojis.cache.get("718281782813786154");
+  const reaction = interaction.guild?.emojis.cache.get("718281782813786154");
   if (reaction) msg.react(reaction);
 
   // Start thread, fetch experience, and post if found
@@ -107,7 +107,7 @@ export const handlePortalModal = async (interaction: ModalSubmitInteraction) => 
       autoArchiveDuration: 1440,
       reason: "Auto-created thread for Portal Experience sharing post.",
     })
-    .then(async thread => {
+    .then(async (thread) => {
       const experienceApiURL = new URL("https://api.gametools.network/bf2042/playground");
       experienceApiURL.searchParams.set("experiencecode", experienceCode);
       experienceApiURL.searchParams.set("blockydata", "false");
@@ -154,7 +154,7 @@ export const handlePortalModal = async (interaction: ModalSubmitInteraction) => 
               playground.mapRotation.maps
                 ?.map(
                   (rotation: any) =>
-                    `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`
+                    `**${++mapRotationNumber}:** ${rotation.mode} on ${rotation.mapname} (${rotation.gameSize} players)`,
                 )
                 .join("\n") || "None"
             }`,

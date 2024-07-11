@@ -6,7 +6,7 @@ export default createCommand({
   enabled: true,
   isPublic: true,
   allowedRoles: ["907750002313539634", "140941611415633920", "174949751152836608"], // FNB Staff, Admin, Mod
-  execute: interaction => {
+  execute: (interaction) => {
     if (interaction.options.getString("action") === "activate") {
       activateFNB(interaction.client, interaction);
     } else {

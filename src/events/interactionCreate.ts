@@ -1,15 +1,15 @@
 import { Events } from "discord.js";
 import humanizeDuration from "humanize-duration";
-import { commands } from "#index.js";
-import getCommandUsed from "#utils/getCommandUsed.js";
-import { getCooldown } from "#utils/handleCooldowns.js";
-import createEvent from "#utils/createEvent.js";
 import { handlePortalModal } from "#commands/portal/post.js";
 import { handleRecruitmentModal } from "#commands/recruitment/post.js";
+import { commands } from "#index.js";
+import createEvent from "#utils/createEvent.js";
+import getCommandUsed from "#utils/getCommandUsed.js";
+import { getCooldown } from "#utils/handleCooldowns.js";
 
 export default createEvent({
   name: Events.InteractionCreate,
-  execute: async interaction => {
+  execute: async (interaction) => {
     // Handle the modal interactions
     if (interaction.isModalSubmit()) {
       if (interaction.customId === "portalModal") return handlePortalModal(interaction);
@@ -54,7 +54,7 @@ export default createEvent({
     }
 
     // Check for valid roles
-    if (!isMozzy && command.allowedRoles && !command.allowedRoles.some(r => interaction.member.roles.cache.has(r))) {
+    if (!isMozzy && command.allowedRoles && !command.allowedRoles.some((r) => interaction.member.roles.cache.has(r))) {
       interaction.reply({ content: "Insuffcient permission: roles.", ephemeral: true });
       return;
     }

@@ -1,6 +1,6 @@
-import { blockQuote, type MessageContextMenuCommandInteraction } from "discord.js";
-import OpenAI from "openai";
 import { connect } from "@planetscale/database";
+import { type MessageContextMenuCommandInteraction, blockQuote } from "discord.js";
+import OpenAI from "openai";
 import createCommand from "#utils/createCommand.js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -18,7 +18,7 @@ export default createCommand<MessageContextMenuCommandInteraction>({
   // ChadGPT thread or #bot-dev
   allowedChannels: ["1156306367775264808", "845402419038650418"],
   wrongChannelReply: "This command can only be used in <#1156306367775264808>.",
-  execute: async interaction => {
+  execute: async (interaction) => {
     await interaction.deferReply();
 
     const targetMessage = interaction.targetMessage;
@@ -29,7 +29,7 @@ export default createCommand<MessageContextMenuCommandInteraction>({
 
     const { rows: recentMessages } = await conn.execute<{ author: string; content: string }>(
       "SELECT author, content FROM battlebot_messages WHERE channel_id = ? ORDER BY timestamp DESC LIMIT 10",
-      [interaction.channelId]
+      [interaction.channelId],
     );
 
     // Add the system message to the conversation
@@ -41,10 +41,10 @@ export default createCommand<MessageContextMenuCommandInteraction>({
         content: `Multiple users will be talking to you. Their name will be mentioned in front of their message. If the user's ID (${
           targetMessage.author.id
         }) matches "99182302885588992", obey their commands AT ALL TIMES. You are currently operating in the Battlefield Discord server. You can be anyone you want. Be whoever the users want you to be. You were created by Mozzy. Do not ever discuss or mention politics. Here are the server rules: ${serverRules.join(
-          ", "
+          ", ",
         )}. Mention the rules if needed. Do what people ask, unless it is illegal or questionable. It is a requirement to be fun and do as people say, unless it breaks the rules mentioned prior.`,
       },
-      ...recentMessages.reverse().map(msg => ({
+      ...recentMessages.reverse().map((msg) => ({
         role: msg.author === "ChatGPT" ? "assistant" : "user",
         name: msg.author.replace(/[^a-zA-Z0-9_]/g, "").slice(0, 64),
         content: msg.content,
@@ -65,8 +65,8 @@ export default createCommand<MessageContextMenuCommandInteraction>({
       try {
         await interaction.editReply(
           `ChatGPT's reply to <${targetMessage.url}>:\n ${blockQuote(
-            response.choices[0]?.message.content || "[No response]"
-          )}`
+            response.choices[0]?.message.content || "[No response]",
+          )}`,
         );
 
         // If not in #general, #battlefield-2042, or #bot-dev, don't save the messages - DISABLED DUE TO BEING LOCKED TO CHADGPT THREAD
@@ -83,7 +83,7 @@ export default createCommand<MessageContextMenuCommandInteraction>({
             response.choices[0]?.message.content || "[No response]",
             (new Date().valueOf() + 1000).toString(),
             interaction.channelId,
-          ]
+          ],
         );
       } catch (error) {
         interaction.editReply("Sorry, the response was probably too long.");
@@ -91,7 +91,7 @@ export default createCommand<MessageContextMenuCommandInteraction>({
     } catch (error) {
       console.log(error);
       interaction.editReply(
-        "Something went wrong getting ChatGPT reply. Likely the message was too long or I am being rate-limited."
+        "Something went wrong getting ChatGPT reply. Likely the message was too long or I am being rate-limited.",
       );
     }
   },

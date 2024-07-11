@@ -1,13 +1,13 @@
-import {
-  Client,
-  ChatInputCommandInteraction,
-  GuildScheduledEventPrivacyLevel,
-  GuildScheduledEventEntityType,
-  TextChannel,
-} from "discord.js";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
+import utc from "dayjs/plugin/utc.js";
+import {
+  type ChatInputCommandInteraction,
+  type Client,
+  GuildScheduledEventEntityType,
+  GuildScheduledEventPrivacyLevel,
+  type TextChannel,
+} from "discord.js";
 dayjs.extend(utc);
 dayjs.extend(advancedFormat);
 import { CronJob } from "cron";
@@ -52,7 +52,7 @@ export const createFNBEvent = (client: Client, interaction?: ChatInputCommandInt
         scheduledEndTime: fnbEnd.toISOString(),
         reason: `Automatically creating event for FNB (${fnbStart.format("MMMM D")})`,
       })
-      .then(event => {
+      .then((event) => {
         console.log(`Created FNB event: ${event.name}`);
         const successMessage = `✅ Created FNB event: \`${event.name}\`\n${process.env.ENVIRONMENT === "live" ? `https://discord.gg/battlefield?event=${event.id}` : event.url}`;
 
@@ -62,12 +62,12 @@ export const createFNBEvent = (client: Client, interaction?: ChatInputCommandInt
           (client.channels.cache.get(fnbNewsChannelId) as TextChannel)?.send(successMessage);
         } else {
           // Attempt to send to both channels
-          [confirmationChannelId, fnbNewsChannelId].forEach(channel =>
+          [confirmationChannelId, fnbNewsChannelId].forEach((channel) =>
             (client.channels.cache.get(channel) as TextChannel)?.send(successMessage),
           );
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Failed to create FNB event.", error);
         const failMessage = `❌ Failed to create FNB event :(\n\`${error.message}\``;
 

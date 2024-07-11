@@ -1,25 +1,25 @@
-import {
-  PermissionFlagsBits,
-  User,
-  ComponentType,
-  ButtonStyle,
-  type APIActionRowComponent,
-  type APIButtonComponent,
-  ButtonInteraction,
-} from "discord.js";
-import HumanizeDuration from "humanize-duration";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import {
+  type APIActionRowComponent,
+  type APIButtonComponent,
+  type ButtonInteraction,
+  ButtonStyle,
+  ComponentType,
+  PermissionFlagsBits,
+  type User,
+} from "discord.js";
+import HumanizeDuration from "humanize-duration";
+import createCommand from "#utils/createCommand.js";
 import { deleteCooldown, getCooldown, setCooldown } from "#utils/handleCooldowns.js";
 dayjs.extend(utc);
-import createCommand from "#utils/createCommand.js";
 
 export default createCommand({
   name: "recruitment_cooldown",
   enabled: true,
   isPublic: true,
   requiredPermissions: [PermissionFlagsBits.BanMembers],
-  execute: async interaction => {
+  execute: async (interaction) => {
     const targetUser = interaction.options.getUser("user") as User;
 
     const now = new Date().getTime();
@@ -68,7 +68,7 @@ export default createCommand({
     const clearCooldownFilter = (i: ButtonInteraction) => i.user.id === interaction.user.id;
     responseMsg
       .awaitMessageComponent({ filter: clearCooldownFilter, time: 30000, componentType: ComponentType.Button })
-      .then(async buttonInteraction => {
+      .then(async (buttonInteraction) => {
         // On collect, remove cooldown. Update response and remove button. setLongCooldown sets cooldown to year 9999
         if (buttonInteraction.customId === "clearCooldown") {
           await deleteCooldown(targetUser.id, "recruitment_post");
@@ -84,7 +84,7 @@ export default createCommand({
             components: [],
           });
           console.log(
-            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) recruitment cooldown.`
+            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) cleared ${targetUser.username}'s (${targetUser.id}) recruitment cooldown.`,
           );
         }
 
@@ -109,7 +109,7 @@ export default createCommand({
 
           buttonInteraction.update({ embeds: [newEmbed], components: [] });
           console.log(
-            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) recruitment cooldown to year 9999.`
+            `${buttonInteraction.user.username} (${buttonInteraction.user.id}) set ${targetUser.username}'s (${targetUser.id}) recruitment cooldown to year 9999.`,
           );
         }
       })

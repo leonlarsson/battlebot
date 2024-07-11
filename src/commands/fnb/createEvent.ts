@@ -1,12 +1,12 @@
 import {
-  ButtonStyle,
-  ComponentType,
   type APIActionRowComponent,
   type APIButtonComponent,
-  ButtonInteraction,
+  type ButtonInteraction,
+  ButtonStyle,
+  ComponentType,
 } from "discord.js";
-import { createFNBEvent } from "#utils/createFNBEvent.js";
 import createCommand from "#utils/createCommand.js";
+import { createFNBEvent } from "#utils/createFNBEvent.js";
 
 export default createCommand({
   name: "fnb_create_event",
@@ -14,7 +14,7 @@ export default createCommand({
   isPublic: true,
   // Set allowed roles. FNB Staff & Admin (on BFD)
   allowedRoles: ["907750002313539634", "140941611415633920"],
-  execute: async interaction => {
+  execute: async (interaction) => {
     const row = {
       type: ComponentType.ActionRow,
       components: [
@@ -52,7 +52,7 @@ export default createCommand({
         time: 20000,
         componentType: ComponentType.Button,
       })
-      .then(buttonInteraction => {
+      .then((buttonInteraction) => {
         if (buttonInteraction.customId === "create") {
           console.log(`${interaction.user.username} (${interaction.user.id}) confirmed FNB event-creation.`);
           createFNBEvent(interaction.client, interaction);

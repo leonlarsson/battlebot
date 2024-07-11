@@ -8,6 +8,6 @@ export default (content: string): string => {
   const ssRegex = /\bss\b/gi;
   return content
     .replace(inviteRegex, "[INVITE REMOVED]")
-    .replace(linkRegex, `<$1>`)
+    .replace(linkRegex, "<$1>")
     .replace(ssRegex, strings[Math.floor(Math.random() * strings.length)] as string);
 };

@@ -1,17 +1,17 @@
-import { AutoModerationActionType, ComponentType, Events, PermissionFlagsBits, TextChannel } from "discord.js";
-import createEvent from "#utils/createEvent.js";
-import { createMessageLink } from "#utils/createMessageLink.js";
+import { AutoModerationActionType, ComponentType, Events, PermissionFlagsBits, type TextChannel } from "discord.js";
 import {
   buildBaseAndActionsAutoModActionRow,
   buildBaseAndCommandLinkAutoModActionRow,
   buildBaseAutoModActionRow,
 } from "#utils/buildActionRows.js";
+import createEvent from "#utils/createEvent.js";
+import { createMessageLink } from "#utils/createMessageLink.js";
 
 const modCommandsChannelId = process.env.ENVIRONMENT === "live" ? "591426310317015072" : "845402419038650418";
 
 export default createEvent({
   name: Events.AutoModerationActionExecution,
-  execute: async automod => {
+  execute: async (automod) => {
     // Only run once
     if (automod.action.type !== AutoModerationActionType.SendAlertMessage) return;
 
@@ -28,11 +28,11 @@ export default createEvent({
     const messageLinkToAutomodAlert = createMessageLink(
       automod.guild.id,
       automod.action.metadata.channelId ?? "123",
-      automod.alertSystemMessageId ?? "456"
+      automod.alertSystemMessageId ?? "456",
     );
 
     const automodAlertChannel = automod.channel?.client.channels.cache.find(
-      x => x.id === automod.action.metadata.channelId
+      (x) => x.id === automod.action.metadata.channelId,
     ) as TextChannel | undefined;
 
     if (!automodAlertChannel) return;
@@ -45,9 +45,9 @@ export default createEvent({
     await responseMsg
       .awaitMessageComponent({
         componentType: ComponentType.Button,
-        filter: i => i.member.permissions.has(PermissionFlagsBits.BanMembers),
+        filter: (i) => i.member.permissions.has(PermissionFlagsBits.BanMembers),
       })
-      .then(async buttonInteraction => {
+      .then(async (buttonInteraction) => {
         if (!automod.member) {
           await buttonInteraction.update({
             content: ":x: Member not found.",
@@ -69,7 +69,7 @@ export default createEvent({
         if (buttonInteraction.customId === `kick_member_${automod.member.id}`) {
           try {
             const kickCommandMessage = await modCommandsChannel.send(
-              `!kick ${automod.member.id} -mod ${buttonInteraction.member.id} Compromised account. ${messageLinkToAutomodAlert}`
+              `!kick ${automod.member.id} -mod ${buttonInteraction.member.id} Compromised account. ${messageLinkToAutomodAlert}`,
             );
             buttonInteraction.update({
               allowedMentions: {
@@ -80,7 +80,7 @@ export default createEvent({
                 buildBaseAndCommandLinkAutoModActionRow(
                   "Go to !kick command",
                   messageLinkToAutomodAlert,
-                  kickCommandMessage
+                  kickCommandMessage,
                 ),
               ],
             });
@@ -96,7 +96,7 @@ export default createEvent({
         if (buttonInteraction.customId === `remove_timeout_${automod.member.id}`) {
           try {
             const unmuteCommandMessage = await modCommandsChannel.send(
-              `!unmute ${automod.member.id} -mod ${buttonInteraction.member.id} Not a compromised account`
+              `!unmute ${automod.member.id} -mod ${buttonInteraction.member.id} Not a compromised account`,
             );
 
             buttonInteraction.update({
@@ -108,7 +108,7 @@ export default createEvent({
                 buildBaseAndCommandLinkAutoModActionRow(
                   "Go to !unmute command",
                   messageLinkToAutomodAlert,
-                  unmuteCommandMessage
+                  unmuteCommandMessage,
                 ),
               ],
             });

@@ -1,5 +1,11 @@
-import { Client, ChatInputCommandInteraction, PermissionFlagsBits, TextChannel, CategoryChannel } from "discord.js";
 import { CronJob } from "cron";
+import {
+  type CategoryChannel,
+  type ChatInputCommandInteraction,
+  type Client,
+  PermissionFlagsBits,
+  type TextChannel,
+} from "discord.js";
 
 export const startFNBCategoryCronJobs = (client: Client) => {
   try {
@@ -16,7 +22,7 @@ export const activateFNB = (client: Client, interaction?: ChatInputCommandIntera
   console.log(
     interaction
       ? `${interaction.user.username} (${interaction.user.id}) requested to activate FNB category.`
-      : "Started automatic activation of the FNB category."
+      : "Started automatic activation of the FNB category.",
   );
 
   const confirmationChannel = client.channels.cache.get("907954411970658335") as TextChannel | undefined; // #fnb-bfd-staff
@@ -46,7 +52,7 @@ export const activateFNB = (client: Client, interaction?: ChatInputCommandIntera
       reason: interaction
         ? `${interaction.user.username} asked me to activate the FNB category (permissions).`
         : "Automatic activation of the FNB category (permissions).",
-    }
+    },
   );
 
   Promise.all([moveFNB, changePerms])
@@ -61,7 +67,7 @@ export const activateFNB = (client: Client, interaction?: ChatInputCommandIntera
         rawPosition: movedCategory.rawPosition,
       });
     })
-    .catch(e => {
+    .catch((e) => {
       interaction
         ? interaction.reply("❌ Failed to activate the FNB category.")
         : confirmationChannel?.send("**Automatic FNB activation:**\n❌ Failed to activate the FNB category.");
@@ -73,7 +79,7 @@ export const deactivateFNB = (client: Client, interaction?: ChatInputCommandInte
   console.log(
     interaction
       ? `${interaction.user.username} (${interaction.user.id}) requested to deactivate FNB category.`
-      : "Started automatic deactivation of the FNB category."
+      : "Started automatic deactivation of the FNB category.",
   );
 
   const confirmationChannel = client.channels.cache.get("907954411970658335") as TextChannel | undefined; // #fnb-bfd-staff
@@ -103,7 +109,7 @@ export const deactivateFNB = (client: Client, interaction?: ChatInputCommandInte
       reason: interaction
         ? `${interaction.user.username} asked me to deactivate the FNB category (permissions).`
         : "Automatic deactivation of the FNB category (permissions).",
-    }
+    },
   );
 
   Promise.all([moveFNB, changePerms])
@@ -118,7 +124,7 @@ export const deactivateFNB = (client: Client, interaction?: ChatInputCommandInte
         rawPosition: movedCategory.rawPosition,
       });
     })
-    .catch(e => {
+    .catch((e) => {
       interaction
         ? interaction.reply("❌ Failed to deactivate the FNB category.")
         : confirmationChannel?.send("**Automatic FNB deactivation:**\n❌ Failed to deactivate the FNB category.");

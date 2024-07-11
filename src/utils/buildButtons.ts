@@ -1,4 +1,4 @@
-import { ButtonStyle, ComponentType, type APIActionRowComponent, type APIButtonComponent } from "discord.js";
+import { type APIActionRowComponent, type APIButtonComponent, ButtonStyle, ComponentType } from "discord.js";
 
 export const buildLinkButton = (label: string, url: string): APIButtonComponent => ({
   type: ComponentType.Button,
