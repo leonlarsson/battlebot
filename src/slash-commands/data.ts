@@ -109,17 +109,17 @@ export default [
     options: [
       {
         name: "unbanall",
-        description: "[ADMIN] Unbans all members.",
+        description: "[ADMIN] Unban members.",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "username",
-            description: "Match only bans with this in their username.",
+            description: "Match only bans with this in the username.",
             type: ApplicationCommandOptionType.String,
           },
           {
             name: "reason",
-            description: "Match only bans with this in their reason.",
+            description: "Match only bans with this in the reason.",
             type: ApplicationCommandOptionType.String,
           },
         ],
