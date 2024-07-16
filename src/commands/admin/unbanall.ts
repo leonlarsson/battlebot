@@ -45,6 +45,8 @@ export default createCommand({
       if (usernameFilter && reasonFilter) {
         return ban.username.includes(usernameFilter) && ban.reason?.includes(reasonFilter);
       }
+
+      return true;
     });
 
     // Send initial reply
