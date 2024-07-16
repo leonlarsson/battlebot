@@ -101,6 +101,32 @@ export default [
     ],
   },
 
+  // Admin commands
+  {
+    name: "admin",
+    description: "[ADMIN] Admin commands.",
+    type: ApplicationCommandType.ChatInput,
+    options: [
+      {
+        name: "unbanall",
+        description: "[ADMIN] Unbans all members.",
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: "username",
+            description: "Match only bans with this in their username.",
+            type: ApplicationCommandOptionType.String,
+          },
+          {
+            name: "reason",
+            description: "Match only bans with this in their reason.",
+            type: ApplicationCommandOptionType.String,
+          },
+        ],
+      },
+    ],
+  },
+
   // Context menus
 
   // Show userinfo
