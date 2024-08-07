@@ -2,25 +2,22 @@
   "name": "battlebot",
   "type": "module",
   "scripts": {
-    "start": "node --env-file=.env dist/index.js",
-    "dev": "tsc-watch --build --onSuccess \"npm run dev:node\"",
-    "dev:node": "node --env-file=.env --enable-source-maps --watch dist/index.js",
-    "build": "tsc",
+    "start": "node --experimental-strip-types --env-file=.env src/index.ts",
+    "dev": "node --experimental-strip-types --env-file=.env src/index.ts",
     "docker:build": "docker build --pull --rm -t battlebot:latest .",
     "docker:run": "docker run --env-file .env battlebot:latest",
-    "slash:deploy": "node --env-file=.env dist/slash-commands/deploySlashGuild.js",
-    "slash:remove": "node --env-file=.env dist/slash-commands/removeSlashGuild.js",
+    "slash:deploy": "node --experimental-strip-types --env-file=.env src/slash-commands/deploySlashGuild.ts",
+    "slash:remove": "node --experimental-strip-types --env-file=.env src/slash-commands/removeSlashGuild.ts",
     "biome": "npx @biomejs/biome check --write ."
   },
   "imports": {
-    "#*": "./dist/*"
+    "#*": "./src/*"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@types/humanize-duration": "^3.27.4",
     "@types/node": "^20.12.12",
-    "tsc-watch": "^6.2.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   },
   "dependencies": {
     "@discordjs/rest": "^2.3.0",

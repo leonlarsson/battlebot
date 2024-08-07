@@ -10,9 +10,9 @@ import {
   type User,
 } from "discord.js";
 import HumanizeDuration from "humanize-duration";
-import { deleteCooldown, getCooldown, setCooldown } from "#utils/handleCooldowns.js";
+import { deleteCooldown, getCooldown, setCooldown } from "#utils/handleCooldowns.ts";
 dayjs.extend(utc);
-import createCommand from "#utils/createCommand.js";
+import createCommand from "#utils/createCommand.ts";
 
 export default createCommand({
   name: "portal_cooldown",

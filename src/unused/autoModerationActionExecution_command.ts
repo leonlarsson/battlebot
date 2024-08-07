@@ -3,9 +3,9 @@ import {
   buildBaseAndActionsAutoModActionRow,
   buildBaseAndCommandLinkAutoModActionRow,
   buildBaseAutoModActionRow,
-} from "#utils/buildActionRows.js";
-import createEvent from "#utils/createEvent.js";
-import { createMessageLink } from "#utils/createMessageLink.js";
+} from "#utils/buildActionRows.ts";
+import createEvent from "#utils/createEvent.ts";
+import { createMessageLink } from "#utils/createMessageLink.ts";
 
 const modCommandsChannelId = process.env.ENVIRONMENT === "live" ? "591426310317015072" : "845402419038650418";
 

@@ -10,8 +10,8 @@ import {
   type User,
 } from "discord.js";
 import HumanizeDuration from "humanize-duration";
-import createCommand from "#utils/createCommand.js";
-import { deleteCooldown, getCooldown, setCooldown } from "#utils/handleCooldowns.js";
+import createCommand from "#utils/createCommand.ts";
+import { deleteCooldown, getCooldown, setCooldown } from "#utils/handleCooldowns.ts";
 dayjs.extend(utc);
 
 export default createCommand({

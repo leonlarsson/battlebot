@@ -11,6 +11,10 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
 
+    /* Added due to the switch to Node's experimental TS support */
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,

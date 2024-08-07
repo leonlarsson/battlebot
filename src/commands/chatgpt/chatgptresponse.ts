@@ -1,7 +1,7 @@
 import { connect } from "@planetscale/database";
 import { type MessageContextMenuCommandInteraction, blockQuote } from "discord.js";
 import OpenAI from "openai";
-import createCommand from "#utils/createCommand.js";
+import createCommand from "#utils/createCommand.ts";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 

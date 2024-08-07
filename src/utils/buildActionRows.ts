@@ -1,6 +1,6 @@
 import { type APIActionRowComponent, type APIButtonComponent, ComponentType, type Message } from "discord.js";
-import { buildDangerButton, buildLinkButton, buildSuccessButton } from "./buildButtons.js";
-import { createMessageLink } from "./createMessageLink.js";
+import { buildDangerButton, buildLinkButton, buildSuccessButton } from "./buildButtons.ts";
+import { createMessageLink } from "./createMessageLink.ts";
 
 export const buildBaseAutoModActionRow = (
   messageLinkToAutomodAlert: string,

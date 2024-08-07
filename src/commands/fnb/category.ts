@@ -1,5 +1,5 @@
-import createCommand from "#utils/createCommand.js";
-import { activateFNB, deactivateFNB } from "#utils/moveFNBCategory.js";
+import createCommand from "#utils/createCommand.ts";
+import { activateFNB, deactivateFNB } from "#utils/moveFNBCategory.ts";
 
 export default createCommand({
   name: "fnb_category",

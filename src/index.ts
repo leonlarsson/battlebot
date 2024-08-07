@@ -1,6 +1,6 @@
 import { readdir } from "node:fs/promises";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import type { Command, Event } from "#types.js";
+import type { Command, Event } from "#types.ts";
 
 // Check for required environment variables
 const requiredEnvVars = [
@@ -34,7 +34,7 @@ client.login(process.env.BOT_TOKEN);
 async function loadEvents(): Promise<Collection<string, Event<any>>> {
   const events = new Collection<string, Event<any>>();
 
-  const eventFiles = (await readdir("./dist/events")).filter((file) => file.endsWith(".js"));
+  const eventFiles = (await readdir("./src/events")).filter((file) => file.endsWith(".ts"));
   eventFiles.forEach(async (eventFile) => {
     const event: Event<any> = (await import(`./events/${eventFile}`)).default;
     events.set(event.name, event);
@@ -51,7 +51,7 @@ async function loadEvents(): Promise<Collection<string, Event<any>>> {
 async function loadCommands(): Promise<Collection<string, Command<any>>> {
   const commands = new Collection<string, Command<any>>();
 
-  const commandFiles = (await readdir("./dist/commands", { recursive: true })).filter((file) => file.endsWith(".js"));
+  const commandFiles = (await readdir("./src/commands", { recursive: true })).filter((file) => file.endsWith(".ts"));
   commandFiles.forEach(async (commandFile) => {
     const command: Command<any> = (await import(`./commands/${commandFile}`)).default;
     commands.set(command.name, command);

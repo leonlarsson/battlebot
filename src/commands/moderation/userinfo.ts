@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 import HumanizeDuration from "humanize-duration";
 dayjs.extend(utc);
-import createCommand from "#utils/createCommand.js";
+import createCommand from "#utils/createCommand.ts";
 
 export default createCommand<UserContextMenuCommandInteraction>({
   name: "Show userinfo",

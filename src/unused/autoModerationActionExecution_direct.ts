@@ -1,7 +1,7 @@
 import { AutoModerationActionType, ComponentType, Events, PermissionFlagsBits, type TextChannel } from "discord.js";
-import { buildBaseAndActionsAutoModActionRow, buildBaseAutoModActionRow } from "#utils/buildActionRows.js";
-import createEvent from "#utils/createEvent.js";
-import { createMessageLink } from "#utils/createMessageLink.js";
+import { buildBaseAndActionsAutoModActionRow, buildBaseAutoModActionRow } from "#utils/buildActionRows.ts";
+import createEvent from "#utils/createEvent.ts";
+import { createMessageLink } from "#utils/createMessageLink.ts";
 
 export default createEvent({
   name: Events.AutoModerationActionExecution,

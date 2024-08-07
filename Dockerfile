@@ -1,16 +1,4 @@
-FROM node:lts-alpine as build
-
-WORKDIR /app
-
-COPY package*.json .
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
-FROM node:lts-alpine as production
+FROM node:22.6.0-alpine
 
 WORKDIR /app
 
@@ -18,9 +6,7 @@ COPY package*.json .
 
 RUN npm ci --omit=dev
 
-COPY --from=build /app/dist ./dist
-
-# Copy the assets folder
+COPY ./src ./src
 COPY ./assets ./assets
 
-CMD [ "node", "dist/index.js" ]
+CMD ["npm", "run", "start"]

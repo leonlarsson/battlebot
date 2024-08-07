@@ -1,11 +1,11 @@
 import { Events } from "discord.js";
 import humanizeDuration from "humanize-duration";
-import { handlePortalModal } from "#commands/portal/post.js";
-import { handleRecruitmentModal } from "#commands/recruitment/post.js";
-import { commands } from "#index.js";
-import createEvent from "#utils/createEvent.js";
-import getCommandUsed from "#utils/getCommandUsed.js";
-import { getCooldown } from "#utils/handleCooldowns.js";
+import { handlePortalModal } from "#commands/portal/post.ts";
+import { handleRecruitmentModal } from "#commands/recruitment/post.ts";
+import { commands } from "#index.ts";
+import createEvent from "#utils/createEvent.ts";
+import getCommandUsed from "#utils/getCommandUsed.ts";
+import { getCooldown } from "#utils/handleCooldowns.ts";
 
 export default createEvent({
   name: Events.InteractionCreate,

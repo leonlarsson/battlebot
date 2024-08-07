@@ -5,8 +5,8 @@ import {
   ButtonStyle,
   ComponentType,
 } from "discord.js";
-import createCommand from "#utils/createCommand.js";
-import { createFNBEvent } from "#utils/createFNBEvent.js";
+import createCommand from "#utils/createCommand.ts";
+import { createFNBEvent } from "#utils/createFNBEvent.ts";
 
 export default createCommand({
   name: "fnb_create_event",

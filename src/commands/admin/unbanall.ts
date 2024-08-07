@@ -1,5 +1,5 @@
 import { ButtonStyle, type Collection, ComponentType, type GuildBan, type Snowflake, escapeMarkdown } from "discord.js";
-import createCommand from "#utils/createCommand.js";
+import createCommand from "#utils/createCommand.ts";
 
 const unbanInterval = 500;
 const statusMsgEditInterval = 2_000;
