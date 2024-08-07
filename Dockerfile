@@ -9,4 +9,4 @@ RUN npm ci --omit=dev
 COPY ./src ./src
 COPY ./assets ./assets
 
-CMD ["npm", "run", "start"]
+CMD ["node", "--experimental-strip-types", "src/index.ts"]
